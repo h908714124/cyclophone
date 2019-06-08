@@ -13,24 +13,16 @@ import static java.util.Arrays.copyOf;
 /**
  * A collection of array related utilities
  */
-public final class ArrayUtil {
+final class ArrayUtil {
 
-  /** An empty array of Bytes */
-  static final Byte[] BOX_BYTE_0 = new Byte[0];
-  /** An empty array of Shorts */
-  static final Short[] BOX_SHORT_0 = new Short[0];
-  /** An empty array of Characters */
-  static final Character[] BOX_CHAR_0 = new Character[0];
-  /** An empty array of Longs */
-  static final Long[] BOX_LONG_0 = new Long[0];
-  /** An empty array of Floats */
-  static final Float[] BOX_FLOAT_0 = new Float[0];
-  /** An empty array of Doubles */
-  static final Double[] BOX_DOUBLE_0 = new Double[0];
-  /** An empty array of Integers */
-  static final Integer[] BOX_INT_0 = new Integer[0];
-  /** An empty array of ints */
-  public static final int[] INT_0 = new int[]{};
+  private static final Byte[] BOX_BYTE_0 = new Byte[0];
+  private static final Short[] BOX_SHORT_0 = new Short[0];
+  private static final Character[] BOX_CHAR_0 = new Character[0];
+  private static final Long[] BOX_LONG_0 = new Long[0];
+  private static final Float[] BOX_FLOAT_0 = new Float[0];
+  private static final Double[] BOX_DOUBLE_0 = new Double[0];
+  private static final Integer[] BOX_INT_0 = new Integer[0];
+  static final int[] INT_0 = new int[]{};
 
   private ArrayUtil() {}
 
@@ -39,7 +31,7 @@ public final class ArrayUtil {
    * @param a an array of length {@code n}
    * @return a two dimensional array of length {@code n} which contains the  [element, index] pairs in {@code a}
    */
-  public static int[][] withIndex(int[] a) {
+  static int[][] withIndex(int[] a) {
     int[][] result = new int[a.length][];
     for (int i = 0; i < a.length; i += 1)
       result[i] = new int[]{a[i], i};
@@ -55,7 +47,7 @@ public final class ArrayUtil {
    * @param inclusive whether or not {@code end} should be included in the result
    * @return the sequence from {@code start} to {@code end}
    */
-  public static int[] range(int start, int end, boolean inclusive) {
+  static int[] range(int start, int end, boolean inclusive) {
     if (!inclusive)
       return range(start, end);
     return range(start, end >= start ? ++end : --end);
@@ -69,7 +61,7 @@ public final class ArrayUtil {
    * @param end a number
    * @return an array of length {@code | end | }
    */
-  public static int[] range(int end) {
+  static int[] range(int end) {
     return range(0, end);
   }
 
@@ -77,11 +69,12 @@ public final class ArrayUtil {
    * Creates an array of the numbers {@code 0} (included) to {@code end} (excluded) in sequence.
    * If {@code start == end}, an empty array is returned. If {@code end} is negative, the range
    * will be descending.
+   * @param start a non-negative number
    * @param end a non-negative number
    * @return an array of length {@code | start - end | }
    * @throws java.lang.IllegalArgumentException if {@code end} is negative
    */
-  public static int[] range(int start, int end) {
+  static int[] range(int start, int end) {
     if (start == end)
       return INT_0;
     int[] result = new int[Math.abs(start - end)];
@@ -103,7 +96,7 @@ public final class ArrayUtil {
    * found in {@code a}, or if all occurences are skipped
    * @throws java.lang.IllegalArgumentException if {@code skip < 0}
    */
-  public static int indexOf(int[] a, int el, final int skip) {
+  static int indexOf(int[] a, int el, final int skip) {
     if (skip < 0)
       negativeFailure();
     int cnt = 0;
@@ -124,7 +117,7 @@ public final class ArrayUtil {
    * @param k a number
    * @return the array {@code b} defined as {@code b[i] = a[i] + k}
    */
-  public static int[] add(int[] a, int k) {
+  static int[] add(int[] a, int k) {
     int[] result = new int[a.length];
     for (int i = 0; i < a.length; i += 1)
       result[i] = a[i] + k;
@@ -136,7 +129,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return the maximum of all numbers in {@code a}
    */
-  public static int max(int[] a) {
+  static int max(int[] a) {
     if (a.length == 0)
       throw new IllegalArgumentException("argument must not be empty");
     int maxIndex = a[0];
@@ -151,7 +144,7 @@ public final class ArrayUtil {
    * This method will modify the input array.
    * @param a an array
    */
-  public static void shuffle(int[] a) {
+  static void shuffle(int[] a) {
     Random r = new Random();
     for (int i = a.length - 1; i > 0; i--) {
       int j = r.nextInt(i + 1);
@@ -169,7 +162,7 @@ public final class ArrayUtil {
    * @param length result length
    * @return an array of random numbers
    */
-  public static int[] randomNumbers(int maxNumber, int length) {
+  static int[] randomNumbers(int maxNumber, int length) {
     return randomNumbers(0, maxNumber, length);
   }
 
@@ -180,7 +173,7 @@ public final class ArrayUtil {
    * @param length result length
    * @return an array of random numbers
    */
-  public static int[] randomNumbers(int minNumber, int maxNumber, int length) {
+  static int[] randomNumbers(int minNumber, int maxNumber, int length) {
     if (minNumber > maxNumber) {
       throw new IllegalArgumentException("minNumber must be less than or equal to maxNumber");
     }
@@ -205,7 +198,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Integer[] box(int[] a) {
+  static Integer[] box(int[] a) {
     if (a.length == 0)
       return BOX_INT_0;
     Integer[] result = new Integer[a.length];
@@ -219,7 +212,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Byte[] box(byte[] a) {
+  static Byte[] box(byte[] a) {
     if (a.length == 0)
       return BOX_BYTE_0;
     Byte[] result = new Byte[a.length];
@@ -233,7 +226,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Short[] box(short[] a) {
+  static Short[] box(short[] a) {
     if (a.length == 0)
       return BOX_SHORT_0;
     Short[] result = new Short[a.length];
@@ -247,7 +240,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Long[] box(long[] a) {
+  static Long[] box(long[] a) {
     if (a.length == 0)
       return BOX_LONG_0;
     Long[] result = new Long[a.length];
@@ -261,7 +254,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Float[] box(float[] a) {
+  static Float[] box(float[] a) {
     if (a.length == 0)
       return BOX_FLOAT_0;
     Float[] result = new Float[a.length];
@@ -275,7 +268,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Double[] box(double[] a) {
+  static Double[] box(double[] a) {
     if (a.length == 0)
       return BOX_DOUBLE_0;
     Double[] result = new Double[a.length];
@@ -289,7 +282,7 @@ public final class ArrayUtil {
    * @param a an array of primitives
    * @return an array of boxed primitives
    */
-  public static Character[] box(char[] a) {
+  static Character[] box(char[] a) {
     if (a.length == 0)
       return BOX_CHAR_0;
     Character[] result = new Character[a.length];
@@ -303,7 +296,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static char[] sortedCopy(char[] input) {
+  static char[] sortedCopy(char[] input) {
     char[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -314,7 +307,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static short[] sortedCopy(short[] input) {
+  static short[] sortedCopy(short[] input) {
     short[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -325,7 +318,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static double[] sortedCopy(double[] input) {
+  static double[] sortedCopy(double[] input) {
     double[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -336,7 +329,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static float[] sortedCopy(float[] input) {
+  static float[] sortedCopy(float[] input) {
     float[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -347,7 +340,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static long[] sortedCopy(long[] input) {
+  static long[] sortedCopy(long[] input) {
     long[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -358,7 +351,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static byte[] sortedCopy(byte[] input) {
+  static byte[] sortedCopy(byte[] input) {
     byte[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -369,7 +362,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static Comparable[] sortedCopy(Comparable[] input) {
+  static Comparable[] sortedCopy(Comparable[] input) {
     Comparable[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -382,7 +375,7 @@ public final class ArrayUtil {
    * @return a sorted copy of the input
    */
   @SuppressWarnings("unchecked")
-  public static Object[] sortedCopy(Object[] input, Comparator comp) {
+  static Object[] sortedCopy(Object[] input, Comparator comp) {
     Object[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted, comp);
     return sorted;
@@ -393,7 +386,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return a sorted copy of the input
    */
-  public static int[] sortedCopy(int[] input) {
+  static int[] sortedCopy(int[] input) {
     int[] sorted = Arrays.copyOf(input, input.length);
     Arrays.sort(sorted);
     return sorted;
@@ -430,7 +423,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(int[] input) {
+  static boolean isSorted(int[] input) {
     if (input.length < 2) {return true;}
     int test = input[0];
     for (int i : input) {
@@ -445,7 +438,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(byte[] input) {
+  static boolean isSorted(byte[] input) {
     if (input.length < 2) {return true;}
     byte test = input[0];
     for (byte i : input) {
@@ -460,7 +453,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(short[] input) {
+  static boolean isSorted(short[] input) {
     if (input.length < 2) {return true;}
     short test = input[0];
     for (short i : input) {
@@ -475,7 +468,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(char[] input) {
+  static boolean isSorted(char[] input) {
     if (input.length < 2) {return true;}
     int test = input[0];
     for (int i : input) {
@@ -490,7 +483,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(float[] input) {
+  static boolean isSorted(float[] input) {
     if (input.length < 2) {return true;}
     float test = input[0];
     for (float i : input) {
@@ -505,7 +498,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(double[] input) {
+  static boolean isSorted(double[] input) {
     if (input.length < 2) {return true;}
     double test = input[0];
     for (double i : input) {
@@ -520,7 +513,7 @@ public final class ArrayUtil {
    * @param input an array
    * @return true if the {@code input} is sorted
    */
-  public static boolean isSorted(long[] input) {
+  static boolean isSorted(long[] input) {
     if (input.length < 2) {return true;}
     long test = input[0];
     for (long i : input) {
@@ -537,7 +530,7 @@ public final class ArrayUtil {
    * @throws java.lang.NullPointerException if the input contains null
    */
   @SuppressWarnings("unchecked")
-  public static boolean isSorted(Comparable[] input) {
+  static boolean isSorted(Comparable[] input) {
     if (input.length == 0) {return true;}
     Comparable test = input[0];
     if (test == null) {throw new NullPointerException("null is not allowed");}
@@ -554,7 +547,7 @@ public final class ArrayUtil {
    * @return true if the {@code input} is sorted
    * @throws java.lang.NullPointerException if the input contains null
    */
-  public static <E extends Comparable<E>> boolean isSorted(Iterable<E> input) {
+  static <E extends Comparable<E>> boolean isSorted(Iterable<E> input) {
     Iterator<E> iterator = input.iterator();
     if (!iterator.hasNext()) {return true;}
     E test = iterator.next();
@@ -573,7 +566,7 @@ public final class ArrayUtil {
    * @return true if the {@code input} is sorted
    * @throws java.lang.NullPointerException if the input contains null
    */
-  public static <E> boolean isSorted(Comparator<E> comparator, Iterable<E> input) {
+  static <E> boolean isSorted(Comparator<E> comparator, Iterable<E> input) {
     Iterator<E> iterator = input.iterator();
     if (!iterator.hasNext()) {return true;}
     E test = iterator.next();
@@ -597,7 +590,7 @@ public final class ArrayUtil {
    * @throws java.lang.NullPointerException if the input contains null
    */
   @SuppressWarnings("unchecked")
-  public static <E> boolean isSorted(Comparator<E> comparator, Object[] input) {
+  static <E> boolean isSorted(Comparator<E> comparator, Object[] input) {
     if (input.length == 0) {return true;}
     Object test = input[0];
     if (test == null) {throw new NullPointerException("null is not allowed");}
@@ -649,7 +642,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static int[] unique(int[] sorted) {
+  static int[] unique(int[] sorted) {
     int[] result = new int[sorted.length];
     int idx = 0;
     int previous = sorted[0];
@@ -669,7 +662,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static byte[] unique(byte[] sorted) {
+  static byte[] unique(byte[] sorted) {
     byte[] result = new byte[sorted.length];
     int idx = 0;
     byte previous = sorted[0];
@@ -689,7 +682,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static short[] unique(short[] sorted) {
+  static short[] unique(short[] sorted) {
     short[] result = new short[sorted.length];
     int idx = 0;
     short previous = sorted[0];
@@ -709,7 +702,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static long[] unique(long[] sorted) {
+  static long[] unique(long[] sorted) {
     long[] result = new long[sorted.length];
     int idx = 0;
     long previous = sorted[0];
@@ -729,7 +722,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static float[] unique(float[] sorted) {
+  static float[] unique(float[] sorted) {
     float[] result = new float[sorted.length];
     int idx = 0;
     float previous = sorted[0];
@@ -749,7 +742,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static double[] unique(double[] sorted) {
+  static double[] unique(double[] sorted) {
     double[] result = new double[sorted.length];
     int idx = 0;
     double previous = sorted[0];
@@ -769,7 +762,7 @@ public final class ArrayUtil {
    * @param sorted a sorted array
    * @return the unique sorted array
    */
-  public static char[] unique(char[] sorted) {
+  static char[] unique(char[] sorted) {
     char[] result = new char[sorted.length];
     int idx = 0;
     char previous = sorted[0];
@@ -791,7 +784,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(int[] a) {
+  static boolean isUnique(int[] a) {
     return isUnique(a, false);
   }
 
@@ -804,7 +797,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(int[] a, boolean omitCheck) {
+  static boolean isUnique(int[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -821,7 +814,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(byte[] a) {
+  static boolean isUnique(byte[] a) {
     return isUnique(a, false);
   }
 
@@ -834,7 +827,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(byte[] a, boolean omitCheck) {
+  static boolean isUnique(byte[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -851,7 +844,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(short[] a) {
+  static boolean isUnique(short[] a) {
     return isUnique(a, false);
   }
 
@@ -864,7 +857,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(short[] a, boolean omitCheck) {
+  static boolean isUnique(short[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -881,7 +874,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(char[] a) {
+  static boolean isUnique(char[] a) {
     return isUnique(a, false);
   }
 
@@ -894,7 +887,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(char[] a, boolean omitCheck) {
+  static boolean isUnique(char[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -911,7 +904,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(long[] a) {
+  static boolean isUnique(long[] a) {
     return isUnique(a, false);
   }
 
@@ -924,7 +917,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(long[] a, boolean omitCheck) {
+  static boolean isUnique(long[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -941,7 +934,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(double[] a) {
+  static boolean isUnique(double[] a) {
     return isUnique(a, false);
   }
 
@@ -954,7 +947,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(double[] a, boolean omitCheck) {
+  static boolean isUnique(double[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -972,7 +965,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(float[] a) {
+  static boolean isUnique(float[] a) {
     return isUnique(a, false);
   }
 
@@ -985,7 +978,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(float[] a, boolean omitCheck) {
+  static boolean isUnique(float[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -1003,7 +996,7 @@ public final class ArrayUtil {
    * @param a an array
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(Comparable[] a) {
+  static boolean isUnique(Comparable[] a) {
     return isUnique(a, false);
   }
 
@@ -1016,7 +1009,7 @@ public final class ArrayUtil {
    *                  the correct result.
    * @return true if the input contains no duplicate element
    */
-  public static boolean isUnique(Comparable[] a, boolean omitCheck) {
+  static boolean isUnique(Comparable[] a, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(a))
@@ -1036,7 +1029,7 @@ public final class ArrayUtil {
    * @return true if the input contains no duplicate element
    */
   @SuppressWarnings("unchecked")
-  public static boolean isUnique(Object[] a, Comparator comparator) {
+  static boolean isUnique(Object[] a, Comparator comparator) {
     return isUnique(a, comparator, false);
   }
 
@@ -1051,7 +1044,7 @@ public final class ArrayUtil {
    * @return true if the input contains no duplicate element
    */
   @SuppressWarnings("unchecked")
-  public static boolean isUnique(Object[] a, Comparator comparator, boolean omitCheck) {
+  static boolean isUnique(Object[] a, Comparator comparator, boolean omitCheck) {
     if (a.length < 2)
       return true;
     if (!omitCheck && !isSorted(comparator, a))
@@ -1068,7 +1061,7 @@ public final class ArrayUtil {
    * @param i cut point, must be non negative and less than {@code a.length}
    * @return an array of length {@code a.length - 1}
    */
-  public static int[] cut(int[] a, int i) {
+  static int[] cut(int[] a, int i) {
     if (i < 0 || i >= a.length)
       throw new IllegalArgumentException("i must be non netative and less than " + a.length);
     int[] result = new int[a.length - 1];
@@ -1083,7 +1076,7 @@ public final class ArrayUtil {
    * @param el new element to be inserted
    * @return an array of length {@code a.length + 1}, this will have {@code el} at position {@code i}
    */
-  public static int[] paste(int[] a, int i, int el) {
+  static int[] paste(int[] a, int i, int el) {
     if (i < 0 || i > a.length)
       throw new IllegalArgumentException("i must be non negative and not greater than " + a.length);
     int[] result = new int[a.length + 1];

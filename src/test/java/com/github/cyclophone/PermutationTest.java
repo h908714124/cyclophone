@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 import static com.github.cyclophone.ArrayUtil.randomNumbers;
 import static com.github.cyclophone.Permutation.cycle;
-import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Permutation.cycle0;
+import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Permutation.identity;
 import static com.github.cyclophone.Permutation.move;
 import static com.github.cyclophone.Permutation.product;
@@ -509,8 +509,7 @@ class PermutationTest {
   @Test
   void testCycle4() {
     Permutation permutation = cycle(1, 3).compose(cycle(2, 4)).compose(cycle(1, 2));
-    System.out.println(permutation.toCycles());
+    assertEquals("(1 4 2 3)", permutation.toCycles().toString());
   }
-
 }
 

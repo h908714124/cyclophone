@@ -11,7 +11,6 @@ import static com.github.cyclophone.ArrayUtil.negativeFailure;
 
 /**
  * A permutation operation that can be used to rearrange arrays and lists.
- * <p/>
  * Instances of this class are immutable, and none of the apply methods modify the input.
  * The toCycles method can be used to obtain the destructive version of an instance.
  *
@@ -113,16 +112,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
     return new Permutation(trimmed, validate);
   }
 
-  /**
-   * Creates a new <a href="http://en.wikipedia.org/wiki/Cyclic_permutation">cycle</a>.
-   * A single number {@code n} creates the identity of length {@code n + 1}.
-   * An emtpy input produces the permutation of length {@code 0}.
-   *
-   * @param cycle a list of distinct, non-negative numbers
-   * @return the cyclic permutation defined by {@code cycle}
-   * @exception java.lang.IllegalArgumentException if {@code cycle} contains negative numbers or duplicates
-   */
-  public static Permutation cycle0(int... cycle) {
+  static Permutation cycle0(int... cycle) {
     return define(CycleUtil.cyclic(cycle), false);
   }
 
@@ -130,6 +120,8 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
   /**
    * Creates a new <a href="http://en.wikipedia.org/wiki/Cyclic_permutation">cycle</a>.
    *
+   * @param a first param
+   * @param b second param
    * @param cycle1based a list of numbers that defines a permutation in 1-based cycle notation
    * @return the cyclic permutation defined by {@code cycle1based}
    * @see Permutation#cycle0
@@ -259,11 +251,11 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * Creates a cycle that acts as a delete followed by an insert. Examples:
    * <pre><code>
    *   Permutation.move(0, 2).apply("12345");
-   *   => 23145
+   *   =&gt; 23145
    *   </code></pre>
    * <pre><code>
    *   Permutation.move(3, 1).apply("12345");
-   *   => 14235
+   *   =&gt; 14235
    * </code></pre>
    * If {@code delete == insert}, the identity of length {@code delete + 1} is returned.
    *
@@ -341,7 +333,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * <p>Returns a permutation that reverses its input. Example:</p>
    * <pre><code>
    *   Permutation.reverse(5).apply("12345");
-   *   => 54321
+   *   =&gt; 54321
    * </code></pre>
    *
    * @param length a non negative number
@@ -377,7 +369,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
   /**
    * Returns a shifted permutation. The following is true for the shifted permutation:
    * <pre><code>
-   *   p.shift(n).apply(j) = j, j < n
+   *   p.shift(n).apply(j) = j, j &lt; n
    *   p.shift(n).apply(n + i) = n + p.apply(i)
    * </code></pre>
    *
@@ -485,10 +477,10 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
 
   /**
    * Move an index. The following is true for arrays {@code a} of any type and of length
-   * {@code a.length >= this.length}, and all indexes {@code 0 <= i < a.length}:
-   * <code><pre>
+   * {@code a.length &gt;= this.length}, and all indexes {@code 0 &lt;= i < a.length}:
+   * {@code
    *   apply(a)[apply(i)] == a[i];
-   * </pre></code>
+   * }
    * If the input is greater than or equal to {@code this.length()}, then the same number is returned.
    *
    * @param i a non negative number
@@ -509,6 +501,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * Rearrange an array. This method does not modify its input array.
    *
    * @param input an array of length not less than {@code this.length()}
+   * @param <T> type param
    * @return the result of applying this permutation to {@code input}
    * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
    * @see #apply(int)
@@ -660,6 +653,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * Rearrange a list. This method does not modify the input list.
    *
    * @param input a list that must have at least {@code this.length()} elements
+   * @param <E> type param
    * @return the result of applying this permutation to {@code input}
    * @exception java.lang.IllegalArgumentException if {@code input} has less than {@code this.length()} elements
    * @see Cycles#clobber(List)

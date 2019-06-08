@@ -26,7 +26,8 @@ import static java.util.Arrays.binarySearch;
  */
 public final class Rankings {
 
-  private Rankings() {}
+  private Rankings() {
+  }
 
   private static final Comparator<int[]> COMPARE_FIRST = Comparator.comparingInt(a -> a[0]);
 
@@ -35,6 +36,7 @@ public final class Rankings {
   /**
    * Check that the input ranking is valid. In order to be valid, each non-negative integer less than
    * {@code a.length} must appear exactly once.
+   *
    * @param a an array
    * @return true if a is a ranking
    */
@@ -52,6 +54,7 @@ public final class Rankings {
 
   /**
    * Return the identity ranking
+   *
    * @param length the length of the ranking
    * @return the identity ranking of the given length
    */
@@ -63,6 +66,7 @@ public final class Rankings {
 
   /**
    * Find the length that this ranking can be safely trimmed to.
+   *
    * @param ranking a ranking
    * @return the length that this ranking can be safely trimmed to
    */
@@ -75,6 +79,7 @@ public final class Rankings {
 
   /**
    * If possible, trim ranking to something shorter but equivalent.
+   *
    * @param ranking a ranking
    * @return the trimmed ranking
    */
@@ -90,10 +95,11 @@ public final class Rankings {
   /**
    * Return a ranking that acts similar to the input but operates on higher indexes,
    * leaving the lower {@code n} indexes unmoved.
+   *
    * @param n a non-negative number
    * @param ranking a ranking
    * @return the shifted ranking
-   * @throws java.lang.IllegalArgumentException if {@code n} is negative
+   * @exception java.lang.IllegalArgumentException if {@code n} is negative
    */
   public static int[] shift(int n, int[] ranking) {
     if (n < 0)
@@ -110,9 +116,10 @@ public final class Rankings {
 
   /**
    * Ensure that the input is a ranking.
+   *
    * @param a an array
    * @return the input ranking
-   * @throws java.lang.IllegalArgumentException if {@code a} is not a valid ranking
+   * @exception java.lang.IllegalArgumentException if {@code a} is not a valid ranking
    * @see #isValid
    */
   public static int[] checkRanking(int[] a) {
@@ -129,6 +136,7 @@ public final class Rankings {
   /**
    * Calculate the inverse ranking.
    * This method does not check if the input is indeed a ranking and may have unexpected results otherwise.
+   *
    * @param ranking a ranking
    * @return the inverse ranking
    */
@@ -143,9 +151,10 @@ public final class Rankings {
 
   /**
    * Generate a random ranking of given length.
+   *
    * @param length a non-negative integer
    * @return a random ranking
-   * @throws IllegalArgumentException if {@code length} is negative
+   * @exception IllegalArgumentException if {@code length} is negative
    */
   public static int[] random(int length) {
     int[] a = range(length);
@@ -155,6 +164,7 @@ public final class Rankings {
 
   /**
    * Multiply two rankings.
+   *
    * @param lhs a ranking
    * @param rhs another ranking
    * @return the product of the input rankings
@@ -186,6 +196,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -211,6 +222,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -236,6 +248,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -261,6 +274,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -286,6 +300,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -311,6 +326,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -336,6 +352,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -361,6 +378,7 @@ public final class Rankings {
    * Find the next position, after {@code idx + offset}, of {@code sorted[idx]} in a sorted array.
    * For a given element {@code el}, iterating this method over the {@code offset} element, starting with
    * {@code offset = 0}, will enumerate all positions of {@code sorted[idx]} in the sorted array.
+   *
    * @param idx the start index
    * @param offset the current offset from the start index
    * @param sorted a sorted array
@@ -386,6 +404,7 @@ public final class Rankings {
 
   /**
    * Encode an int as a non-zero int
+   *
    * @param i an int
    * @return {@code i + 1} if {@code i} is non-negative, otherwise {@code i}
    * @see #unshift
@@ -396,6 +415,7 @@ public final class Rankings {
 
   /**
    * Undo the shift
+   *
    * @param i a non-zero int
    * @return {@code i - 1} if {@code i} is positive, otherwise {@code i}
    * @see #shift
@@ -477,6 +497,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], int[])
@@ -511,6 +532,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], byte[])
@@ -545,6 +567,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], short[])
@@ -579,6 +602,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], long[])
@@ -613,6 +637,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], float[])
@@ -646,6 +671,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], double[])
@@ -680,6 +706,7 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
    * @see #apply(int[], char[])
@@ -713,10 +740,11 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @return a ranking that sorts the input
+   * @exception java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
    * @see ArrayUtil#indexOf
-   * @throws java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
    */
   public static <E extends Comparable> int[] sorting(E[] a) {
     Comparable[] sorted = sortedCopy(a);
@@ -747,12 +775,13 @@ public final class Rankings {
    * <pre><code>
    *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
    * </code></pre>
+   *
    * @param a an array
    * @param comp a comparator
    * @return a ranking that sorts the input
+   * @exception java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
    * @see #apply(int[], Object[])
    * @see ArrayUtil#indexOf
-   * @throws java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
    */
   public static <E> int[] sorting(Object[] a, Comparator<E> comp) {
     Object[] sorted = sortedCopy(a, comp);
@@ -774,11 +803,12 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
-   * @throws java.lang.NullPointerException if any argument is {@code null}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.NullPointerException if any argument is {@code null}
    * @see #apply(int[], int[])
    */
   public static int[] from(int[] a, int[] b) {
@@ -804,11 +834,12 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
-   * @throws java.lang.NullPointerException if any argument is {@code null}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.NullPointerException if any argument is {@code null}
    */
   public static <E extends Comparable> int[] from(E[] a, E[] b) {
     checkEqualLength(a, b);
@@ -833,11 +864,12 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.NullPointerException if any argument is {@code null}
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.NullPointerException if any argument is {@code null}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
    * @see #apply(int[], byte[])
    */
   public static int[] from(byte[] a, byte[] b) {
@@ -863,11 +895,12 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.NullPointerException if any argument is {@code null}
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.NullPointerException if any argument is {@code null}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
    * @see #apply(int[], long[])
    */
   public static int[] from(long[] a, long[] b) {
@@ -893,11 +926,12 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.NullPointerException if any argument is {@code null}
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.NullPointerException if any argument is {@code null}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
    * @see #apply(int[], float[])
    */
   public static int[] from(float[] a, float[] b) {
@@ -923,11 +957,12 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.NullPointerException if any argument is {@code null}
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.NullPointerException if any argument is {@code null}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
    * @see #apply(int[], double[])
    */
   public static int[] from(double[] a, double[] b) {
@@ -953,12 +988,13 @@ public final class Rankings {
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
+   *
    * @param a an array
    * @param b an array
    * @return a ranking that produces {@code b} when applied to {@code a}
-   * @throws java.lang.NullPointerException if any argument is null, or if {@code a} or {@code b}
+   * @exception java.lang.NullPointerException if any argument is null, or if {@code a} or {@code b}
    * contain a {@code null} element
-   * @throws java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
+   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
    * @see #apply(int[], java.lang.Object[])
    */
   public static <E> int[] from(E[] a, E[] b, Comparator<E> comp) {
@@ -984,14 +1020,15 @@ public final class Rankings {
 
   /**
    * Check where the {@code ranking} moves the index {@code i}.
-   * The following is true for all {@code j < a.length}:
-   * <code><pre>
-   *   apply(ranking, a)[apply(ranking, j)] == a[j];
-   * </pre></code>
+   * The following is true for all {@code j &lt; a.length}:
+   * {@code
+   * apply(ranking, a)[apply(ranking, j)] == a[j];
+   * }
    * This method does not check whether the input ranking is valid.
+   *
    * @param i a non negative number
    * @return the moved index
-   * @throws java.lang.IllegalArgumentException if {@code i} is negative
+   * @exception java.lang.IllegalArgumentException if {@code i} is negative
    */
   public static int apply(int[] ranking, int i) {
     if (i < 0)
@@ -1007,10 +1044,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not check that the first argument is indeed a ranking.
+   *
+   * @param <T> type param
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
    */
   public static <T> T[] apply(int[] ranking, T[] input) {
     checkLength(ranking.length, input.length);
@@ -1028,11 +1067,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static byte[] apply(int[] ranking, byte[] input) {
     checkLength(ranking.length, input.length);
@@ -1049,11 +1089,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static short[] apply(int[] ranking, short[] input) {
     checkLength(ranking.length, input.length);
@@ -1069,11 +1110,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static int[] apply(int[] ranking, int[] input) {
     checkLength(ranking.length, input.length);
@@ -1090,11 +1132,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static long[] apply(int[] ranking, long[] input) {
     checkLength(ranking.length, input.length);
@@ -1111,11 +1154,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static float[] apply(int[] ranking, float[] input) {
     checkLength(ranking.length, input.length);
@@ -1132,11 +1176,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static double[] apply(int[] ranking, double[] input) {
     checkLength(ranking.length, input.length);
@@ -1153,11 +1198,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static boolean[] apply(int[] ranking, boolean[] input) {
     checkLength(ranking.length, input.length);
@@ -1174,11 +1220,12 @@ public final class Rankings {
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not validate that the first argument is indeed a ranking.
+   *
    * @param ranking a ranking
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static char[] apply(int[] ranking, char[] input) {
     checkLength(ranking.length, input.length);
@@ -1194,11 +1241,13 @@ public final class Rankings {
    * Apply the ranking to the input list. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
    * This method does not check if the first argument is indeed a ranking, and will have unexpected results otherwise.
+   *
    * @param ranking a ranking
+   * @param <E> type param
    * @param input an input array
    * @return the result of applying the ranking to the input
-   * @throws java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @throws java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
+   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
+   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   public static <E> List<E> apply(int[] ranking, List<E> input) {
     if (ranking.length == 0)
@@ -1218,6 +1267,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1247,6 +1297,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1276,6 +1327,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1305,6 +1357,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1334,6 +1387,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1363,6 +1417,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1392,6 +1447,7 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
@@ -1421,11 +1477,13 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
+   * @param <E> type param
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
+   * @exception java.lang.NullPointerException if {@code a} contains a {@code null} element
    * @see #isValid
-   * @throws java.lang.NullPointerException if {@code a} contains a {@code null} element
    */
   public static <E extends Comparable<E>> boolean sorts(int[] ranking, E[] a) {
     if (a.length < ranking.length)
@@ -1452,12 +1510,14 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input array when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a an array
+   * @param <E> type param
    * @param ranking a ranking
    * @param comparator a Comparator
    * @return true if the return value of {@code apply(ranking, a)} is a sorted array
+   * @exception java.lang.NullPointerException if {@code a} contains a {@code null} element
    * @see #isValid
-   * @throws java.lang.NullPointerException if {@code a} contains a {@code null} element
    */
   public static <E> boolean sorts(int[] ranking, E[] a, Comparator<E> comparator) {
     if (a.length < ranking.length)
@@ -1484,11 +1544,13 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input list when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a a list
+   * @param <E> type param
    * @param ranking a ranking
    * @return true if the return value of {@code apply(ranking, a)} is a sorted list
+   * @exception java.lang.NullPointerException if {@code a} contains a {@code null} element
    * @see #isValid
-   * @throws java.lang.NullPointerException if {@code a} contains a {@code null} element
    */
   public static <E extends Comparable<E>> boolean sorts(int[] ranking, List<E> a) {
     if (a.size() < ranking.length)
@@ -1515,12 +1577,14 @@ public final class Rankings {
   /**
    * Check if the input ranking will sort the input list when applied to it.
    * This method does not check if the first argument is indeed a valid ranking, and will have unexpected results otherwise.
+   *
    * @param a a list
+   * @param <E> type param
    * @param ranking a ranking
    * @param comparator a Comparator
    * @return true if the return value of {@code apply(ranking, a)} is a sorted list
+   * @exception java.lang.NullPointerException if {@code a} contains a {@code null} element
    * @see #isValid
-   * @throws java.lang.NullPointerException if {@code a} contains a {@code null} element
    */
   public static <E> boolean sorts(int[] ranking, List<E> a, Comparator<E> comparator) {
     if (a.size() < ranking.length)
@@ -1557,6 +1621,7 @@ public final class Rankings {
 
   /**
    * Returns all possible permutations of given length
+   *
    * @param n length of permutations to generate
    * @return all possible permutations of length {@code n}; this will contain {@code n!}
    * different permutations
@@ -1597,6 +1662,4 @@ public final class Rankings {
     };
     return StreamSupport.stream(it.spliterator(), false);
   }
-
-
 }

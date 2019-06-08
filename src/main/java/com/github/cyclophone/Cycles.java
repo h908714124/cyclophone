@@ -1,24 +1,22 @@
 package com.github.cyclophone;
 
-import static com.github.cyclophone.ArrayUtil.checkLength;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.github.cyclophone.ArrayUtil.checkLength;
+
 /**
  * <p>
  * An operation that shuffles arrays and lists.
  * </p>
- * <p/>
  * <p>
  * This implementation is based on cyclic decomposition and will sometimes use less memory than an equivalent
  * {@link Permutation}. In some cases it can be faster when applied to a list or array, and it can optionally
  * be applied in a destructive manner, see the {@code clobber} and {@code unclobber} methods.
  * </p>
- * <p/>
  * <p>
  * Applying it to a single index is {@code O(n)} whereas {@link Permutation} does this in constant time.
  * </p>
@@ -44,7 +42,7 @@ public final class Cycles implements Serializable {
    *
    * @return the identity permutation
    */
-  public static Cycles identity() {
+  static Cycles identity() {
     return IDENTITY;
   }
 
@@ -68,9 +66,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(int[] array) {
+  void clobber(int[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -85,9 +83,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(int[] array) {
+  void unclobber(int[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -102,9 +100,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(byte[] array) {
+  void clobber(byte[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -119,9 +117,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(byte[] array) {
+  void unclobber(byte[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -136,9 +134,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(char[] array) {
+  void clobber(char[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -153,9 +151,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(char[] array) {
+  void unclobber(char[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -170,9 +168,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(short[] array) {
+  void clobber(short[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -187,9 +185,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(short[] array) {
+  void unclobber(short[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -204,9 +202,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(float[] array) {
+  void clobber(float[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -221,9 +219,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(float[] array) {
+  void unclobber(float[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -238,9 +236,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(double[] array) {
+  void clobber(double[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -255,9 +253,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(double[] array) {
+  void unclobber(double[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -272,9 +270,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(long[] array) {
+  void clobber(long[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -289,9 +287,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(long[] array) {
+  void unclobber(long[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -306,9 +304,9 @@ public final class Cycles implements Serializable {
    * Apply this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(Object[] array) {
+  void clobber(Object[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -323,9 +321,9 @@ public final class Cycles implements Serializable {
    * Undo the action of this operation by modifying the input array.
    *
    * @param array an array
-   * @throws IllegalArgumentException if {@code array.length < this.length()}
+   * @exception IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void unclobber(Object[] array) {
+  void unclobber(Object[] array) {
     checkLength(length, array.length);
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -341,10 +339,10 @@ public final class Cycles implements Serializable {
    * The input list must support {@link List#set(int, Object)}.
    *
    * @param list a list
-   * @throws UnsupportedOperationException if the input list is not mutable
-   * @throws IllegalArgumentException      if {@code list.size() < this.length()}
+   * @exception UnsupportedOperationException if the input list is not mutable
+   * @exception IllegalArgumentException if {@code list.size() < this.length()}
    */
-  public <E> void clobber(List<E> list) {
+  <E> void clobber(List<E> list) {
     checkLength(length, list.size());
     for (int[] cycle : cycles) {
       for (int j = cycle.length - 2; j >= 0; j--) {
@@ -360,10 +358,10 @@ public final class Cycles implements Serializable {
    * The input list must support {@link List#set(int, Object)}.
    *
    * @param list a list
-   * @throws UnsupportedOperationException if the input list is not mutable
-   * @throws IllegalArgumentException      if {@code list.size() < this.length()}
+   * @exception UnsupportedOperationException if the input list is not mutable
+   * @exception IllegalArgumentException if {@code list.size() < this.length()}
    */
-  public <E> void unclobber(List<E> list) {
+  <E> void unclobber(List<E> list) {
     checkLength(length, list.size());
     for (int[] cycle : cycles) {
       for (int j = 0; j < cycle.length - 1; j++) {
@@ -379,9 +377,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public int[] apply(int[] a) {
+  int[] apply(int[] a) {
     int[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -392,9 +390,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public byte[] apply(byte[] a) {
+  byte[] apply(byte[] a) {
     byte[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -405,9 +403,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public char[] apply(char[] a) {
+  char[] apply(char[] a) {
     char[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -418,9 +416,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public short[] apply(short[] a) {
+  short[] apply(short[] a) {
     short[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -431,9 +429,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public float[] apply(float[] a) {
+  float[] apply(float[] a) {
     float[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -444,9 +442,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public double[] apply(double[] a) {
+  double[] apply(double[] a) {
     double[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -457,9 +455,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public long[] apply(long[] a) {
+  long[] apply(long[] a) {
     long[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -470,9 +468,9 @@ public final class Cycles implements Serializable {
    *
    * @param a an array of length not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.length < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public <E> E[] apply(E[] a) {
+  <E> E[] apply(E[] a) {
     E[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -483,9 +481,9 @@ public final class Cycles implements Serializable {
    *
    * @param a a list of size not less than {@code this.length()}
    * @return the result of applying this permutation to {@code a}
-   * @throws java.lang.IllegalArgumentException if {@code a.size() < this.length()}
+   * @exception java.lang.IllegalArgumentException if {@code a.size() < this.length()}
    */
-  public <E> List<E> apply(List<E> a) {
+  <E> List<E> apply(List<E> a) {
     ArrayList<E> copy = new ArrayList<E>(a);
     clobber(copy);
     return copy;
@@ -497,7 +495,7 @@ public final class Cycles implements Serializable {
    * @param n a number
    * @return the moved index
    */
-  public int apply(int n) {
+  int apply(int n) {
     for (int[] cycle : cycles)
       for (int j = cycle.length - 2; j >= 0; j--)
         n = n == cycle[j] ? cycle[j + 1] : n == cycle[j + 1] ? cycle[j] : n;
@@ -510,7 +508,7 @@ public final class Cycles implements Serializable {
    * @param n a number
    * @return the moved index
    */
-  public int unApply(int n) {
+  int unApply(int n) {
     for (int[] cycle : cycles)
       for (int j = 0; j < cycle.length - 1; j++)
         n = n == cycle[j] ? cycle[j + 1] : n == cycle[j + 1] ? cycle[j] : n;
@@ -522,7 +520,7 @@ public final class Cycles implements Serializable {
    *
    * @return a ranking-based version of this operation
    */
-  public Permutation toPermutation() {
+  Permutation toPermutation() {
     int[] ranking = ArrayUtil.range(length);
     unclobber(ranking);
     return Permutation.define(ranking);
@@ -534,7 +532,7 @@ public final class Cycles implements Serializable {
    * @param other another permutation
    * @return the composition or product
    */
-  public Permutation comp(Cycles other) {
+  Permutation comp(Cycles other) {
     if (length == 0)
       return other.toPermutation();
     if (other.length == 0)
@@ -548,7 +546,7 @@ public final class Cycles implements Serializable {
    * @param permutations an array of permutations
    * @return the composition or product
    */
-  public static Permutation product(Cycles... permutations) {
+  static Permutation product(Cycles... permutations) {
     Permutation result = Permutation.identity();
     for (Cycles permutation : permutations)
       result = result.compose(permutation.toPermutation());
@@ -561,7 +559,7 @@ public final class Cycles implements Serializable {
    * @param permutations a list of permutations
    * @return the composition or product
    */
-  public static Permutation product(List<Cycles> permutations) {
+  static Permutation product(List<Cycles> permutations) {
     Permutation result = Permutation.identity();
     for (Cycles permutation : permutations)
       result = result.compose(permutation.toPermutation());
@@ -570,12 +568,13 @@ public final class Cycles implements Serializable {
 
   @Override
   public String toString() {
-    if (cycles.length == 0)
+    if (cycles.length == 0) {
       return "()";
-    List<String> s = Arrays.stream(cycles).map(a ->
-        "(" + Arrays.stream(a).map(i -> i + 1).mapToObj(Integer::toString).collect(Collectors.joining(" "))
-            + ")").collect(Collectors.toList());
-    return String.join(" ", s);
+    }
+    return Arrays.stream(cycles)
+        .map(a -> Arrays.stream(a).map(i -> i + 1).mapToObj(Integer::toString).collect(Collectors.joining(" ")))
+        .map(s -> '(' + s + ')')
+        .collect(Collectors.joining(" "));
   }
 
   /**
@@ -584,7 +583,7 @@ public final class Cycles implements Serializable {
    *
    * @return the length of this operation
    */
-  public int length() {
+  int length() {
     return length;
   }
 
@@ -593,7 +592,7 @@ public final class Cycles implements Serializable {
    *
    * @return the number of cycles
    */
-  public int numCycles() {
+  int numCycles() {
     return cycles.length;
   }
 
@@ -601,9 +600,9 @@ public final class Cycles implements Serializable {
    * Get the length of the {@code n}th cycle.
    *
    * @return the length of the {@code n}th cycle
-   * @throws java.lang.ArrayIndexOutOfBoundsException if the {@code n}th cycle does not exist
+   * @exception java.lang.ArrayIndexOutOfBoundsException if the {@code n}th cycle does not exist
    */
-  public int cycleLength(int n) {
+  int cycleLength(int n) {
     return cycles[n].length;
   }
 
@@ -611,9 +610,9 @@ public final class Cycles implements Serializable {
    * Get a copy of the {@code n}th cycle.
    *
    * @return the {@code n}th cycle
-   * @throws java.lang.ArrayIndexOutOfBoundsException if the {@code n}th cycle does not exist
+   * @exception java.lang.ArrayIndexOutOfBoundsException if the {@code n}th cycle does not exist
    */
-  public int[] getCycle(int n) {
+  int[] getCycle(int n) {
     return Arrays.copyOf(cycles[n], cycles[n].length);
   }
 
@@ -621,9 +620,9 @@ public final class Cycles implements Serializable {
    * Get the {@code m}th element of the {@code n}th cycle.
    *
    * @return the {@code m}th element of the {@code n}th cycle
-   * @throws java.lang.ArrayIndexOutOfBoundsException if the {@code m}th element of the {@code n}th cycle does not exist
+   * @exception java.lang.ArrayIndexOutOfBoundsException if the {@code m}th element of the {@code n}th cycle does not exist
    */
-  public int getCycleElement(int n, int m) {
+  int getCycleElement(int n, int m) {
     return cycles[n][m];
   }
 
@@ -632,7 +631,7 @@ public final class Cycles implements Serializable {
    *
    * @return {@code 1} if this permutation can be written as an even number of transpositions, {@code -1} otherwise
    */
-  public int signature() {
+  int signature() {
     boolean even = true;
     for (int[] cycle : cycles)
       if (cycle.length % 2 == 0)
@@ -646,7 +645,7 @@ public final class Cycles implements Serializable {
    * @return true if the signature of this permutation is {@code 1}
    * @see #signature()
    */
-  public boolean isEven() {
+  boolean isEven() {
     return signature() == 1;
   }
 
@@ -656,7 +655,7 @@ public final class Cycles implements Serializable {
    * @return true if the signature of this permutation is {@code -11}
    * @see #signature()
    */
-  public boolean isOdd() {
+  boolean isOdd() {
     return signature() == -1;
   }
 
