@@ -1,5 +1,7 @@
 ### Cyclophone
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.h908714124/cyclophone/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.h908714124/cyclophone)
+
 ````java
 import static com.github.cyclophone.Permutation.cycle;
 
