@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * A collection of methods that return cycles or operate on cycles.
  */
-public final class CycleUtil {
+final class CycleUtil {
 
   private CycleUtil() {}
 
@@ -16,7 +16,7 @@ public final class CycleUtil {
    * @return the indexes that are moved by the cycle
    * @throws java.lang.IllegalArgumentException if the input does not define a cycle
    */
-  public static boolean[] movedIndexes(int[] cycle) {
+  private static boolean[] movedIndexes(int[] cycle) {
     if (cycle.length == 0)
       return new boolean[0];
     boolean[] moved = new boolean[ArrayUtil.max(cycle) + 1];
@@ -37,7 +37,7 @@ public final class CycleUtil {
    * @return true if the input defines a cycle, because it contains no negative
    * numbers or duplicates
    */
-  public static boolean isCycle(int[] a) {
+  static boolean isCycle(int[] a) {
     boolean[] used = new boolean[ArrayUtil.max(a) + 1];
     for (int i : a) {
       if (i < 0)
@@ -57,7 +57,7 @@ public final class CycleUtil {
    * @throws java.lang.IllegalArgumentException if the input does not define a cycle
    * @see #isCycle
    */
-  public static int[] cyclic(int... cycle) {
+  static int[] cyclic(int... cycle) {
     boolean[] moved = movedIndexes(cycle);
     int[] ranking = new int[moved.length];
     for (int i = 0; i < moved.length; i += 1)
@@ -73,7 +73,7 @@ public final class CycleUtil {
    * @param i an integer
    * @return the order of {@code i}
    */
-  public static int order(int[] ranking, final int i) {
+  private static int order(int[] ranking, final int i) {
     int length = 1;
     int j = i;
     while ((j = ranking[j]) != i)
@@ -90,7 +90,7 @@ public final class CycleUtil {
    * @return the orbit of {@code i}
    * @throws java.lang.IllegalArgumentException if {@code i} is negative
    */
-  public static int[] orbit(int[] ranking, int i) {
+  static int[] orbit(int[] ranking, int i) {
     if (i < 0)
       ArrayUtil.negativeFailure();
     if (i >= ranking.length || ranking[i] == i)
@@ -110,7 +110,7 @@ public final class CycleUtil {
    * @param ranking a ranking
    * @return true if the input is a cycle
    */
-  public static boolean isCyclicRanking(int[] ranking) {
+  static boolean isCyclicRanking(int[] ranking) {
     int[] candidate = null;
     for (int i = 0; i < ranking.length; i += 1) {
       if (ranking[i] != i) {
@@ -134,7 +134,7 @@ public final class CycleUtil {
    * @param ranking a ranking
    * @return an array of all nontrivial orbits in the input ranking
    */
-  public static int[][] toOrbits(int[] ranking) {
+  static int[][] toOrbits(int[] ranking) {
     int[][] orbits = new int[ranking.length / 2][];
     boolean[] done = new boolean[ranking.length];
     int cnt = 0;

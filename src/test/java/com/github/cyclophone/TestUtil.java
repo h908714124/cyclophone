@@ -11,6 +11,30 @@ import java.util.TreeSet;
 
 class TestUtil {
 
+  private static final Comparator<Permutation> PERMUTATION_COMPARATOR = new Comparator<Permutation>() {
+
+    /**
+     * A compare method compatible with {@code equals}: permutations compare to {@code 0}
+     * if and only they are equal.
+     *
+     * @param other a permutation, not necessarily of the same length
+     * @return the result of lexicographic comparison of {@code this.ranking} and {@code other.ranking}
+     * @see #equals
+     */
+    @Override
+    public int compare(Permutation that, Permutation other) {
+      int[] thatRanking = that.getRanking();
+      int[] otherRanking = other.getRanking();
+      if (that == other)
+        return 0;
+      for (int i = 0; i < Math.min(thatRanking.length, otherRanking.length); i += 1)
+        if (thatRanking[i] != otherRanking[i])
+          return thatRanking[i] - otherRanking[i];
+      return otherRanking.length - thatRanking.length;
+    }
+  };
+
+
   static Iterable<Permutation[]> cartesian(final List<Permutation> a, final List<Permutation> b) {
     return () ->
         new Iterator<Permutation[]>() {
@@ -45,7 +69,7 @@ class TestUtil {
 
   static List<Permutation> commutator(final List<Permutation> input) {
     LinkedList<Permutation> result = new LinkedList<Permutation>();
-    for (Permutation p : distinct(commutatorIterable(input)))
+    for (Permutation p : distinct(commutatorIterable(input), PERMUTATION_COMPARATOR))
       result.push(p);
     return result;
   }
@@ -69,9 +93,9 @@ class TestUtil {
     };
   }
 
-  static <E extends Comparable> Iterable<E> distinct(final Iterable<E> input) {
+  static <E> Iterable<E> distinct(final Iterable<E> input, Comparator<E> comparator) {
     return () -> {
-      final TreeSet<E> set = new TreeSet<E>();
+      final TreeSet<E> set = new TreeSet<>(comparator);
       final Iterator<E> it = input.iterator();
       return new Iterator<E>() {
         E current = null;
@@ -109,9 +133,8 @@ class TestUtil {
   }
 
   static boolean isClosed(final List<Permutation> permutations) {
-    TreeSet<Permutation> set = new TreeSet<Permutation>();
-    for (Permutation p : permutations)
-      set.add(p);
+    TreeSet<Permutation> set = new TreeSet<>(PERMUTATION_COMPARATOR);
+    set.addAll(permutations);
     for (Permutation[] p : cartesian(permutations, permutations))
       if (!set.contains(p[0].compose(p[1])) || !set.contains(p[1].compose(p[0])))
         return false;
@@ -139,18 +162,6 @@ class TestUtil {
     for (Permutation p : permutations)
       result += p.toCycles().signature();
     return result;
-  }
-
-  static <E extends Comparable> boolean isDistinct(Iterable<E> input) {
-    Iterable<E> distinct = distinct(input);
-    Iterator it = distinct.iterator();
-    for (E __ : input) {
-      if (!it.hasNext())
-        return false;
-      it.next();
-    }
-    assert !it.hasNext();
-    return true;
   }
 
   static boolean isDistinct(int[] input) {

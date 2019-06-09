@@ -10,19 +10,11 @@ import static com.github.cyclophone.ArrayUtil.checkLength;
 /**
  * An operation that swaps two elements of an array or list.
  */
-public final class Transposition implements Serializable {
+final class Transposition implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  /**
-   * A factory that creates transpositions.
-   * Transpositions are immutable, so various caching strategies can be considered.
-   */
-  public interface TranspositionFactory {
-    Transposition swap(int j, int k);
-  }
-
-  public static final TranspositionFactory NON_CACHING_FACTORY = new DefaultTranspositionFactory(0);
+  private static final TranspositionFactory NON_CACHING_FACTORY = new TranspositionFactory(0);
 
   private final int j;
   private final int k;
@@ -30,7 +22,7 @@ public final class Transposition implements Serializable {
   /**
    * A simple caching factory that maintains a permanent cache of transpositions below the configured length.
    */
-  public static final class DefaultTranspositionFactory implements TranspositionFactory {
+  static final class TranspositionFactory {
 
     private final Transposition[][] cache;
 
@@ -41,7 +33,7 @@ public final class Transposition implements Serializable {
      *
      * @param maxCachedLength the maximum index that is moved by a cached transposition
      */
-    public DefaultTranspositionFactory(int maxCachedLength) {
+    TranspositionFactory(int maxCachedLength) {
       this.cache = new Transposition[maxCachedLength][];
       for (int j = 1; j < maxCachedLength; j++)
         cache[j] = new Transposition[j];
@@ -55,7 +47,7 @@ public final class Transposition implements Serializable {
      * @return a transposition operation
      * @exception java.lang.IllegalArgumentException if the arguments are equal or negative
      */
-    public Transposition swap(int j, int k) {
+    Transposition swap(int j, int k) {
       if (j < 0 || k < 0)
         ArrayUtil.negativeFailure();
       if (j == k)
@@ -84,7 +76,7 @@ public final class Transposition implements Serializable {
    * @return a random transposition of length {@code length} or less
    * @exception IllegalArgumentException if {@code length} is less than {@code 2}
    */
-  public static Transposition random(TranspositionFactory factory, int length) {
+  static Transposition random(TranspositionFactory factory, int length) {
     if (length < 2)
       throw new IllegalArgumentException("minimum length of a transposition is 2");
     int j = (int) (length * Math.random());
@@ -101,7 +93,7 @@ public final class Transposition implements Serializable {
    * @return a random transposition of length {@code length} or less
    * @exception IllegalArgumentException if {@code length} is less than {@code 2}
    */
-  public static Transposition random(int length) {
+  static Transposition random(int length) {
     return random(NON_CACHING_FACTORY, length);
   }
 
@@ -113,7 +105,7 @@ public final class Transposition implements Serializable {
    * @return the transposition that swaps the elements at {@code j} and {@code k}
    * @exception IllegalArgumentException if {@code j < 0}, {@code k < 0} or {@code j == k}
    */
-  public static Transposition swap(int j, int k) {
+  static Transposition swap(int j, int k) {
     return NON_CACHING_FACTORY.swap(j, k);
   }
 
@@ -129,7 +121,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(int[] array) {
+  void clobber(int[] array) {
     checkLength(j, array.length);
     int temp = array[k];
     array[k] = array[j];
@@ -142,7 +134,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(byte[] array) {
+  void clobber(byte[] array) {
     byte temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -154,7 +146,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(char[] array) {
+  void clobber(char[] array) {
     char temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -166,7 +158,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(short[] array) {
+  void clobber(short[] array) {
     short temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -178,7 +170,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(float[] array) {
+  void clobber(float[] array) {
     float temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -190,7 +182,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(double[] array) {
+  void clobber(double[] array) {
     double temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -202,7 +194,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(long[] array) {
+  void clobber(long[] array) {
     long temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -214,7 +206,7 @@ public final class Transposition implements Serializable {
    * @param array an array
    * @exception java.lang.IllegalArgumentException if {@code array.length < this.length()}
    */
-  public void clobber(Object[] array) {
+  void clobber(Object[] array) {
     Object temp = array[k];
     array[k] = array[j];
     array[j] = temp;
@@ -228,7 +220,7 @@ public final class Transposition implements Serializable {
    * @exception java.lang.UnsupportedOperationException if the input list is not mutable
    * @exception java.lang.IllegalArgumentException if {@code list.size() < this.length()}
    */
-  public <E> void clobber(List<E> list) {
+  <E> void clobber(List<E> list) {
     E temp = list.get(k);
     list.set(k, list.get(j));
     list.set(j, temp);
@@ -241,7 +233,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public int[] apply(int[] a) {
+  int[] apply(int[] a) {
     int[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -254,7 +246,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public byte[] apply(byte[] a) {
+  byte[] apply(byte[] a) {
     byte[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -267,7 +259,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public char[] apply(char[] a) {
+  char[] apply(char[] a) {
     char[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -280,7 +272,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public short[] apply(short[] a) {
+  short[] apply(short[] a) {
     short[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -293,7 +285,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public float[] apply(float[] a) {
+  float[] apply(float[] a) {
     float[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -306,7 +298,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public double[] apply(double[] a) {
+  double[] apply(double[] a) {
     double[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -319,7 +311,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public long[] apply(long[] a) {
+  long[] apply(long[] a) {
     long[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -332,7 +324,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.length < this.length()}
    */
-  public <E> E[] apply(E[] a) {
+  <E> E[] apply(E[] a) {
     E[] copy = Arrays.copyOf(a, a.length);
     clobber(copy);
     return copy;
@@ -345,7 +337,7 @@ public final class Transposition implements Serializable {
    * @return the result of applying this permutation to {@code a}
    * @exception java.lang.IllegalArgumentException if {@code a.size() < this.length()}
    */
-  public <E> List<E> apply(List<E> a) {
+  <E> List<E> apply(List<E> a) {
     ArrayList<E> copy = new ArrayList<E>(a.size());
     for (int i = 0; i < a.size(); i++)
       copy.set(i, a.get(apply(i)));
@@ -358,7 +350,7 @@ public final class Transposition implements Serializable {
    * @param i a number
    * @return the moved index
    */
-  public int apply(int i) {
+  int apply(int i) {
     return i == j ? k : i == k ? j : i;
   }
 
@@ -368,7 +360,7 @@ public final class Transposition implements Serializable {
    * @param other a transposition
    * @return true if {@code this.apply(other.apply(i)) == other.apply(this.apply(i))} for all integers {@code i}
    */
-  public boolean commutesWith(Transposition other) {
+  boolean commutesWith(Transposition other) {
     return (this.j != other.j && this.k != other.k && this.j != other.k && this.k != other.j)
         || (this.j == other.j && this.k == other.k);
   }
@@ -379,7 +371,7 @@ public final class Transposition implements Serializable {
    *
    * @return the length of this operation
    */
-  public int length() {
+  int length() {
     return j + 1;
   }
 
@@ -390,7 +382,7 @@ public final class Transposition implements Serializable {
    * @return a non-negative number
    * @see #second()
    */
-  public int first() {
+  int first() {
     return j;
   }
 
@@ -399,7 +391,7 @@ public final class Transposition implements Serializable {
    *
    * @return a non-negative number
    */
-  public int second() {
+  int second() {
     return k;
   }
 
@@ -408,7 +400,7 @@ public final class Transposition implements Serializable {
    *
    * @return a permutation
    */
-  public Permutation toPermutation() {
+  Permutation toPermutation() {
     return Permutation.cycle0(j, k);
   }
 
@@ -418,7 +410,7 @@ public final class Transposition implements Serializable {
    * @param transpositions an array of transpositions
    * @return the product of the input
    */
-  public static Permutation product(Transposition... transpositions) {
+  static Permutation product(Transposition... transpositions) {
     int maxIndex = 0;
     for (Transposition t : transpositions)
       maxIndex = Math.max(maxIndex, t.j);

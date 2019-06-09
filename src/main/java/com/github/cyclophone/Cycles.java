@@ -23,18 +23,18 @@ import static com.github.cyclophone.ArrayUtil.checkLength;
  *
  * @see Permutation#toCycles()
  */
-public final class Cycles implements Serializable {
+final class Cycles implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private static final Cycles IDENTITY = new Cycles(Permutation.Orbits.EMPTY, 0);
+  private static final Cycles IDENTITY = new Cycles(new int[0][], 0);
 
   private final int length;
   private final int[][] cycles;
 
-  private Cycles(Permutation.Orbits orbits, int length) {
+  private Cycles(int[][] cycles, int length) {
     this.length = length;
-    this.cycles = orbits.orbits;
+    this.cycles = cycles;
   }
 
   /**
@@ -49,17 +49,17 @@ public final class Cycles implements Serializable {
   /**
    * Define a new operation as a list of cycles.
    *
-   * @param orbits a list of cycles
+   * @param cycles a list of cycles
    * @return the operation defined by the input
    */
-  static Cycles create(Permutation.Orbits orbits) {
-    if (orbits.orbits.length == 0)
+  static Cycles create(int[][] cycles) {
+    if (cycles.length == 0)
       return IDENTITY;
     int maxIndex = 0;
-    for (int[] orbit : orbits.orbits)
+    for (int[] orbit : cycles)
       for (int i : orbit)
         maxIndex = Math.max(maxIndex, i);
-    return new Cycles(orbits, maxIndex + 1);
+    return new Cycles(cycles, maxIndex + 1);
   }
 
   /**

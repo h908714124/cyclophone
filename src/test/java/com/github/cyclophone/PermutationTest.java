@@ -509,7 +509,7 @@ class PermutationTest {
   @Test
   void testCycle4() {
     Permutation permutation = cycle(1, 3).compose(cycle(2, 4)).compose(cycle(1, 2));
-    assertEquals("(1 4 2 3)", permutation.toCycles().toString());
+    assertEquals("(1 4 2 3)", permutation.toString());
   }
 }
 

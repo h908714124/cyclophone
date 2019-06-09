@@ -1,6 +1,5 @@
 package com.github.cyclophone;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -16,9 +15,7 @@ import static com.github.cyclophone.ArrayUtil.negativeFailure;
  *
  * @see #toCycles
  */
-public final class Permutation implements Comparable<Permutation>, Serializable {
-
-  private static final long serialVersionUID = 1L;
+public final class Permutation {
 
   /*
    *  An array of N integers where each of the integers between 0 and N-1 appear exactly once.
@@ -34,11 +31,11 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
     this.ranking = validate ? Rankings.checkRanking(ranking) : ranking;
   }
 
-  public static Permutation define() {
+  static Permutation define() {
     return IDENTITY;
   }
 
-  public static Permutation define(int a0) {
+  static Permutation define(int a0) {
     if (a0 == 0) {
       return IDENTITY;
     } else {
@@ -46,47 +43,47 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
     }
   }
 
-  public static Permutation define(int a0, int a1) {
+  static Permutation define(int a0, int a1) {
     return define(new int[]{a0, a1}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2) {
+  static Permutation define(int a0, int a1, int a2) {
     return define(new int[]{a0, a1, a2}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3) {
+  static Permutation define(int a0, int a1, int a2, int a3) {
     return define(new int[]{a0, a1, a2, a3}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4) {
     return define(new int[]{a0, a1, a2, a3, a4}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5) {
     return define(new int[]{a0, a1, a2, a3, a4, a5}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6) {
     return define(new int[]{a0, a1, a2, a3, a4, a5, a6}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7) {
     return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8) {
     return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7, a8}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9) {
     return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10) {
     return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10}, true, false);
   }
 
-  public static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10, int... a11) {
+  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10, int... a11) {
     int[] a00 = {a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10};
     int[] a = new int[a00.length + a11.length];
     System.arraycopy(a00, 0, a, 0, a00.length);
@@ -94,7 +91,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
     return define(a, true, false);
   }
 
-  public static Permutation define(int[] ranking) {
+  static Permutation define(int[] ranking) {
     return define(ranking, true);
   }
 
@@ -140,7 +137,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @param length the length of arrays that the result can be applied to
    * @return a random permutation that can be applied to an array of length {@code length}
    */
-  public static Permutation random(int length) {
+  static Permutation random(int length) {
     return define(Rankings.random(length), false);
   }
 
@@ -150,7 +147,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the identity permutation that can be applied to an array of length {@code length}
    * @see Permutation#isIdentity
    */
-  public static Permutation identity() {
+  static Permutation identity() {
     return IDENTITY;
   }
 
@@ -180,7 +177,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the product of the input
    * @see #compose
    */
-  public static Permutation product(Permutation... permutations) {
+  static Permutation product(Permutation... permutations) {
     Permutation result = identity();
     for (Permutation permutation : permutations)
       result = result.compose(permutation);
@@ -194,7 +191,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the product of the input
    * @see #compose
    */
-  public static Permutation product(Iterable<Permutation> permutations) {
+  static Permutation product(Iterable<Permutation> permutations) {
     Permutation result = identity();
     for (Permutation permutation : permutations)
       result = result.compose(permutation);
@@ -241,7 +238,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see #compose
    * @see #isIdentity
    */
-  public Permutation invert() {
+  Permutation invert() {
     if (this.ranking.length == 0)
       return this;
     return define(Rankings.invert(ranking), false);
@@ -264,7 +261,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return a permutation of length {@code Math.max(delete, insert) + 1}
    * @see #cycle0
    */
-  public static Permutation move(int delete, int insert) {
+  static Permutation move(int delete, int insert) {
     return cycle0(ArrayUtil.range(insert, delete, true));
   }
 
@@ -280,7 +277,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the orbit of {@code i}
    * @exception java.lang.IllegalArgumentException if {@code i < 0} or {@code i >= this.length}.
    */
-  public int[] orbit(int i) {
+  int[] orbit(int i) {
     return CycleUtil.orbit(ranking, i);
   }
 
@@ -313,7 +310,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see #cycle0
    * @see #orbit
    */
-  public boolean isCycle() {
+  boolean isCycle() {
     return CycleUtil.isCyclicRanking(ranking);
   }
 
@@ -322,10 +319,10 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    *
    * @return a cycle based version of this operation
    */
-  public Cycles toCycles() {
+  Cycles toCycles() {
     if (this.ranking.length == 0)
       return Cycles.identity();
-    return Cycles.create(new Orbits(CycleUtil.toOrbits(ranking)));
+    return Cycles.create(CycleUtil.toOrbits(ranking));
   }
 
 
@@ -339,7 +336,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @param length a non negative number
    * @return a permutation that reverses an array of length {@code length}
    */
-  public static Permutation reverse(int length) {
+  static Permutation reverse(int length) {
     int[] result = new int[length];
     for (int i = 0; i < length; i += 1) {
       result[i] = length - i - 1;
@@ -355,7 +352,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @exception java.lang.IllegalArgumentException if {@code n} is negative
    * @see #reverse
    */
-  public boolean reverses(int n) {
+  boolean reverses(int n) {
     if (ranking.length < n)
       return false;
     if (n < 0)
@@ -377,7 +374,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the shifted permutation
    * @exception java.lang.IllegalArgumentException if n is negative
    */
-  public Permutation shift(int n) {
+  Permutation shift(int n) {
     if (ranking.length == 0 && n == 0)
       return this;
     return define(Rankings.shift(n, ranking), false);
@@ -388,7 +385,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    *
    * @return a cycle in this permutation or {@code null} if there are no cycles because this is the identity
    */
-  public int[] findCycle() {
+  int[] findCycle() {
     if (ranking.length == 0)
       return null;
     for (int i = 0; i < ranking.length; i++)
@@ -402,7 +399,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    *
    * @return true if this is the identity
    */
-  public boolean isIdentity() {
+  boolean isIdentity() {
     return ranking.length == 0;
   }
 
@@ -413,7 +410,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the length of this operation
    */
 
-  public int length() {
+  int length() {
     return ranking.length;
   }
 
@@ -424,7 +421,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    */
   @Override
   public String toString() {
-    return Arrays.toString(ranking);
+    return toCycles().toString();
   }
 
   /**
@@ -449,29 +446,11 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
   }
 
   /**
-   * A compare method compatible with {@code equals}: permutations compare to {@code 0}
-   * if and only they are equal.
-   *
-   * @param other a permutation, not necessarily of the same length
-   * @return the result of lexicographic comparison of {@code this.ranking} and {@code other.ranking}
-   * @see #equals
-   */
-  @Override
-  public int compareTo(Permutation other) {
-    if (this == other)
-      return 0;
-    for (int i = 0; i < Math.min(this.ranking.length, other.ranking.length); i += 1)
-      if (this.ranking[i] != other.ranking[i])
-        return this.ranking[i] - other.ranking[i];
-    return other.ranking.length - this.ranking.length;
-  }
-
-  /**
    * Get a copy of the ranking that represents of this permutation.
    *
    * @return a copy of the ranking
    */
-  public int[] getRanking() {
+  int[] getRanking() {
     return Arrays.copyOf(ranking, ranking.length);
   }
 
@@ -479,7 +458,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * Move an index. The following is true for arrays {@code a} of any type and of length
    * {@code a.length &gt;= this.length}, and all indexes {@code 0 &lt;= i < a.length}:
    * {@code
-   *   apply(a)[apply(i)] == a[i];
+   * apply(a)[apply(i)] == a[i];
    * }
    * If the input is greater than or equal to {@code this.length()}, then the same number is returned.
    *
@@ -487,7 +466,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @return the moved index
    * @exception java.lang.IllegalArgumentException if the input is negative
    */
-  public int apply(int i) {
+  int apply(int i) {
     if (i < 0)
       negativeFailure();
     if (i >= ranking.length)
@@ -508,7 +487,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see #toCycles()
    * @see Cycles#apply(Object[])
    */
-  public <T> T[] apply(T[] input) {
+  <T> T[] apply(T[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -523,7 +502,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(byte[])
    * @see #apply(int)
    */
-  public byte[] apply(byte[] input) {
+  byte[] apply(byte[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -538,7 +517,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(short[])
    * @see #apply(int)
    */
-  public short[] apply(short[] input) {
+  short[] apply(short[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -553,7 +532,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(int[])
    * @see #apply(int)
    */
-  public int[] apply(int[] input) {
+  int[] apply(int[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -568,7 +547,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(long[])
    * @see #apply(int)
    */
-  public long[] apply(long[] input) {
+  long[] apply(long[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -583,7 +562,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(float[])
    * @see #apply(int)
    */
-  public float[] apply(float[] input) {
+  float[] apply(float[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -598,7 +577,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see #apply(int)
    * @see Cycles#clobber(double[])
    */
-  public double[] apply(double[] input) {
+  double[] apply(double[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -612,7 +591,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
    * @see #apply(int)
    */
-  public boolean[] apply(boolean[] input) {
+  boolean[] apply(boolean[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -627,7 +606,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(char[])
    * @see #apply(int)
    */
-  public char[] apply(char[] input) {
+  char[] apply(char[] input) {
     if (this.ranking.length == 0)
       return input;
     return Rankings.apply(ranking, input);
@@ -641,7 +620,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @exception java.lang.IllegalArgumentException if {@code s.length() < this.length()}
    * @see #apply(int)
    */
-  public String apply(String s) {
+  String apply(String s) {
     if (this.ranking.length == 0)
       return s;
     char[] dst = new char[s.length()];
@@ -659,7 +638,7 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
    * @see Cycles#clobber(List)
    * @see #apply(int)
    */
-  public <E> List<E> apply(List<E> input) {
+  <E> List<E> apply(List<E> input) {
     if (ranking.length == 0)
       return input;
     int length = input.size();
@@ -667,110 +646,110 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
     return Rankings.apply(ranking, input);
   }
 
-  public static Permutation sorting(byte[] input) {
+  static Permutation sorting(byte[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static Permutation sorting(short[] input) {
+  static Permutation sorting(short[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static Permutation sorting(long[] input) {
+  static Permutation sorting(long[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static Permutation sorting(float[] input) {
+  static Permutation sorting(float[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static Permutation sorting(double[] input) {
+  static Permutation sorting(double[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static final class SortingBuilder<E> {
+  static final class SortingBuilder<E> {
     private final E[] a;
 
-    public SortingBuilder(E[] a) {
+    SortingBuilder(E[] a) {
       this.a = a;
     }
 
-    public Permutation using(Comparator<E> comparator) {
+    Permutation using(Comparator<E> comparator) {
       return define(Rankings.sorting(a, comparator), false);
     }
   }
 
-  public static <E extends Comparable> Permutation sorting(E[] input) {
+  static <E extends Comparable> Permutation sorting(E[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static Permutation sorting(char[] input) {
+  static Permutation sorting(char[] input) {
     return define(Rankings.sorting(input), false);
   }
 
 
-  public static <E> SortingBuilder<E> sorting(E[] input) {
+  static <E> SortingBuilder<E> sorting(E[] input) {
     return new SortingBuilder<>(input);
   }
 
-  public static Permutation sorting(int[] input) {
+  static Permutation sorting(int[] input) {
     return define(Rankings.sorting(input), false);
   }
 
-  public static Permutation sorting(String s) {
+  static Permutation sorting(String s) {
     char[] chars = new char[s.length()];
     s.getChars(0, chars.length, chars, 0);
     return sorting(chars);
   }
 
-  public static final class TakingBuilder<E extends Comparable> {
+  static final class TakingBuilder<E extends Comparable> {
     private final E[] from;
 
     private TakingBuilder(E[] from) {
       this.from = from;
     }
 
-    public Permutation to(E[] to) {
+    Permutation to(E[] to) {
       return define(Rankings.from(from, to), false, false);
     }
   }
 
-  public static final class TakingBuilderInt {
+  static final class TakingBuilderInt {
     private final int[] from;
 
     private TakingBuilderInt(int[] from) {
       this.from = from;
     }
 
-    public Permutation to(int[] to) {
+    Permutation to(int[] to) {
       return define(Rankings.from(from, to), false, false);
     }
   }
 
-  public static final class TakingBuilderLong {
+  static final class TakingBuilderLong {
     private final long[] from;
 
     private TakingBuilderLong(long[] from) {
       this.from = from;
     }
 
-    public Permutation to(long[] to) {
+    Permutation to(long[] to) {
       return define(Rankings.from(from, to), false, false);
     }
   }
 
-  public static final class TakingBuilderDouble {
+  static final class TakingBuilderDouble {
     private final double[] from;
 
     private TakingBuilderDouble(double[] from) {
       this.from = from;
     }
 
-    public Permutation to(double[] to) {
+    Permutation to(double[] to) {
       return define(Rankings.from(from, to), false, false);
     }
   }
 
-  public static final class TakingBuilderComp<E> {
+  static final class TakingBuilderComp<E> {
 
     private final E[] from;
     private final E[] to;
@@ -780,12 +759,12 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
       this.to = to;
     }
 
-    public Permutation using(Comparator<E> comp) {
+    Permutation using(Comparator<E> comp) {
       return define(Rankings.from(from, to, comp), false);
     }
   }
 
-  public static final class TakingBuilderObj<E> {
+  static final class TakingBuilderObj<E> {
 
     private final E[] from;
 
@@ -793,99 +772,88 @@ public final class Permutation implements Comparable<Permutation>, Serializable 
       this.from = from;
     }
 
-    public TakingBuilderComp<E> to(E[] to) {
+    TakingBuilderComp<E> to(E[] to) {
       return new TakingBuilderComp<>(from, to);
     }
 
   }
 
 
-  public static TakingBuilderInt taking(int[] a) {
+  static TakingBuilderInt taking(int[] a) {
     return new TakingBuilderInt(a);
   }
 
-  public static <E extends Comparable> TakingBuilder<E> taking(E[] a) {
+  static <E extends Comparable> TakingBuilder<E> taking(E[] a) {
     return new TakingBuilder<>(a);
   }
 
-  public static TakingBuilderLong taking(long[] a) {
+  static TakingBuilderLong taking(long[] a) {
     return new TakingBuilderLong(a);
   }
 
-  public static TakingBuilderDouble taking(double[] a) {
+  static TakingBuilderDouble taking(double[] a) {
     return new TakingBuilderDouble(a);
   }
 
-  public static <E> TakingBuilderObj<E> taking(E[] a) {
+  static <E> TakingBuilderObj<E> taking(E[] a) {
     return new TakingBuilderObj<>(a);
   }
 
-  public boolean sorts(int[] a) {
+  boolean sorts(int[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public boolean sorts(byte[] a) {
+  boolean sorts(byte[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public boolean sorts(short[] a) {
+  boolean sorts(short[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public boolean sorts(char[] a) {
+  boolean sorts(char[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public boolean sorts(long[] a) {
+  boolean sorts(long[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public boolean sorts(float[] a) {
+  boolean sorts(float[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public boolean sorts(double[] a) {
+  boolean sorts(double[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public <E extends Comparable<E>> boolean sorts(E[] a) {
+  <E extends Comparable<E>> boolean sorts(E[] a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public <E extends Comparable<E>> boolean sorts(List<E> a) {
+  <E extends Comparable<E>> boolean sorts(List<E> a) {
     return Rankings.sorts(ranking, a);
   }
 
-  public static final class SortsBuilder<E> {
+  static final class SortsBuilder<E> {
     private final E[] a;
     private final int[] ranking;
 
-    public SortsBuilder(E[] a, int[] ranking) {
+    SortsBuilder(E[] a, int[] ranking) {
       this.a = a;
       this.ranking = ranking;
     }
 
-    public boolean using(Comparator<E> comparator) {
+    boolean using(Comparator<E> comparator) {
       return Rankings.sorts(ranking, a, comparator);
     }
   }
 
-  public <E> SortsBuilder<E> sorts(E[] a) {
+  <E> SortsBuilder<E> sorts(E[] a) {
     return new SortsBuilder<>(a, ranking);
   }
 
-  /* Transport an array safely to Cycles constructor */
-  static final class Orbits {
-    static Orbits EMPTY = new Orbits(new int[0][]);
-    final int[][] orbits;
-
-    private Orbits(int[][] orbits) {
-      this.orbits = orbits;
-    }
-  }
-
-  public static Stream<Permutation> symmetricGroup(int n) {
+  static Stream<Permutation> symmetricGroup(int n) {
     return Rankings.symmetricGroup(n).map(a -> define(a, false));
   }
-
 }

@@ -16,7 +16,7 @@ class TranspositionTest {
 
   @Test
   void testCommute() {
-    Transposition.DefaultTranspositionFactory factory = new Transposition.DefaultTranspositionFactory(10);
+    Transposition.TranspositionFactory factory = new Transposition.TranspositionFactory(10);
     for (int __ = 0; __ < 10; __++) {
       Transposition p = Transposition.random(factory, 10);
       Transposition q = Transposition.random(factory, 10);
