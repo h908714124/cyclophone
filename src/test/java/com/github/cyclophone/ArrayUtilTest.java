@@ -6,12 +6,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static com.github.cyclophone.CycleUtil.cyclic;
+import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Product.product;
 import static com.github.cyclophone.SymmetricGroup.symmetricGroup;
+import static com.github.cyclophone.TestUtil.PERMUTATION_COMPARATOR;
 import static com.github.cyclophone.TestUtil.cartesian;
 import static com.github.cyclophone.TestUtil.center;
 import static com.github.cyclophone.TestUtil.commutator;
@@ -34,7 +37,7 @@ class ArrayUtilTest {
   void testCombinations() {
     List<Permutation> permutations = symmetricGroup(3).collect(Collectors.toList());
     assertEquals(6, permutations.size());
-    Set<Permutation> perms = new HashSet<Permutation>();
+    Set<Permutation> perms = new TreeSet<>(PERMUTATION_COMPARATOR);
     for (Permutation perm : permutations) {
       assertTrue(perms.add(perm));
     }
@@ -219,21 +222,21 @@ class ArrayUtilTest {
   void testFindCommutator() {
     Permutation p = define(cyclic(1, 2));
     Permutation q = define(cyclic(0, 1));
-    assertEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
+    assertPermutationEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
   }
 
   @Test
   void testEvenCommutator() {
     Permutation p = define(cyclic(0, 4, 1));
     Permutation q = define(cyclic(0, 3, 2, 1, 4));
-    assertEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
+    assertPermutationEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
   }
 
   @Test
   void testEvenCommutator2() {
     Permutation p = define(cyclic(0, 3, 1));
     Permutation q = define(cyclic(0, 4, 2, 1, 3));
-    assertEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
+    assertPermutationEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
   }
 
   @Test

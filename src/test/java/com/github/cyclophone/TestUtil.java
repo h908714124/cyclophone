@@ -13,7 +13,7 @@ import static com.github.cyclophone.Product.product;
 
 class TestUtil {
 
-  private static final Comparator<Permutation> PERMUTATION_COMPARATOR = new Comparator<Permutation>() {
+  static final Comparator<Permutation> PERMUTATION_COMPARATOR = new Comparator<Permutation>() {
 
     /**
      * A compare method compatible with {@code equals}: permutations compare to {@code 0}

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static com.github.cyclophone.Apply.apply;
+import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -135,7 +136,7 @@ class TestRankings {
   void testDecompose() {
     for (int __ = 0; __ < 100; __++) {
       Permutation p = Permutation.random(100);
-      assertEquals(p, p.toCycles().toPermutation());
+      assertPermutationEquals(p, p.toCycles().toPermutation());
     }
   }
 

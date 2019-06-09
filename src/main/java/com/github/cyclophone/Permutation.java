@@ -261,27 +261,6 @@ public final class Permutation {
   }
 
   /**
-   * Equality test. In order for permutations to be equal, they must have the same length, and their effects
-   * on indexes and arrays must be identical.
-   *
-   * @param other another object
-   * @return true if the other object is an equivalent permutation
-   */
-  @Override
-  public boolean equals(Object other) {
-    if (this == other)
-      return true;
-    if (other == null || getClass() != other.getClass())
-      return false;
-    return Arrays.equals(ranking, ((Permutation) other).ranking);
-  }
-
-  @Override
-  public int hashCode() {
-    return Arrays.hashCode(ranking);
-  }
-
-  /**
    * Get a copy of the ranking that represents of this permutation.
    *
    * @return a copy of the ranking
@@ -334,7 +313,7 @@ public final class Permutation {
    * @param h a permutation
    * @return {@code h^-1 * this * h}
    */
-  public Permutation conj(Permutation h) {
+  public Permutation conjugationBy(Permutation h) {
     return h.invert().compose(this).compose(h);
   }
 }

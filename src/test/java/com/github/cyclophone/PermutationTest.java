@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static com.github.cyclophone.Apply.apply;
 import static com.github.cyclophone.ArrayUtil.randomNumbers;
+import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Permutation.cycle0;
 import static com.github.cyclophone.Permutation.define;
@@ -42,7 +43,7 @@ class PermutationTest {
   @Test
   void testComp() {
     Permutation p = Permutation.define(1, 2, 0);
-    assertEquals(define(1, 2, 0), p);
+    assertPermutationEquals(define(1, 2, 0), p);
     assertArrayEquals(new String[]{"c", "a", "b"}, apply(p, TestUtil.symbols(3)));
     assertArrayEquals(new String[]{"b", "c", "a"}, apply(p.pow(2), TestUtil.symbols(3)));
   }
@@ -143,11 +144,11 @@ class PermutationTest {
     assertFalse(p.pow(1).isIdentity());
     assertFalse(p.pow(2).isIdentity());
     assertEquals(p.pow(0), p.pow(3));
-    assertEquals(p.pow(2), product(p, p));
+    assertPermutationEquals(p.pow(2), product(p, p));
     assertEquals(p.pow(1), p);
-    assertEquals(p.pow(-1), product(p, p));
-    assertEquals(p.pow(-1), p.invert());
-    assertEquals(p.pow(2), p.compose(p));
+    assertPermutationEquals(p.pow(-1), product(p, p));
+    assertPermutationEquals(p.pow(-1), p.invert());
+    assertPermutationEquals(p.pow(2), p.compose(p));
     assertArrayEquals(new String[]{"a", "b", "c"},
         apply(product(p, p.invert()), TestUtil.symbols(3)));
   }
@@ -179,8 +180,8 @@ class PermutationTest {
 
   @Test
   void cycleEquality() {
-    assertEquals(cycle(1, 5, 3, 2), cycle(5, 3, 2, 1));
-    assertEquals(cycle(1, 5, 3, 2), cycle(2, 1, 5, 3));
+    assertPermutationEquals(cycle(1, 5, 3, 2), cycle(5, 3, 2, 1));
+    assertPermutationEquals(cycle(1, 5, 3, 2), cycle(2, 1, 5, 3));
     assertNotEquals(cycle(1, 5, 3, 2), cycle(1, 5, 2, 3));
   }
 
@@ -208,14 +209,14 @@ class PermutationTest {
   @Test
   void testCycleEquals() {
     assertTrue(product(cycle(1, 2), cycle(2, 1)).isIdentity());
-    assertEquals(cycle(2, 3), product(cycle(1, 2),
+    assertPermutationEquals(cycle(2, 3), product(cycle(1, 2),
         product(cycle(1, 2), cycle(2, 3))));
   }
 
   @Test
   void testCycleLaw() {
     Permutation longest = cycle(2, 4, 1, 11, 3);
-    assertEquals(product(cycle(2, 4),
+    assertPermutationEquals(product(cycle(2, 4),
         cycle(4, 1, 11, 3)), longest);
   }
 
@@ -358,7 +359,7 @@ class PermutationTest {
       int order = p.order();
       sign += p.toCycles().signature();
       Cycles cycles = p.toCycles();
-      assertEquals(p, p.toCycles().toPermutation());
+      assertPermutationEquals(p, p.toCycles().toPermutation());
       if (p.reverses(5)) {
         assertEquals(2, order);
         assertEquals(1, p.toCycles().signature());
@@ -446,7 +447,7 @@ class PermutationTest {
       int[] expected = apply(p, a);
       assertArrayEquals(expected, copy);
       assertArrayEquals(ArrayUtil.box(expected), listCopy.toArray(new Integer[0]));
-      assertEquals(p, d.toPermutation());
+      assertPermutationEquals(p, d.toPermutation());
     }
   }
 
@@ -472,7 +473,7 @@ class PermutationTest {
       int[] expected = apply(p, a);
       assertArrayEquals(expected, copy);
       assertArrayEquals(ArrayUtil.box(expected), listCopy.toArray(new Integer[0]));
-      assertEquals(p, d.toPermutation());
+      assertPermutationEquals(p, d.toPermutation());
     }
   }
 

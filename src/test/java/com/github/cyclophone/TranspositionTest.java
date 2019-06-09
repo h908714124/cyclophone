@@ -21,7 +21,7 @@ class TranspositionTest {
     for (int __ = 0; __ < 10; __++) {
       Transposition p = Transposition.random(factory, 10);
       Transposition q = Transposition.random(factory, 10);
-      if (Transposition.product(p, q).equals(Transposition.product(q, p))) {
+      if (Equals.equals(Transposition.product(p, q), Transposition.product(q, p))) {
         assertTrue(p.commutesWith(q));
         assertTrue(q.commutesWith(p));
       } else {
