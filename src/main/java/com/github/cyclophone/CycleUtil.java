@@ -7,8 +7,6 @@ import java.util.Arrays;
  */
 final class CycleUtil {
 
-  private CycleUtil() {}
-
   /**
    * Get the indexes that are moved by the input cycle.
    *
@@ -31,31 +29,11 @@ final class CycleUtil {
   }
 
   /**
-   * Check if the input defines a cycle.
-   *
-   * @param a an array
-   * @return true if the input defines a cycle, because it contains no negative
-   * numbers or duplicates
-   */
-  static boolean isCycle(int[] a) {
-    boolean[] used = new boolean[ArrayUtil.max(a) + 1];
-    for (int i : a) {
-      if (i < 0)
-        return false;
-      if (used[i])
-        return false;
-      used[i] = true;
-    }
-    return true;
-  }
-
-  /**
    * Create a ranking from a cycle in cycle notation.
    *
    * @param cycle a cycle in cycle notation
    * @return a ranking that represents the cycle
    * @throws java.lang.IllegalArgumentException if the input does not define a cycle
-   * @see #isCycle
    */
   static int[] cyclic(int... cycle) {
     boolean[] moved = movedIndexes(cycle);
@@ -104,30 +82,6 @@ final class CycleUtil {
   }
 
   /**
-   * Check if this ranking has at most a single orbit.
-   * This method does not check if the input is indeed a valid ranking and will have unexpected results otherwise.
-   *
-   * @param ranking a ranking
-   * @return true if the input is a cycle
-   */
-  static boolean isCyclicRanking(int[] ranking) {
-    int[] candidate = null;
-    for (int i = 0; i < ranking.length; i += 1) {
-      if (ranking[i] != i) {
-        if (candidate == null) {
-          candidate = orbit(ranking, i);
-          Arrays.sort(candidate);
-        } else {
-          if (Arrays.binarySearch(candidate, i) < 0) {
-            return false;
-          }
-        }
-      }
-    }
-    return true;
-  }
-
-  /**
    * Find all nontrivial cycles in the input ranking.
    * This method does not check if the input is indeed a valid ranking and will have unexpected results otherwise.
    *
@@ -153,5 +107,4 @@ final class CycleUtil {
     }
     return orbits.length == cnt ? orbits : Arrays.copyOf(orbits, cnt);
   }
-
 }

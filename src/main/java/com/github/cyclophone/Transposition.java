@@ -213,20 +213,6 @@ final class Transposition implements Serializable {
   }
 
   /**
-   * Apply this operation by modifying the input list.
-   * The input list must support {@link java.util.List#set(int, Object)}.
-   *
-   * @param list an array
-   * @exception java.lang.UnsupportedOperationException if the input list is not mutable
-   * @exception java.lang.IllegalArgumentException if {@code list.size() < this.length()}
-   */
-  <E> void clobber(List<E> list) {
-    E temp = list.get(k);
-    list.set(k, list.get(j));
-    list.set(j, temp);
-  }
-
-  /**
    * Apply this operation to produce a new array. This method does not modify the input.
    *
    * @param a an array of length not less than {@code this.length()}
@@ -376,26 +362,6 @@ final class Transposition implements Serializable {
   }
 
   /**
-   * Return the first index to be swapped.
-   * This is always greater than the second.
-   *
-   * @return a non-negative number
-   * @see #second()
-   */
-  int first() {
-    return j;
-  }
-
-  /**
-   * Return the second index to be swapped.
-   *
-   * @return a non-negative number
-   */
-  int second() {
-    return k;
-  }
-
-  /**
    * Get a permutation version of this operation.
    *
    * @return a permutation
@@ -441,5 +407,4 @@ final class Transposition implements Serializable {
     result = 31 * result + k;
     return result;
   }
-
 }

@@ -1,24 +1,32 @@
 package com.github.cyclophone;
 
 import org.junit.jupiter.api.Test;
-import static com.github.cyclophone.CycleUtil.cyclic;
-import static com.github.cyclophone.Permutation.product;
-import static com.github.cyclophone.TestUtil.*;
-import static com.github.cyclophone.Permutation.define;
-import static com.github.cyclophone.Permutation.symmetricGroup;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.github.cyclophone.CycleUtil.cyclic;
+import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Product.product;
+import static com.github.cyclophone.SymmetricGroup.symmetricGroup;
+import static com.github.cyclophone.TestUtil.cartesian;
+import static com.github.cyclophone.TestUtil.center;
+import static com.github.cyclophone.TestUtil.commutator;
+import static com.github.cyclophone.TestUtil.count;
+import static com.github.cyclophone.TestUtil.duplicateIndexes;
+import static com.github.cyclophone.TestUtil.factorial;
+import static com.github.cyclophone.TestUtil.isClosed;
+import static com.github.cyclophone.TestUtil.isDistinct;
+import static com.github.cyclophone.TestUtil.signatureSum;
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ArrayUtilTest {
 
@@ -67,11 +75,11 @@ class ArrayUtilTest {
     assertTrue(isClosed(singletonList(id)));
     assertTrue(isClosed(asList(id, p)));
     assertTrue(isClosed(asList(id, p2, p2.pow(2))));
-    assertTrue(isClosed(asList(id, p, k, Permutation.product(p, k))));
+    assertTrue(isClosed(asList(id, p, k, product(p, k))));
     assertFalse(isClosed(asList(id, p2)));
     assertFalse(isClosed(singletonList(p)));
     assertFalse(isClosed(asList(id, p, p2)));
-    assertTrue(Permutation.product(p, k).pow(2).isIdentity());
+    assertTrue(product(p, k).pow(2).isIdentity());
   }
 
   @Test
@@ -117,10 +125,10 @@ class ArrayUtilTest {
   @Test
   void testRandomExtreme() {
     int radius = (int) (50 * Math.random()) + 50;
-    HashSet<Integer> seen = new HashSet<Integer>(radius);
+    HashSet<Integer> seen = new HashSet<>(radius);
     for (int i = 0; i < 1000; i += 1) {
       int[] ints = ArrayUtil.randomNumbers(Integer.MIN_VALUE, Integer.MIN_VALUE + radius, 100);
-      for (int a: ints) {
+      for (int a : ints) {
         assertTrue(a <= Integer.MIN_VALUE + radius, String.format("%d %d %d", radius, a, Integer.MIN_VALUE + radius));
         seen.add(a);
       }
@@ -128,10 +136,10 @@ class ArrayUtilTest {
     for (int i = 0; i <= radius; i++) {
       assertTrue(seen.contains(Integer.MIN_VALUE + i));
     }
-    seen = new HashSet<Integer>(radius);
+    seen = new HashSet<>(radius);
     for (int i = 0; i < 1000; i += 1) {
       int[] ints = ArrayUtil.randomNumbers(Integer.MAX_VALUE - radius, Integer.MAX_VALUE, 100);
-      for (int a: ints) {
+      for (int a : ints) {
         assertTrue(a >= Integer.MAX_VALUE - radius, (Integer.MAX_VALUE - a) + " " + radius);
         seen.add(a);
       }
@@ -148,7 +156,7 @@ class ArrayUtilTest {
         HashSet<Integer> seen = new HashSet<Integer>(radius);
         for (int i = 0; i < 100; i += 1) {
           int[] ints = ArrayUtil.randomNumbers(low, low + radius, 10);
-          for (int a: ints) {
+          for (int a : ints) {
             assertTrue(a <= low + radius, String.format("%d %d", low, a));
             seen.add(a);
           }
@@ -247,18 +255,18 @@ class ArrayUtilTest {
   @Test
   void testCut() {
     int[] a = {8, 5, 7, 2, 9, 4, 1, 6, 0, 3};
-    assertArrayEquals(new int []{5, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.cut(a, 0));
-    assertArrayEquals(new int []{8, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.cut(a, 1));
-    assertArrayEquals(new int []{8, 5, 7, 2, 9, 4, 1, 6, 0}, ArrayUtil.cut(a, 9));
+    assertArrayEquals(new int[]{5, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.cut(a, 0));
+    assertArrayEquals(new int[]{8, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.cut(a, 1));
+    assertArrayEquals(new int[]{8, 5, 7, 2, 9, 4, 1, 6, 0}, ArrayUtil.cut(a, 9));
   }
 
   @Test
   void testPaste() {
     int[] a = {8, 5, 7, 2, 9, 4, 1, 6, 0, 3};
-    assertArrayEquals(new int []{0, 8, 5, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.paste(a, 0, 0));
-    assertArrayEquals(new int []{8, 0, 5, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.paste(a, 1, 0));
-    assertArrayEquals(new int []{8, 5, 7, 2, 9, 4, 1, 6, 0, 0, 3}, ArrayUtil.paste(a, 9, 0));
-    assertArrayEquals(new int []{8, 5, 7, 2, 9, 4, 1, 6, 0, 3, 0}, ArrayUtil.paste(a, 10, 0));
+    assertArrayEquals(new int[]{0, 8, 5, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.paste(a, 0, 0));
+    assertArrayEquals(new int[]{8, 0, 5, 7, 2, 9, 4, 1, 6, 0, 3}, ArrayUtil.paste(a, 1, 0));
+    assertArrayEquals(new int[]{8, 5, 7, 2, 9, 4, 1, 6, 0, 0, 3}, ArrayUtil.paste(a, 9, 0));
+    assertArrayEquals(new int[]{8, 5, 7, 2, 9, 4, 1, 6, 0, 3, 0}, ArrayUtil.paste(a, 10, 0));
   }
 
 }

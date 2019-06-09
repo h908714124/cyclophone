@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import static com.github.cyclophone.Product.product;
+
 class TestUtil {
 
   private static final Comparator<Permutation> PERMUTATION_COMPARATOR = new Comparator<Permutation>() {
@@ -69,12 +71,12 @@ class TestUtil {
 
   static List<Permutation> commutator(final List<Permutation> input) {
     LinkedList<Permutation> result = new LinkedList<Permutation>();
-    for (Permutation p : distinct(commutatorIterable(input), PERMUTATION_COMPARATOR))
+    for (Permutation p : distinct(commutatorIterable(input)))
       result.push(p);
     return result;
   }
 
-  static Iterable<Permutation> commutatorIterable(final List<Permutation> input) {
+  private static Iterable<Permutation> commutatorIterable(final List<Permutation> input) {
     return () -> {
       List<Permutation> inlist = Arrays.asList(input.toArray(new Permutation[input.size()]));
       final Iterator<Permutation[]> cartesian = cartesian(inlist, inlist).iterator();
@@ -87,23 +89,23 @@ class TestUtil {
         @Override
         public Permutation next() {
           Permutation[] p = cartesian.next();
-          return Permutation.product(p[0].invert(), p[1].invert(), p[0], p[1]);
+          return product(p[0].invert(), p[1].invert(), p[0], p[1]);
         }
       };
     };
   }
 
-  static <E> Iterable<E> distinct(final Iterable<E> input, Comparator<E> comparator) {
+  private static Iterable<Permutation> distinct(final Iterable<Permutation> input) {
     return () -> {
-      final TreeSet<E> set = new TreeSet<>(comparator);
-      final Iterator<E> it = input.iterator();
-      return new Iterator<E>() {
-        E current = null;
+      final TreeSet<Permutation> set = new TreeSet<>(TestUtil.PERMUTATION_COMPARATOR);
+      final Iterator<Permutation> it = input.iterator();
+      return new Iterator<Permutation>() {
+        Permutation current = null;
 
         @Override
         public boolean hasNext() {
           while (it.hasNext()) {
-            E candidate = it.next();
+            Permutation candidate = it.next();
             if (set.add(candidate)) {
               current = candidate;
               return true;
@@ -113,7 +115,7 @@ class TestUtil {
         }
 
         @Override
-        public E next() {
+        public Permutation next() {
           return current;
         }
       };
@@ -121,7 +123,7 @@ class TestUtil {
   }
 
   static List<Permutation> center(final List<Permutation> input) {
-    LinkedList<Permutation> result = new LinkedList<Permutation>();
+    LinkedList<Permutation> result = new LinkedList<>();
     outer:
     for (Permutation a : input) {
       for (Permutation b : input)
@@ -187,7 +189,7 @@ class TestUtil {
    * @return A pair {@code i, j} of indexes so that {@code input[i] == input[j]}
    * @exception java.lang.IllegalArgumentException if no duplicates were found
    */
-  public static int[] duplicateIndexes(int[] input, int start) {
+  static int[] duplicateIndexes(int[] input, int start) {
     int max = 0;
     for (int j : input)
       max = Math.max(max, j);
@@ -203,11 +205,11 @@ class TestUtil {
     throw new IllegalArgumentException("no duplicates found");
   }
 
-  public static int[] duplicateIndexes(int[] input) {
+  static int[] duplicateIndexes(int[] input) {
     return duplicateIndexes(input, (int) (Math.random() * input.length));
   }
 
-  public static int[] duplicateIndexes(Object[] input, Comparator comp) {
+  static int[] duplicateIndexes(Object[] input, Comparator comp) {
     @SuppressWarnings("unchecked")
     Map<Object, Integer> test = new TreeMap<Object, Integer>(comp);
     int start = (int) (Math.random() * input.length);
@@ -222,7 +224,7 @@ class TestUtil {
     throw new IllegalArgumentException("no duplicates found");
   }
 
-  public static int[] duplicateIndexes(long[] input, int start) {
+  static int[] duplicateIndexes(long[] input, int start) {
     int max = 0;
     for (long j : input)
       max = Math.max(max, (int) j);
@@ -238,7 +240,7 @@ class TestUtil {
     throw new IllegalArgumentException("no duplicates found");
   }
 
-  public static int[] duplicateIndexes(long[] input) {
+  static int[] duplicateIndexes(long[] input) {
     return duplicateIndexes(input, (int) (Math.random() * input.length));
   }
 
@@ -249,7 +251,7 @@ class TestUtil {
    * @return the factorial of {@code n}
    * @exception java.lang.IllegalArgumentException if n is negative
    */
-  public static long factorial(int n) {
+  static long factorial(int n) {
     if (n < 0) {
       throw new IllegalArgumentException("negative number is not allowed");
     }
@@ -273,7 +275,7 @@ class TestUtil {
    * @param n length of array to generate
    * @return a list of distinct strings of length n
    */
-  public static String[] symbols(int n) {
+  static String[] symbols(int n) {
     String[] r = new String[n];
     String s = "a";
     for (int i = 0; i < n; i += 1) {
@@ -311,5 +313,4 @@ class TestUtil {
       return s.substring(0, s.length() - 1) + ((char) (last + 1));
     }
   }
-
 }

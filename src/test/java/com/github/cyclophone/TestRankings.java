@@ -1,16 +1,16 @@
 package com.github.cyclophone;
 
-import static com.github.cyclophone.ArrayUtil.randomNumbers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+
+import static com.github.cyclophone.Apply.apply;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 class TestRankings {
 
@@ -18,11 +18,11 @@ class TestRankings {
   void testSortRandom() {
     for (int __ = 0; __ < 100; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 200);
-      assertArrayEquals(ArrayUtil.sortedCopy(a), Permutation.sorting(a).apply(a));
+      assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(a), a));
     }
     for (int __ = 0; __ < 100; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 20);
-      assertArrayEquals(ArrayUtil.sortedCopy(a), Permutation.sorting(a).apply(a));
+      assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(a), a));
     }
   }
 
@@ -30,8 +30,8 @@ class TestRankings {
   void testSortStrict() {
     for (int __ = 0; __ < 100; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = Permutation.random(a.length).apply(a);
-      assertArrayEquals(ArrayUtil.sortedCopy(a), Permutation.sorting(shuffled).apply(shuffled));
+      String[] shuffled = apply(Permutation.random(a.length), a);
+      assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(shuffled), shuffled));
     }
   }
 
@@ -39,13 +39,13 @@ class TestRankings {
   void testFromRandom() {
     for (int __ = 0; __ < 100; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 200);
-      int[] b = Permutation.random(a.length).apply(a);
-      assertArrayEquals(b, Permutation.taking(a).to(b).apply(a));
+      int[] b = apply(Permutation.random(a.length), a);
+      assertArrayEquals(b, apply(Taking.taking(a).to(b), a));
     }
     for (int __ = 0; __ < 100; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 20);
-      int[] b = Permutation.random(a.length).apply(a);
-      assertArrayEquals(b, Permutation.taking(a).to(b).apply(a));
+      int[] b = apply(Permutation.random(a.length), a);
+      assertArrayEquals(b, apply(Taking.taking(a).to(b), a));
     }
   }
 
@@ -53,8 +53,8 @@ class TestRankings {
   void testFromStrict() {
     for (int __ = 0; __ < 100; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = Permutation.random(a.length).apply(a);
-      assertArrayEquals(a, Permutation.taking(shuffled).to(a).apply(shuffled));
+      String[] shuffled = apply(Permutation.random(a.length), a);
+      assertArrayEquals(a, apply(Taking.taking(shuffled).to(a), shuffled));
     }
   }
 
@@ -96,7 +96,7 @@ class TestRankings {
       assertTrue(bc > 0);
 
       // null because b is not a rearrangement of a
-      assertNull(Rankings.from(a, b));
+      assertNull(Taking.from(a, b));
     }
   }
 
@@ -156,5 +156,4 @@ class TestRankings {
       assertTrue(Rankings.sorts(ranking, a));
     }
   }
-
 }

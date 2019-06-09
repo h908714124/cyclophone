@@ -1,9 +1,7 @@
 package com.github.cyclophone;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.github.cyclophone.ArrayUtil.checkLength;
 import static com.github.cyclophone.ArrayUtil.negativeFailure;
@@ -24,93 +22,21 @@ public final class Permutation {
    */
   private final int[] ranking;
 
-  private static final Permutation IDENTITY = new Permutation(new int[0], false);
+  private static final Permutation IDENTITY = new Permutation(new int[0]);
 
-  private Permutation(int[] ranking, boolean validate) {
-    ranking = Rankings.trim(ranking);
-    this.ranking = validate ? Rankings.checkRanking(ranking) : ranking;
+  private Permutation(int[] ranking) {
+    this.ranking = Rankings.checkRanking(ranking);
   }
 
-  static Permutation define() {
-    return IDENTITY;
-  }
-
-  static Permutation define(int a0) {
-    if (a0 == 0) {
-      return IDENTITY;
-    } else {
-      throw new IllegalArgumentException("not a ranking");
-    }
-  }
-
-  static Permutation define(int a0, int a1) {
-    return define(new int[]{a0, a1}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2) {
-    return define(new int[]{a0, a1, a2}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3) {
-    return define(new int[]{a0, a1, a2, a3}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4) {
-    return define(new int[]{a0, a1, a2, a3, a4}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5) {
-    return define(new int[]{a0, a1, a2, a3, a4, a5}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6) {
-    return define(new int[]{a0, a1, a2, a3, a4, a5, a6}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7) {
-    return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8) {
-    return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7, a8}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9) {
-    return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10) {
-    return define(new int[]{a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10}, true, false);
-  }
-
-  static Permutation define(int a0, int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10, int... a11) {
-    int[] a00 = {a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10};
-    int[] a = new int[a00.length + a11.length];
-    System.arraycopy(a00, 0, a, 0, a00.length);
-    System.arraycopy(a11, 0, a, a00.length, a11.length);
-    return define(a, true, false);
-  }
-
-  static Permutation define(int[] ranking) {
-    return define(ranking, true);
-  }
-
-  private static Permutation define(int[] ranking, boolean dirty) {
-    return define(ranking, dirty, dirty);
-  }
-
-  private static Permutation define(int[] ranking, boolean validate, boolean copy) {
+  static Permutation define(int... ranking) {
     int[] trimmed = Rankings.trim(ranking);
     if (trimmed.length == 0)
       return IDENTITY;
-    if (copy && ranking == trimmed) {
-      trimmed = Arrays.copyOf(trimmed, trimmed.length);
-    }
-    return new Permutation(trimmed, validate);
+    return new Permutation(trimmed);
   }
 
   static Permutation cycle0(int... cycle) {
-    return define(CycleUtil.cyclic(cycle), false);
+    return define(CycleUtil.cyclic(cycle));
   }
 
 
@@ -121,7 +47,6 @@ public final class Permutation {
    * @param b second param
    * @param cycle1based a list of numbers that defines a permutation in 1-based cycle notation
    * @return the cyclic permutation defined by {@code cycle1based}
-   * @see Permutation#cycle0
    */
   public static Permutation cycle(int a, int b, int... cycle1based) {
     int[] ints = new int[cycle1based.length + 2];
@@ -138,7 +63,7 @@ public final class Permutation {
    * @return a random permutation that can be applied to an array of length {@code length}
    */
   static Permutation random(int length) {
-    return define(Rankings.random(length), false);
+    return define(Rankings.random(length));
   }
 
   /**
@@ -160,44 +85,14 @@ public final class Permutation {
    *
    * @param other a permutation
    * @return the product of this instance and {@code other}
-   * @see #product
    */
   public Permutation compose(Permutation other) {
     if (this.isIdentity())
       return other;
     if (other.ranking.length == 0)
       return this;
-    return define(Rankings.comp(this.ranking, other.ranking), false);
+    return define(Rankings.comp(this.ranking, other.ranking));
   }
-
-  /**
-   * Take the product of the given permutations.
-   *
-   * @param permutations an array of permutations
-   * @return the product of the input
-   * @see #compose
-   */
-  static Permutation product(Permutation... permutations) {
-    Permutation result = identity();
-    for (Permutation permutation : permutations)
-      result = result.compose(permutation);
-    return result;
-  }
-
-  /**
-   * Take the product of the given permutations. If the input is empty, a permutation of length {@code 0} is returned.
-   *
-   * @param permutations an iterable of permutations
-   * @return the product of the input
-   * @see #compose
-   */
-  static Permutation product(Iterable<Permutation> permutations) {
-    Permutation result = identity();
-    for (Permutation permutation : permutations)
-      result = result.compose(permutation);
-    return result;
-  }
-
 
   /**
    * Raise this permutation to the {@code n}th power.
@@ -241,7 +136,7 @@ public final class Permutation {
   Permutation invert() {
     if (this.ranking.length == 0)
       return this;
-    return define(Rankings.invert(ranking), false);
+    return define(Rankings.invert(ranking));
   }
 
   /**
@@ -259,26 +154,9 @@ public final class Permutation {
    * @param delete a non-negative integer
    * @param insert a non-negative integer
    * @return a permutation of length {@code Math.max(delete, insert) + 1}
-   * @see #cycle0
    */
   static Permutation move(int delete, int insert) {
     return cycle0(ArrayUtil.range(insert, delete, true));
-  }
-
-  /**
-   * <p>Calculate the orbit of given index.
-   * The orbit is an array of distinct integers that contains all indexes</p>
-   * <pre><code>
-   *   i, apply(i), apply(apply(i)), ...
-   * </code></pre>
-   * <p>The orbit always contains at least one element, that is the start index {@code i} itself.</p>
-   *
-   * @param i a non negative number which is less than {@code this.length()}
-   * @return the orbit of {@code i}
-   * @exception java.lang.IllegalArgumentException if {@code i < 0} or {@code i >= this.length}.
-   */
-  int[] orbit(int i) {
-    return CycleUtil.orbit(ranking, i);
   }
 
   /**
@@ -301,17 +179,6 @@ public final class Permutation {
       p = p.compose(this);
     }
     return i;
-  }
-
-  /**
-   * <p>Determine whether this permutation has at most one than one nontrivial orbit.</p>
-   *
-   * @return true if this permutation is a cycle
-   * @see #cycle0
-   * @see #orbit
-   */
-  boolean isCycle() {
-    return CycleUtil.isCyclicRanking(ranking);
   }
 
   /**
@@ -341,7 +208,7 @@ public final class Permutation {
     for (int i = 0; i < length; i += 1) {
       result[i] = length - i - 1;
     }
-    return define(result, false);
+    return define(result);
   }
 
   /**
@@ -361,37 +228,6 @@ public final class Permutation {
       if (ranking[i] != ranking.length - i - 1)
         return false;
     return true;
-  }
-
-  /**
-   * Returns a shifted permutation. The following is true for the shifted permutation:
-   * <pre><code>
-   *   p.shift(n).apply(j) = j, j &lt; n
-   *   p.shift(n).apply(n + i) = n + p.apply(i)
-   * </code></pre>
-   *
-   * @param n a non negative number
-   * @return the shifted permutation
-   * @exception java.lang.IllegalArgumentException if n is negative
-   */
-  Permutation shift(int n) {
-    if (ranking.length == 0 && n == 0)
-      return this;
-    return define(Rankings.shift(n, ranking), false);
-  }
-
-  /**
-   * Find a cycle in this permutation or return {@code null} if this is the identity.
-   *
-   * @return a cycle in this permutation or {@code null} if there are no cycles because this is the identity
-   */
-  int[] findCycle() {
-    if (ranking.length == 0)
-      return null;
-    for (int i = 0; i < ranking.length; i++)
-      if (ranking[i] != i)
-        return orbit(i);
-    throw new IllegalStateException(); // we'll never get here
   }
 
   /**
@@ -474,171 +310,17 @@ public final class Permutation {
     return ranking[i];
   }
 
-  /* ============== apply to arrays ============== */
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @param <T> type param
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see #apply(int)
-   * @see #toCycles()
-   * @see Cycles#apply(Object[])
-   */
-  <T> T[] apply(T[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see Cycles#clobber(byte[])
-   * @see #apply(int)
-   */
-  byte[] apply(byte[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see Cycles#clobber(short[])
-   * @see #apply(int)
-   */
-  short[] apply(short[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see Cycles#clobber(int[])
-   * @see #apply(int)
-   */
-  int[] apply(int[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see Cycles#clobber(long[])
-   * @see #apply(int)
-   */
-  long[] apply(long[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see Cycles#clobber(float[])
-   * @see #apply(int)
-   */
-  float[] apply(float[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see #apply(int)
-   * @see Cycles#clobber(double[])
-   */
-  double[] apply(double[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see #apply(int)
-   */
-  boolean[] apply(boolean[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange an array. This method does not modify its input array.
-   *
-   * @param input an array of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code input}
-   * @exception java.lang.IllegalArgumentException if {@code input.length < this.length()}
-   * @see Cycles#clobber(char[])
-   * @see #apply(int)
-   */
-  char[] apply(char[] input) {
-    if (this.ranking.length == 0)
-      return input;
-    return Rankings.apply(ranking, input);
-  }
-
-  /**
-   * Rearrange the characters in the string.
-   *
-   * @param s a string of length not less than {@code this.length()}
-   * @return the result of applying this permutation to {@code s}
-   * @exception java.lang.IllegalArgumentException if {@code s.length() < this.length()}
-   * @see #apply(int)
-   */
-  String apply(String s) {
-    if (this.ranking.length == 0)
-      return s;
-    char[] dst = new char[s.length()];
-    s.getChars(0, s.length(), dst, 0);
-    return new String(apply(dst));
-  }
-
   /**
    * Rearrange a list. This method does not modify the input list.
    *
    * @param input a list that must have at least {@code this.length()} elements
-   * @param <E> type param
+   * @param <E> the lists element type
    * @return the result of applying this permutation to {@code input}
    * @exception java.lang.IllegalArgumentException if {@code input} has less than {@code this.length()} elements
    * @see Cycles#clobber(List)
    * @see #apply(int)
    */
-  <E> List<E> apply(List<E> input) {
+  public <E> List<E> apply(List<E> input) {
     if (ranking.length == 0)
       return input;
     int length = input.size();
@@ -646,214 +328,13 @@ public final class Permutation {
     return Rankings.apply(ranking, input);
   }
 
-  static Permutation sorting(byte[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static Permutation sorting(short[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static Permutation sorting(long[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static Permutation sorting(float[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static Permutation sorting(double[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static final class SortingBuilder<E> {
-    private final E[] a;
-
-    SortingBuilder(E[] a) {
-      this.a = a;
-    }
-
-    Permutation using(Comparator<E> comparator) {
-      return define(Rankings.sorting(a, comparator), false);
-    }
-  }
-
-  static <E extends Comparable> Permutation sorting(E[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static Permutation sorting(char[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-
-  static <E> SortingBuilder<E> sorting(E[] input) {
-    return new SortingBuilder<>(input);
-  }
-
-  static Permutation sorting(int[] input) {
-    return define(Rankings.sorting(input), false);
-  }
-
-  static Permutation sorting(String s) {
-    char[] chars = new char[s.length()];
-    s.getChars(0, chars.length, chars, 0);
-    return sorting(chars);
-  }
-
-  static final class TakingBuilder<E extends Comparable> {
-    private final E[] from;
-
-    private TakingBuilder(E[] from) {
-      this.from = from;
-    }
-
-    Permutation to(E[] to) {
-      return define(Rankings.from(from, to), false, false);
-    }
-  }
-
-  static final class TakingBuilderInt {
-    private final int[] from;
-
-    private TakingBuilderInt(int[] from) {
-      this.from = from;
-    }
-
-    Permutation to(int[] to) {
-      return define(Rankings.from(from, to), false, false);
-    }
-  }
-
-  static final class TakingBuilderLong {
-    private final long[] from;
-
-    private TakingBuilderLong(long[] from) {
-      this.from = from;
-    }
-
-    Permutation to(long[] to) {
-      return define(Rankings.from(from, to), false, false);
-    }
-  }
-
-  static final class TakingBuilderDouble {
-    private final double[] from;
-
-    private TakingBuilderDouble(double[] from) {
-      this.from = from;
-    }
-
-    Permutation to(double[] to) {
-      return define(Rankings.from(from, to), false, false);
-    }
-  }
-
-  static final class TakingBuilderComp<E> {
-
-    private final E[] from;
-    private final E[] to;
-
-    private TakingBuilderComp(E[] from, E[] to) {
-      this.from = from;
-      this.to = to;
-    }
-
-    Permutation using(Comparator<E> comp) {
-      return define(Rankings.from(from, to, comp), false);
-    }
-  }
-
-  static final class TakingBuilderObj<E> {
-
-    private final E[] from;
-
-    private TakingBuilderObj(E[] from) {
-      this.from = from;
-    }
-
-    TakingBuilderComp<E> to(E[] to) {
-      return new TakingBuilderComp<>(from, to);
-    }
-
-  }
-
-
-  static TakingBuilderInt taking(int[] a) {
-    return new TakingBuilderInt(a);
-  }
-
-  static <E extends Comparable> TakingBuilder<E> taking(E[] a) {
-    return new TakingBuilder<>(a);
-  }
-
-  static TakingBuilderLong taking(long[] a) {
-    return new TakingBuilderLong(a);
-  }
-
-  static TakingBuilderDouble taking(double[] a) {
-    return new TakingBuilderDouble(a);
-  }
-
-  static <E> TakingBuilderObj<E> taking(E[] a) {
-    return new TakingBuilderObj<>(a);
-  }
-
-  boolean sorts(int[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  boolean sorts(byte[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  boolean sorts(short[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  boolean sorts(char[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  boolean sorts(long[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  boolean sorts(float[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  boolean sorts(double[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  <E extends Comparable<E>> boolean sorts(E[] a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  <E extends Comparable<E>> boolean sorts(List<E> a) {
-    return Rankings.sorts(ranking, a);
-  }
-
-  static final class SortsBuilder<E> {
-    private final E[] a;
-    private final int[] ranking;
-
-    SortsBuilder(E[] a, int[] ranking) {
-      this.a = a;
-      this.ranking = ranking;
-    }
-
-    boolean using(Comparator<E> comparator) {
-      return Rankings.sorts(ranking, a, comparator);
-    }
-  }
-
-  <E> SortsBuilder<E> sorts(E[] a) {
-    return new SortsBuilder<>(a, ranking);
-  }
-
-  static Stream<Permutation> symmetricGroup(int n) {
-    return Rankings.symmetricGroup(n).map(a -> define(a, false));
+  /**
+   * Conjugation with {@code h}.
+   *
+   * @param h a permutation
+   * @return {@code h^-1 * this * h}
+   */
+  public Permutation conj(Permutation h) {
+    return h.invert().compose(this).compose(h);
   }
 }
