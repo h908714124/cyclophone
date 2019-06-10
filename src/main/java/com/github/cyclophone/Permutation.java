@@ -184,7 +184,7 @@ public final class Permutation {
   @Override
   public String toString() {
     if (isIdentity()) {
-      return "1";
+      return "id";
     }
     return toCycles().toString();
   }
