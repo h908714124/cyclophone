@@ -3,7 +3,10 @@ package com.github.cyclophone;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Span.span;
@@ -54,5 +57,30 @@ class ExoticTest {
 //        }
 //      }
 //    }
+  }
+
+  @Disabled
+  @Test
+  void testConjugate() {
+    Permutation b1 = cycle(2, 4, 6, 5);
+    Permutation b2 = cycle(1, 2, 6).compose(cycle(3, 4, 5));
+    List<Set<Permutation>> spans = new ArrayList<>();
+    spans.add(span(b1, b2));
+    List<Permutation> sym = SymmetricGroup.symmetricGroup(6).collect(Collectors.toList());
+    for (Permutation p : sym) {
+      Permutation p1 = b1.conjugationBy(p);
+      Permutation p2 = b2.conjugationBy(p);
+      boolean add = true;
+      for (Set<Permutation> span : spans) {
+        if (span.contains(p1) || span.contains(p2)) {
+          add = false;
+          break;
+        }
+      }
+      if (add) {
+        spans.add(span(p1, p2));
+      }
+    }
+    System.out.println(spans.size());
   }
 }
