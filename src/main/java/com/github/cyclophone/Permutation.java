@@ -2,9 +2,9 @@ package com.github.cyclophone;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.github.cyclophone.ArrayUtil.checkLength;
-import static com.github.cyclophone.ArrayUtil.negativeFailure;
 
 /**
  * A permutation operation that can be used to rearrange arrays and lists.
@@ -130,26 +130,6 @@ public final class Permutation {
   }
 
   /**
-   * Creates a cycle that acts as a delete followed by an insert. Examples:
-   * <pre><code>
-   *   Permutation.move(0, 2).apply("12345");
-   *   =&gt; 23145
-   *   </code></pre>
-   * <pre><code>
-   *   Permutation.move(3, 1).apply("12345");
-   *   =&gt; 14235
-   * </code></pre>
-   * If {@code delete == insert}, the identity of length {@code delete + 1} is returned.
-   *
-   * @param delete a non-negative integer
-   * @param insert a non-negative integer
-   * @return a permutation of length {@code Math.max(delete, insert) + 1}
-   */
-  static Permutation move(int delete, int insert) {
-    return cycle0(ArrayUtil.range(insert, delete, true));
-  }
-
-  /**
    * <p>Calculate the order of this permutation. The order is the smallest positive number {@code n}
    * such that</p>
    * <pre><code>
@@ -181,43 +161,6 @@ public final class Permutation {
     return Cycles.create(CycleUtil.toOrbits(ranking));
   }
 
-
-  /**
-   * <p>Returns a permutation that reverses its input. Example:</p>
-   * <pre><code>
-   *   Permutation.reverse(5).apply("12345");
-   *   =&gt; 54321
-   * </code></pre>
-   *
-   * @param length a non negative number
-   * @return a permutation that reverses an array of length {@code length}
-   */
-  static Permutation reverse(int length) {
-    int[] result = new int[length];
-    for (int i = 0; i < length; i += 1) {
-      result[i] = length - i - 1;
-    }
-    return define(result);
-  }
-
-  /**
-   * Check if this permutation reverses its input.
-   *
-   * @param n a nonnegative number
-   * @return true if this permutation reverses or "flips" an input of length {@code n}
-   * @exception java.lang.IllegalArgumentException if {@code n} is negative
-   */
-  boolean reverses(int n) {
-    if (ranking.length < n)
-      return false;
-    if (n < 0)
-      negativeFailure();
-    for (int i = 0; i < n; i += 1)
-      if (ranking[i] != ranking.length - i - 1)
-        return false;
-    return true;
-  }
-
   /**
    * <p>Determine whether this permutation moves any index.</p>
    *
@@ -240,6 +183,9 @@ public final class Permutation {
 
   @Override
   public String toString() {
+    if (isIdentity()) {
+      return "1";
+    }
     return toCycles().toString();
   }
 
@@ -267,6 +213,20 @@ public final class Permutation {
     int length = input.size();
     checkLength(ranking.length, length);
     return Rankings.apply(ranking, input);
+  }
+
+  /**
+   * Rearrange the input.
+   *
+   * @param input at least {@code this.length()} ints
+   * @return the result of applying this permutation to {@code input}
+   * @exception java.lang.IllegalArgumentException if {@code input} has less than {@code this.length()} elements
+   */
+  public List<Integer> apply(int... input) {
+    List<Integer> list = Arrays.stream(input)
+        .boxed()
+        .collect(Collectors.toList());
+    return apply(list);
   }
 
   /**

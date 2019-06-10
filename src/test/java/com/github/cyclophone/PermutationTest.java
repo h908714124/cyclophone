@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 import static com.github.cyclophone.Apply.apply;
 import static com.github.cyclophone.ArrayUtil.randomNumbers;
 import static com.github.cyclophone.Equals.assertPermutationEquals;
+import static com.github.cyclophone.Move.move;
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Permutation.cycle0;
 import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Permutation.identity;
-import static com.github.cyclophone.Permutation.move;
 import static com.github.cyclophone.Product.product;
+import static com.github.cyclophone.Reverse.reverse;
+import static com.github.cyclophone.Reverse.reverses;
 import static com.github.cyclophone.Shift.shift;
 import static com.github.cyclophone.SymmetricGroup.symmetricGroup;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -346,9 +348,9 @@ class PermutationTest {
   @Test
   void testMove() {
     assertEquals(identity(), move(5, 5));
-    assertEquals("213", apply(Permutation.move(0, 1), "123"));
-    assertEquals("23145", apply(Permutation.move(0, 2), "12345"));
-    assertEquals("14235", apply(Permutation.move(3, 1), "12345"));
+    assertEquals("213", apply(move(0, 1), "123"));
+    assertEquals("23145", apply(move(0, 2), "12345"));
+    assertEquals("14235", apply(move(3, 1), "12345"));
   }
 
   /* various assertions about Sym(5) */
@@ -360,7 +362,7 @@ class PermutationTest {
       sign += p.toCycles().signature();
       Cycles cycles = p.toCycles();
       assertPermutationEquals(p, p.toCycles().toPermutation());
-      if (p.reverses(5)) {
+      if (reverses(p, 5)) {
         assertEquals(2, order);
         assertEquals(1, p.toCycles().signature());
       }
@@ -415,7 +417,7 @@ class PermutationTest {
 
   @Test
   void testShift() {
-    assertEquals("abccba", apply(shift(Permutation.reverse(3), 3), "abcabc"));
+    assertEquals("abccba", apply(shift(reverse(3), 3), "abcabc"));
   }
 
   @Test
