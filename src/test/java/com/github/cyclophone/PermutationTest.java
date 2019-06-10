@@ -54,7 +54,7 @@ class PermutationTest {
     Permutation p = Permutation.define(1, 2, 0);
     Permutation p2 = Sorting.sorting(new int[]{4, 6, 10, -5, 195, 33, 2});
     for (int i = 0; i < p.length(); i += 1) {
-      assertEquals(p2.apply(p.apply(i)), p2.compose(p).apply(i));
+      assertEquals(apply(p2, apply(p, i)), apply(p2.compose(p), i));
     }
   }
 
@@ -62,9 +62,9 @@ class PermutationTest {
   @Test
   void testApply() {
     int[] a = randomNumbers(100, 200);
-    Permutation p = Permutation.random((int) (a.length * Math.random()));
+    Permutation p = RandomPermutation.random((int) (a.length * Math.random()));
     for (int i = 0; i < a.length; i += 1) {
-      assertEquals(apply(p, a)[p.apply(i)], a[i]);
+      assertEquals(apply(p, a)[apply(p, i)], a[i]);
       if (i >= p.length()) {
         assertEquals(a[i], apply(p, a)[i]);
       }
@@ -75,7 +75,7 @@ class PermutationTest {
   void testIterable() {
     for (int __ = 0; __ < 100; __++) {
       MyInt[] a = MyInt.box(randomNumbers(100, 50 + (int) (Math.random() * 100)));
-      Permutation p = Permutation.random((int) (Math.random() * a.length));
+      Permutation p = RandomPermutation.random((int) (Math.random() * a.length));
       Object[] applied = apply(p, a);
       List<MyInt> arrayList = new ArrayList<>(a.length);
       List<MyInt> linkedList = new LinkedList<>();
@@ -165,7 +165,7 @@ class PermutationTest {
   void testIdentity2() {
     Permutation identity = Permutation.identity();
     for (int i = 0; i < 10; i += 1) {
-      assertEquals(i, identity.apply(i));
+      assertEquals(i, apply(identity, i));
     }
   }
 
@@ -174,7 +174,7 @@ class PermutationTest {
   void testInverse2() {
     Permutation p = Sorting.sorting(new int[]{4, 6, 10, -5, 195, 33, 2});
     for (int i = 0; i < p.length(); i += 1) {
-      assertEquals(i, p.invert().apply(p.apply(i)));
+      assertEquals(i, apply(p.invert(), apply(p, i)));
     }
   }
 
@@ -227,7 +227,7 @@ class PermutationTest {
     Arrays.sort(y);
     Permutation p = Sorting.sorting(x);
     for (int i = 0; i < x.length; i += 1) {
-      assertEquals(x[i], y[p.apply(i)]);
+      assertEquals(x[i], y[apply(p, i)]);
     }
     assertArrayEquals(y, apply(p, x));
   }
@@ -257,7 +257,7 @@ class PermutationTest {
     Arrays.sort(y);
     for (int k = 0; k < y.length; k += 1) {
       assertEquals(x[indexOf(x, y[k])], y[k]);
-      assertEquals(indexOf(x, y[k]), unsort.apply(k));
+      assertEquals(indexOf(x, y[k]), apply(unsort, k));
     }
   }
 
@@ -270,7 +270,7 @@ class PermutationTest {
     Arrays.sort(sorted);
     Permutation p = Sorting.sorting(distinct);
     for (int i = 0; i < sorted.length; i += 1) {
-      distinct[i] = sorted[p.apply(i)];
+      distinct[i] = sorted[apply(p, i)];
     }
   }
 
@@ -282,7 +282,7 @@ class PermutationTest {
     Arrays.sort(y, MyInt.COMP);
     for (int k = 0; k < y.length; k += 1) {
       assertEquals(x[indexOf(x, y[k])], y[k]);
-      assertEquals(indexOf(x, y[k]), unsort.apply(k));
+      assertEquals(indexOf(x, y[k]), apply(unsort, k));
     }
   }
 
@@ -290,7 +290,7 @@ class PermutationTest {
   @Test
   void testApplyInvalid() {
     Assertions.assertThrows(IllegalArgumentException.class, () ->
-        Permutation.identity().apply(-1));
+        apply(Permutation.identity(), -1));
   }
 
   /**
@@ -328,7 +328,7 @@ class PermutationTest {
     int[] a = Rankings.random(size);
     Permutation random;
     do {
-      random = Permutation.random((int) (Math.random() * size));
+      random = RandomPermutation.random((int) (Math.random() * size));
     } while (random.isIdentity());
     int[] b = apply(random, a);
     assertFalse(Arrays.equals(a, b));
@@ -421,13 +421,13 @@ class PermutationTest {
   @Test
   void testShift2() {
     for (int __ = 0; __ < 100; __++) {
-      Permutation p = Permutation.random(40);
+      Permutation p = RandomPermutation.random(40);
       for (int n = 0; n < 100; n++) {
         for (int j = 0; j < 100; j++) {
           if (j < n) {
-            assertEquals(j, shift(p, n).apply(j));
+            assertEquals(j, apply(shift(p, n), j));
           } else {
-            assertEquals(shift(p, n).apply(j), n + p.apply(j - n));
+            assertEquals(apply(shift(p, n), j), n + apply(p, j - n));
           }
         }
       }
@@ -440,7 +440,7 @@ class PermutationTest {
       int[] a = ArrayUtil.randomNumbers(10, 5);
       int[] copy = Arrays.copyOf(a, a.length);
       List<Integer> listCopy = Arrays.asList(ArrayUtil.box(Arrays.copyOf(a, a.length)));
-      Permutation p = Permutation.random(5);
+      Permutation p = RandomPermutation.random(5);
       Cycles d = p.toCycles();
       d.clobber(copy);
       d.clobber(listCopy);
@@ -466,7 +466,7 @@ class PermutationTest {
       int[] a = ArrayUtil.randomNumbers(100, 100);
       int[] copy = Arrays.copyOf(a, a.length);
       List<Integer> listCopy = Arrays.asList(ArrayUtil.box(Arrays.copyOf(a, a.length)));
-      Permutation p = Permutation.random(100);
+      Permutation p = RandomPermutation.random(100);
       Cycles d = p.toCycles();
       d.clobber(copy);
       d.clobber(listCopy);

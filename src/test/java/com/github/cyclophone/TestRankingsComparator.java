@@ -37,7 +37,7 @@ class TestRankingsComparator {
   void testSortStrict() {
     for (int __ = 0; __ < REPEAT; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = apply(Permutation.random(a.length), a);
+      String[] shuffled = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(shuffled), shuffled));
     }
   }
@@ -47,12 +47,12 @@ class TestRankingsComparator {
   void testFromRandom() {
     for (int __ = 0; __ < REPEAT; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 200);
-      MyInt[] b = apply(Permutation.random(a.length), MyInt.box(a));
+      MyInt[] b = apply(RandomPermutation.random(a.length), MyInt.box(a));
       Assertions.assertArrayEquals(b, apply(Taking.taking(MyInt.box(a)).to(b).using(MyInt.COMP), MyInt.box(a)));
     }
     for (int i = 0; i < REPEAT; i += 1) {
       MyInt[] a = randomMyInts(20);
-      MyInt[] b = apply(Permutation.random(a.length), a);
+      MyInt[] b = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(b, apply(Taking.taking(a).to(b).using(MyInt.COMP), a));
     }
   }
@@ -61,7 +61,7 @@ class TestRankingsComparator {
   void testFromStrict() {
     for (int __ = 0; __ < REPEAT; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = apply(Permutation.random(a.length), a);
+      String[] shuffled = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(a, apply(Taking.taking(shuffled).to(a), shuffled));
     }
   }
@@ -72,7 +72,7 @@ class TestRankingsComparator {
 
     for (int __ = 0; __ < REPEAT; __ += 1) {
       MyInt[] a = randomMyInts(110);
-      Object[] b = apply(Permutation.random(a.length), a);
+      Object[] b = apply(RandomPermutation.random(a.length), a);
 
       int[] bdupes = TestUtil.duplicateIndexes(b, MyInt.COMP);
       int[] adupes = TestUtil.duplicateIndexes(a, MyInt.COMP);

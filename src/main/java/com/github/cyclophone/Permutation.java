@@ -39,13 +39,13 @@ public final class Permutation {
     return define(CycleUtil.cyclic(cycle));
   }
 
-
   /**
-   * Creates a new <a href="http://en.wikipedia.org/wiki/Cyclic_permutation">cycle</a>.
+   * Creates a new <a href="http://en.wikipedia.org/wiki/Cyclic_permutation">cycle</a>
+   * (in 1-based notation).
    *
-   * @param a first param
-   * @param b second param
-   * @param cycle1based a list of numbers that defines a permutation in 1-based cycle notation
+   * @param a first element of the cycle
+   * @param b second element of the cycle
+   * @param cycle1based remaining elements of the cycle
    * @return the cyclic permutation defined by {@code cycle1based}
    */
   public static Permutation cycle(int a, int b, int... cycle1based) {
@@ -54,16 +54,6 @@ public final class Permutation {
     ints[1] = b;
     System.arraycopy(cycle1based, 0, ints, 2, cycle1based.length);
     return cycle0(ArrayUtil.add(ints, -1));
-  }
-
-  /**
-   * Creates a random permutation of given length.
-   *
-   * @param length the length of arrays that the result can be applied to
-   * @return a random permutation that can be applied to an array of length {@code length}
-   */
-  static Permutation random(int length) {
-    return define(Rankings.random(length));
   }
 
   /**
@@ -113,7 +103,7 @@ public final class Permutation {
    */
   public Permutation pow(int n) {
     if (n == 0)
-      return identity();
+      return IDENTITY;
     if (this.ranking.length == 0)
       return this;
     Permutation seed = n < 0 ? invert() : this;
@@ -133,7 +123,7 @@ public final class Permutation {
    * @see #compose
    * @see #isIdentity
    */
-  Permutation invert() {
+  public Permutation invert() {
     if (this.ranking.length == 0)
       return this;
     return define(Rankings.invert(ranking));
@@ -169,7 +159,6 @@ public final class Permutation {
    * @return the order of this permutation
    * @exception java.lang.IllegalArgumentException if {@code pos < 0} or {@code pos >= this.length}
    * @see #isIdentity
-   * @see #pow
    */
   public int order() {
     int i = 1;
@@ -217,7 +206,6 @@ public final class Permutation {
    * @param n a nonnegative number
    * @return true if this permutation reverses or "flips" an input of length {@code n}
    * @exception java.lang.IllegalArgumentException if {@code n} is negative
-   * @see #reverse
    */
   boolean reverses(int n) {
     if (ranking.length < n)
@@ -250,11 +238,6 @@ public final class Permutation {
     return ranking.length;
   }
 
-  /**
-   * Convert this permutation to a human readable string. This representation may change in the future.
-   *
-   * @return a String representation of this permutation.
-   */
   @Override
   public String toString() {
     return toCycles().toString();
@@ -269,25 +252,6 @@ public final class Permutation {
     return Arrays.copyOf(ranking, ranking.length);
   }
 
-  /**
-   * Move an index. The following is true for arrays {@code a} of any type and of length
-   * {@code a.length &gt;= this.length}, and all indexes {@code 0 &lt;= i < a.length}:
-   * {@code
-   * apply(a)[apply(i)] == a[i];
-   * }
-   * If the input is greater than or equal to {@code this.length()}, then the same number is returned.
-   *
-   * @param i a non negative number
-   * @return the moved index
-   * @exception java.lang.IllegalArgumentException if the input is negative
-   */
-  int apply(int i) {
-    if (i < 0)
-      negativeFailure();
-    if (i >= ranking.length)
-      return i;
-    return ranking[i];
-  }
 
   /**
    * Rearrange a list. This method does not modify the input list.
@@ -296,8 +260,6 @@ public final class Permutation {
    * @param <E> the lists element type
    * @return the result of applying this permutation to {@code input}
    * @exception java.lang.IllegalArgumentException if {@code input} has less than {@code this.length()} elements
-   * @see Cycles#clobber(List)
-   * @see #apply(int)
    */
   public <E> List<E> apply(List<E> input) {
     if (ranking.length == 0)

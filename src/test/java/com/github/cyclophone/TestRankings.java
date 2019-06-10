@@ -31,7 +31,7 @@ class TestRankings {
   void testSortStrict() {
     for (int __ = 0; __ < 100; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = apply(Permutation.random(a.length), a);
+      String[] shuffled = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(shuffled), shuffled));
     }
   }
@@ -40,12 +40,12 @@ class TestRankings {
   void testFromRandom() {
     for (int __ = 0; __ < 100; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 200);
-      int[] b = apply(Permutation.random(a.length), a);
+      int[] b = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(b, apply(Taking.taking(a).to(b), a));
     }
     for (int __ = 0; __ < 100; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 20);
-      int[] b = apply(Permutation.random(a.length), a);
+      int[] b = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(b, apply(Taking.taking(a).to(b), a));
     }
   }
@@ -54,7 +54,7 @@ class TestRankings {
   void testFromStrict() {
     for (int __ = 0; __ < 100; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = apply(Permutation.random(a.length), a);
+      String[] shuffled = apply(RandomPermutation.random(a.length), a);
       assertArrayEquals(a, apply(Taking.taking(shuffled).to(a), shuffled));
     }
   }
@@ -135,7 +135,7 @@ class TestRankings {
   @Test
   void testDecompose() {
     for (int __ = 0; __ < 100; __++) {
-      Permutation p = Permutation.random(100);
+      Permutation p = RandomPermutation.random(100);
       assertPermutationEquals(p, p.toCycles().toPermutation());
     }
   }
