@@ -12,31 +12,26 @@ import java.util.stream.Collectors;
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Span.span;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// steps to construct the outer automorphism of S6
+@Disabled
 class ExoticTest {
 
   @Test
-  void testGenerateKlein4Group() {
-    Set<Permutation> span = span(
-        cycle(1, 2).compose(cycle(3, 4)),
-        cycle(1, 3).compose(cycle(2, 4)));
-    assertEquals(4, span.size());
-    assertTrue(span.contains(cycle(1, 4).compose(cycle(2, 3))));
-    assertTrue(span.contains(Permutation.identity()));
-  }
-
-  @Disabled
-  @Test
   void testRandom() {
+    // Step 1: Find a subgroup of S6 of size 120 (the size of S5)
+    // This is an exotic embedding of S5 in S6.
     for (int i = 0; i < 100; i++) {
       Permutation p1 = RandomPermutation.random(6);
       Permutation p2 = RandomPermutation.random(6);
       Set<Permutation> span = span(p1, p2);
-//      System.out.println(span.size());
       if (span.size() == 120) {
-        System.out.println(p1);
-        System.out.println(p2);
+        System.out.println("base1: " + p1);
+        System.out.println("base2: " + p2);
+        System.out.println("==========");
+        for (Permutation permutation : span) {
+          System.out.println(permutation);
+        }
         break;
       }
     }
@@ -51,17 +46,15 @@ class ExoticTest {
     for (Permutation permutation : span) {
       System.out.println(permutation);
     }
-//    for (Permutation p1 : span) {
-//      for (Permutation p2 : span) {
-//        if (span(p1, p2).size() == 120) {
-//          System.out.println(p1 + " | " + p2);
-//        }
-//      }
-//    }
   }
 
   @Test
   void testCosets() {
+    // Find all 6 cosets of the exotic embedding of S5.
+    // The result is seen in Coset.java.
+    //
+    // Note: b1 and b2 are base for the exotic embedding.
+    // They were found by testRandom above.
     Permutation b1 = cycle(2, 4, 6, 5);
     Permutation b2 = cycle(1, 2, 6).compose(cycle(3, 4, 5));
     List<Set<Permutation>> spans = new ArrayList<>();
@@ -76,7 +69,7 @@ class ExoticTest {
     }
     for (int i = 0; i < spans.size(); i++) {
       Set<Permutation> permutation = spans.get(i);
-      System.out.println("=====  " + (i + 1) + "  ======");
+      System.out.println("=====  Coset " + (i + 1) + "  ======");
       for (Permutation p : permutation) {
         System.out.println(p.toCycles().print() + ", ");
       }
@@ -85,13 +78,17 @@ class ExoticTest {
 
   @Test
   void testOuter() {
+    // Construct the mapping table for the outer automorphism of S6.
+    // The result is seen in OuterAutomorphism.java.
     List<Permutation> s6 = SymmetricGroup.symmetricGroup(6).collect(Collectors.toList());
     for (Permutation p : s6) {
       Coset[] values = Coset.values();
       int[] ranking = new int[6];
       for (int i = 0; i < values.length; i++) {
         Coset coset = values[i];
+        // let p act on coset
         Coset actionResult = coset.act(p);
+        // build a ranking from the result
         ranking[i] = actionResult.ordinal();
       }
       System.out.println("map.put(" + p.toCycles().print() + ", " + Permutation.define(ranking).toCycles().print() + ");");
