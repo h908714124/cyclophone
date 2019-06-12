@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import static com.github.cyclophone.Permutation.cycle;
 
 /**
- * The outer automorphism of S6.
+ * An outer automorphism of S6.
  * See http://math.stanford.edu/~vakil/files/sixjan2308.pdf
  */
 final class OuterAutomorphism {
