@@ -2,11 +2,9 @@ package com.github.cyclophone;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import static com.github.cyclophone.Permutation.cycle;
-import static com.github.cyclophone.TestUtil.PERMUTATION_COMPARATOR;
 
 enum Coset {
 
@@ -745,14 +743,26 @@ enum Coset {
       cycle(1, 6).compose(cycle(2, 5, 4)),
       cycle(1, 6, 3, 4).compose(cycle(2, 5))));
 
-  private final Set<Permutation> set;
+  private final TreeSet<Permutation> set;
 
   Coset(List<Permutation> set) {
-    this.set = new TreeSet<>(PERMUTATION_COMPARATOR);
-    this.set.addAll(set);
+    this.set = new TreeSet<>(set);
   }
 
-  Set<Permutation> getSet() {
-    return set;
+  Coset act(Permutation p) {
+    Permutation first = set.first();
+    for (Coset coset : values()) {
+      Permutation test = p.compose(first);
+      if (coset.set.contains(test)) {
+        for (Permutation notFirst : set) {
+          Permutation verify = p.compose(notFirst);
+          if (!coset.set.contains(verify)) {
+            throw new IllegalStateException();
+          }
+        }
+        return coset;
+      }
+    }
+    throw new IllegalStateException();
   }
 }

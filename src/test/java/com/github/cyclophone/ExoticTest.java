@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Span.span;
-import static com.github.cyclophone.TestUtil.PERMUTATION_COMPARATOR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -84,9 +83,23 @@ class ExoticTest {
     }
   }
 
+  @Test
+  void testOuter() {
+    List<Permutation> s6 = SymmetricGroup.symmetricGroup(6).collect(Collectors.toList());
+    for (Permutation p : s6) {
+      Coset[] values = Coset.values();
+      int[] ranking = new int[6];
+      for (int i = 0; i < values.length; i++) {
+        Coset coset = values[i];
+        Coset actionResult = coset.act(p);
+        ranking[i] = actionResult.ordinal();
+      }
+      System.out.println("map.put(" + p.toCycles().print() + ", " + Permutation.define(ranking).toCycles().print() + ");");
+    }
+  }
 
   private Set<Permutation> product(Set<Permutation> s, Permutation p) {
-    Set<Permutation> result = new TreeSet<>(PERMUTATION_COMPARATOR);
+    Set<Permutation> result = new TreeSet<>();
     for (Permutation permutation : s) {
       result.add(p.compose(permutation));
     }

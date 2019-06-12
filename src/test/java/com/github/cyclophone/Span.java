@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.github.cyclophone.TestUtil.PERMUTATION_COMPARATOR;
-
 final class Span {
 
   static Set<Permutation> span(Permutation... seed) {
-    Set<Permutation> result = new TreeSet<>(PERMUTATION_COMPARATOR);
+    Set<Permutation> result = new TreeSet<>();
     Collections.addAll(result, seed);
     int added;
     do {

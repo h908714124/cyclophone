@@ -13,30 +13,6 @@ import static com.github.cyclophone.Product.product;
 
 class TestUtil {
 
-  static final Comparator<Permutation> PERMUTATION_COMPARATOR = new Comparator<Permutation>() {
-
-    /**
-     * A compare method compatible with {@code equals}: permutations compare to {@code 0}
-     * if and only they are equal.
-     *
-     * @param other a permutation, not necessarily of the same length
-     * @return the result of lexicographic comparison of {@code this.ranking} and {@code other.ranking}
-     * @see #equals
-     */
-    @Override
-    public int compare(Permutation that, Permutation other) {
-      int[] thatRanking = that.getRanking();
-      int[] otherRanking = other.getRanking();
-      if (that == other)
-        return 0;
-      for (int i = 0; i < Math.min(thatRanking.length, otherRanking.length); i += 1)
-        if (thatRanking[i] != otherRanking[i])
-          return thatRanking[i] - otherRanking[i];
-      return otherRanking.length - thatRanking.length;
-    }
-  };
-
-
   static Iterable<Permutation[]> cartesian(final List<Permutation> a, final List<Permutation> b) {
     return () ->
         new Iterator<Permutation[]>() {
@@ -78,7 +54,7 @@ class TestUtil {
 
   private static Iterable<Permutation> commutatorIterable(final List<Permutation> input) {
     return () -> {
-      List<Permutation> inlist = Arrays.asList(input.toArray(new Permutation[input.size()]));
+      List<Permutation> inlist = Arrays.asList(input.toArray(new Permutation[0]));
       final Iterator<Permutation[]> cartesian = cartesian(inlist, inlist).iterator();
       return new Iterator<Permutation>() {
         @Override
@@ -97,7 +73,7 @@ class TestUtil {
 
   private static Iterable<Permutation> distinct(final Iterable<Permutation> input) {
     return () -> {
-      final TreeSet<Permutation> set = new TreeSet<>(TestUtil.PERMUTATION_COMPARATOR);
+      final TreeSet<Permutation> set = new TreeSet<>();
       final Iterator<Permutation> it = input.iterator();
       return new Iterator<Permutation>() {
         Permutation current = null;
@@ -127,35 +103,38 @@ class TestUtil {
     outer:
     for (Permutation a : input) {
       for (Permutation b : input)
-        if (!a.compose(b).equals(b.compose(a)))
+        if (!a.compose(b).equals(b.compose(a))) {
           continue outer;
+        }
       result.push(a);
     }
     return result;
   }
 
   static boolean isClosed(final List<Permutation> permutations) {
-    TreeSet<Permutation> set = new TreeSet<>(PERMUTATION_COMPARATOR);
-    set.addAll(permutations);
+    TreeSet<Permutation> set = new TreeSet<>(permutations);
     for (Permutation[] p : cartesian(permutations, permutations))
-      if (!set.contains(p[0].compose(p[1])) || !set.contains(p[1].compose(p[0])))
+      if (!set.contains(p[0].compose(p[1])) || !set.contains(p[1].compose(p[0]))) {
         return false;
+      }
     return true;
   }
 
   static int count(int[] a, int i) {
     int c = 0;
     for (int j : a)
-      if (j == i)
+      if (j == i) {
         c += 1;
+      }
     return c;
   }
 
   static int count(Object[] a, Object i) {
     int c = 0;
     for (Object j : a)
-      if (j.equals(i))
+      if (j.equals(i)) {
         c += 1;
+      }
     return c;
   }
 
@@ -169,14 +148,16 @@ class TestUtil {
   static boolean isDistinct(int[] input) {
     int max = 0;
     for (int i : input) {
-      if (i < 0)
+      if (i < 0) {
         ArrayUtil.negativeFailure();
+      }
       max = Math.max(max, i);
     }
     boolean[] test = new boolean[max + 1];
     for (int i : input) {
-      if (test[i])
+      if (test[i]) {
         return false;
+      }
       test[i] = true;
     }
     return true;
@@ -196,10 +177,11 @@ class TestUtil {
     int[] test = new int[max + 1];
     Arrays.fill(test, -1);
     for (int __ : input) {
-      if (test[input[start]] == -1)
+      if (test[input[start]] == -1) {
         test[input[start]] = start;
-      else
+      } else {
         return new int[]{test[input[start]], start};
+      }
       start = (start + 1) % input.length;
     }
     throw new IllegalArgumentException("no duplicates found");
@@ -231,10 +213,11 @@ class TestUtil {
     int[] test = new int[max + 1];
     Arrays.fill(test, -1);
     for (long __ : input) {
-      if (test[(int) input[start]] == -1)
+      if (test[(int) input[start]] == -1) {
         test[(int) input[start]] = start;
-      else
+      } else {
         return new int[]{test[(int) input[start]], start};
+      }
       start = (start + 1) % input.length;
     }
     throw new IllegalArgumentException("no duplicates found");

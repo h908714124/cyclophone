@@ -14,7 +14,6 @@ import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Product.product;
 import static com.github.cyclophone.SymmetricGroup.symmetricGroup;
-import static com.github.cyclophone.TestUtil.PERMUTATION_COMPARATOR;
 import static com.github.cyclophone.TestUtil.cartesian;
 import static com.github.cyclophone.TestUtil.center;
 import static com.github.cyclophone.TestUtil.commutator;
@@ -37,7 +36,7 @@ class ArrayUtilTest {
   void testCombinations() {
     List<Permutation> permutations = symmetricGroup(3).collect(Collectors.toList());
     assertEquals(6, permutations.size());
-    Set<Permutation> perms = new TreeSet<>(PERMUTATION_COMPARATOR);
+    Set<Permutation> perms = new TreeSet<>();
     for (Permutation perm : permutations) {
       assertTrue(perms.add(perm));
     }
@@ -87,7 +86,7 @@ class ArrayUtilTest {
 
   @Test
   void testCommutator5() {
-    assertEquals(120l, symmetricGroup(5).count());
+    assertEquals(120L, symmetricGroup(5).count());
     assertTrue(isClosed(symmetricGroup(5).collect(Collectors.toList())));
     assertEquals(60, commutator(symmetricGroup(5).collect(Collectors.toList())).size());
     assertTrue(isClosed(commutator(symmetricGroup(5).collect(Collectors.toList()))));
@@ -271,5 +270,4 @@ class ArrayUtilTest {
     assertArrayEquals(new int[]{8, 5, 7, 2, 9, 4, 1, 6, 0, 0, 3}, ArrayUtil.paste(a, 9, 0));
     assertArrayEquals(new int[]{8, 5, 7, 2, 9, 4, 1, 6, 0, 3, 0}, ArrayUtil.paste(a, 10, 0));
   }
-
 }

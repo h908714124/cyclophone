@@ -8,12 +8,8 @@ import static com.github.cyclophone.ArrayUtil.checkLength;
 
 /**
  * A permutation operation that can be used to rearrange arrays and lists.
- * Instances of this class are immutable, and none of the apply methods modify the input.
- * The toCycles method can be used to obtain the destructive version of an instance.
- *
- * @see #toCycles
  */
-public final class Permutation {
+public final class Permutation implements Comparable<Permutation> {
 
   /*
    *  An array of N integers where each of the integers between 0 and N-1 appear exactly once.
@@ -21,6 +17,23 @@ public final class Permutation {
    *  Because of this, Permutation instances are effectively immutable.
    */
   private final int[] ranking;
+
+  @Override
+  public int compareTo(Permutation other) {
+    if (this == other) {
+      return 0;
+    }
+    if (ranking.length != other.ranking.length) {
+      return ranking.length - other.ranking.length;
+    }
+    for (int i = 0; i < ranking.length; i += 1) {
+      int diff = ranking[i] - other.ranking[i];
+      if (diff != 0) {
+        return diff;
+      }
+    }
+    return 0;
+  }
 
   private static final Permutation IDENTITY = new Permutation(new int[0]);
 
@@ -30,8 +43,9 @@ public final class Permutation {
 
   static Permutation define(int... ranking) {
     int[] trimmed = Rankings.trim(ranking);
-    if (trimmed.length == 0)
+    if (trimmed.length == 0) {
       return IDENTITY;
+    }
     return new Permutation(trimmed);
   }
 
@@ -77,10 +91,12 @@ public final class Permutation {
    * @return the product of this instance and {@code other}
    */
   public Permutation compose(Permutation other) {
-    if (this.isIdentity())
+    if (isIdentity()) {
       return other;
-    if (other.ranking.length == 0)
+    }
+    if (other.ranking.length == 0) {
       return this;
+    }
     return define(Rankings.comp(this.ranking, other.ranking));
   }
 
@@ -102,10 +118,12 @@ public final class Permutation {
    * @return the {@code n}th power of this permutation
    */
   public Permutation pow(int n) {
-    if (n == 0)
+    if (n == 0) {
       return IDENTITY;
-    if (this.ranking.length == 0)
+    }
+    if (this.ranking.length == 0) {
       return this;
+    }
     Permutation seed = n < 0 ? invert() : this;
     Permutation result = seed;
     for (int i = 1; i < Math.abs(n); i += 1)
@@ -124,8 +142,9 @@ public final class Permutation {
    * @see #isIdentity
    */
   public Permutation invert() {
-    if (this.ranking.length == 0)
+    if (this.ranking.length == 0) {
       return this;
+    }
     return define(Rankings.invert(ranking));
   }
 
@@ -156,8 +175,9 @@ public final class Permutation {
    * @return a cycle based version of this operation
    */
   Cycles toCycles() {
-    if (this.ranking.length == 0)
+    if (ranking.length == 0) {
       return Cycles.identity();
+    }
     return Cycles.create(CycleUtil.toOrbits(ranking));
   }
 
@@ -208,8 +228,9 @@ public final class Permutation {
    * @exception java.lang.IllegalArgumentException if {@code input} has less than {@code this.length()} elements
    */
   public <E> List<E> apply(List<E> input) {
-    if (ranking.length == 0)
+    if (ranking.length == 0) {
       return input;
+    }
     int length = input.size();
     checkLength(ranking.length, length);
     return Rankings.apply(ranking, input);
@@ -237,5 +258,17 @@ public final class Permutation {
    */
   public Permutation conjugationBy(Permutation h) {
     return h.invert().compose(this).compose(h);
+  }
+
+  /**
+   * Apply the outer automorphism of S6.
+   *
+   * @return map result
+   */
+  Permutation outer() {
+    if (ranking.length >= 7) {
+      throw new IllegalArgumentException("only for permutations of rank 6");
+    }
+    return OuterAutomorphism.exoticMap(this);
   }
 }
