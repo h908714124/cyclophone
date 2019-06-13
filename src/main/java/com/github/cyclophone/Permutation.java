@@ -266,9 +266,6 @@ public final class Permutation implements Comparable<Permutation> {
    * @return map result
    */
   Permutation exoticSwap() {
-    if (ranking.length >= 7) {
-      throw new IllegalArgumentException("can only swap permutations of rank 6");
-    }
-    return OuterAutomorphism.exoticSwap(this);
+    return OuterAutomorphism.getInstance().apply(this);
   }
 }
