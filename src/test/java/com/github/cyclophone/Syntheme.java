@@ -1,7 +1,8 @@
 package com.github.cyclophone;
 
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.Set;
+import java.util.TreeSet;
 
 enum Syntheme {
 
@@ -26,9 +27,9 @@ enum Syntheme {
   private final Set<Integer> third;
 
   Syntheme(int i1, int i2, int i3, int i4, int i5, int i6) {
-    this.first = new HashSet<>(i1, i2);
-    this.second = new HashSet<>(i3, i4);
-    this.third = new HashSet<>(i5, i6);
+    this.first = new TreeSet<>(Arrays.asList(i1, i2));
+    this.second = new TreeSet<>(Arrays.asList(i3, i4));
+    this.third = new TreeSet<>(Arrays.asList(i5, i6));
   }
 
   Set<Integer> getFirst() {
@@ -41,5 +42,19 @@ enum Syntheme {
 
   Set<Integer> getThird() {
     return third;
+  }
+
+  char[] render() {
+    char[] result = new char[6];
+    for (Integer i : first) {
+      result[i - 1] = '@';
+    }
+    for (Integer i : second) {
+      result[i - 1] = '+';
+    }
+    for (Integer i : third) {
+      result[i - 1] = '=';
+    }
+    return result;
   }
 }
