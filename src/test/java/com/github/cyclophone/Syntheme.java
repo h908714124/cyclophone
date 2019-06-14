@@ -1,7 +1,6 @@
 package com.github.cyclophone;
 
 import java.util.Arrays;
-import java.util.Set;
 import java.util.TreeSet;
 
 enum Syntheme {
@@ -22,39 +21,40 @@ enum Syntheme {
   S_14(1, 3, 2, 5, 4, 6),
   S_15(1, 2, 3, 4, 5, 6);
 
-  private final Set<Integer> first;
-  private final Set<Integer> second;
-  private final Set<Integer> third;
+  private final TreeSet<Integer> first;
+  private final TreeSet<Integer> second;
+  private final TreeSet<Integer> third;
 
   Syntheme(int i1, int i2, int i3, int i4, int i5, int i6) {
-    this.first = new TreeSet<>(Arrays.asList(i1, i2));
-    this.second = new TreeSet<>(Arrays.asList(i3, i4));
-    this.third = new TreeSet<>(Arrays.asList(i5, i6));
+    this.first = new TreeSet<>(Arrays.asList(i1 - 1, i2 - 1));
+    this.second = new TreeSet<>(Arrays.asList(i3 - 1, i4 - 1));
+    this.third = new TreeSet<>(Arrays.asList(i5 - 1, i6 - 1));
   }
 
-  Set<Integer> getFirst() {
-    return first;
-  }
-
-  Set<Integer> getSecond() {
-    return second;
-  }
-
-  Set<Integer> getThird() {
-    return third;
-  }
-
-  char[] render() {
-    char[] result = new char[6];
-    for (Integer i : first) {
-      result[i - 1] = '@';
+  String[] render(String alphabet) {
+    char[][] result = new char[2][3];
+    char alpha = alphabet.charAt(0);
+    char beta = alphabet.charAt(1);
+    char gamma = alphabet.charAt(2);
+    for (int i : first) {
+      int x = i % 3;
+      int y = i / 3;
+      result[y][x] = alpha;
     }
-    for (Integer i : second) {
-      result[i - 1] = '+';
+    for (int i : second) {
+      int x = i % 3;
+      int y = i / 3;
+      result[y][x] = beta;
     }
-    for (Integer i : third) {
-      result[i - 1] = '=';
+    for (int i : third) {
+      int x = i % 3;
+      int y = i / 3;
+      result[y][x] = gamma;
     }
-    return result;
+    return new String[]
+        {
+            new String(result[0]),
+            new String(result[1])
+        };
   }
 }
