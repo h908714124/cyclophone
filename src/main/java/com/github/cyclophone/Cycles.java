@@ -53,8 +53,9 @@ final class Cycles implements Serializable {
    * @return the operation defined by the input
    */
   static Cycles create(int[][] cycles) {
-    if (cycles.length == 0)
+    if (cycles.length == 0) {
       return IDENTITY;
+    }
     int maxIndex = 0;
     for (int[] orbit : cycles)
       for (int i : orbit)
@@ -232,8 +233,9 @@ final class Cycles implements Serializable {
   int signature() {
     boolean even = true;
     for (int[] cycle : cycles)
-      if (cycle.length % 2 == 0)
+      if (cycle.length % 2 == 0) {
         even = !even;
+      }
     return even ? 1 : -1;
   }
 }

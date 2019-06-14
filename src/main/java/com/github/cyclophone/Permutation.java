@@ -268,4 +268,21 @@ public final class Permutation implements Comparable<Permutation> {
   Permutation exoticSwap() {
     return OuterAutomorphism.getInstance().apply(this);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Permutation that = (Permutation) o;
+    return this.compareTo(that) == 0;
+  }
+
+  @Override
+  public int hashCode() {
+    return Arrays.hashCode(ranking);
+  }
 }
