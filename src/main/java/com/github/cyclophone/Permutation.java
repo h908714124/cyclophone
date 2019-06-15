@@ -94,7 +94,7 @@ public final class Permutation implements Comparable<Permutation> {
     if (isIdentity()) {
       return other;
     }
-    if (other.ranking.length == 0) {
+    if (other.isIdentity()) {
       return this;
     }
     return define(Rankings.comp(this.ranking, other.ranking));

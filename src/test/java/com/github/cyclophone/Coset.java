@@ -750,6 +750,10 @@ enum Coset {
     this.set = new TreeSet<>(set);
   }
 
+  TreeSet<Permutation> set() {
+    return set;
+  }
+
   // action of p on this coset
   Coset act(Permutation p) {
     Permutation first = set.first();
