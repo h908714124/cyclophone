@@ -1,6 +1,8 @@
 package com.github.cyclophone;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 final class Subgroup {
 
@@ -13,5 +15,17 @@ final class Subgroup {
       }
     }
     return permutations.contains(Permutation.identity());
+  }
+
+  static boolean isNormal(int n, Set<Permutation> permutations) {
+    List<Permutation> universe = SymmetricGroup.symmetricGroup(n).collect(Collectors.toList());
+    for (Permutation u : universe) {
+      for (Permutation p : permutations) {
+        if (!permutations.contains(p.conjugationBy(u))) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }
