@@ -238,4 +238,13 @@ final class Cycles implements Serializable {
       }
     return even ? 1 : -1;
   }
+
+  int[][] getCycles() {
+    int[][] result = Arrays.copyOf(cycles, cycles.length);
+    for (int i = 0; i < cycles.length; i++) {
+      int[] cycle = cycles[i];
+      result[i] = Arrays.copyOf(cycle, cycle.length);
+    }
+    return result;
+  }
 }
