@@ -9,16 +9,16 @@ import java.util.Objects;
  *
  *            |         |         |         |
  *            |         |         |         |
- *      #-    |   #-    |   #--   |   #-#   |   ##-
- *      -#    |    -#   |   #     |    -    |    -
+ *       -#   |    -#   |    --   |    -    |     -
+ *      - #   |   #-    |    ##   |   #-#   |   #-#
  *            |         |         |         |
  *            |         |         |         |
- *      #-    |   #--   |   #-    |   #-#   |   ##-
- *       #-   |     #   |   # -   |   -     |     -
+ *       -#   |    --   |    -#   |    -    |     -
+ *      # -   |   ##    |    #-   |   -##   |   ##-
  *            |         |         |         |
  *            |         |         |         |
- *     |#--|  |  |#- |  |  |#- |  |  |#-#|  |  |##-|
- *     | # |  |  |- #|  |  |#- |  |  |  -|  |  |-  |
+ *     | --|  |  | -#|  |  | -#|  |  | - |  |  |  -|
+ *     |# #|  |  |-# |  |  | -#|  |  |##-|  |  |-##|
  *            |         |         |         |
  *                             
  */
@@ -27,7 +27,7 @@ class SynthemeTest {
   @Test
   void testPrintSynthemes() {
     String[] rows = Arrays.stream(Syntheme.values())
-        .map(syntheme -> syntheme.render("#- "))
+        .map(syntheme -> syntheme.render(" -#"))
         .map(a -> new String[]
             {
                 "   ",
