@@ -178,7 +178,7 @@ public final class Permutation implements Comparable<Permutation> {
     if (ranking.length == 0) {
       return Cycles.identity();
     }
-    return Cycles.create(CycleUtil.toOrbits(ranking));
+    return Cycles.create(getCycles());
   }
 
   /**
@@ -214,11 +214,19 @@ public final class Permutation implements Comparable<Permutation> {
    *
    * @return a copy of the ranking
    */
-  int[] getRanking() {
+  public int[] getRanking() {
     return Arrays.copyOf(ranking, ranking.length);
   }
 
-
+  /**
+   * Get a cycle based version of this operation.
+   *
+   * @return a cycle based version of this operation
+   */
+  public int[][] getCycles() {
+    return CycleUtil.toOrbits(ranking);
+  }
+  
   /**
    * Rearrange a list. This method does not modify the input list.
    *

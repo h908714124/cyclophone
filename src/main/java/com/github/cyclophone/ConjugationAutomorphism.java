@@ -6,8 +6,12 @@ final class ConjugationAutomorphism extends Automorphism {
 
   private Permutation p;
 
-  ConjugationAutomorphism(Permutation p) {
+  private ConjugationAutomorphism(Permutation p) {
     this.p = p;
+  }
+
+  static Automorphism conjugationBy(Permutation p) {
+    return new ConjugationAutomorphism(p);
   }
 
   @Override

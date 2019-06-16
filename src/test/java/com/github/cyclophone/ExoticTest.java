@@ -105,24 +105,10 @@ class ExoticTest {
 
   private boolean contains(List<Set<Permutation>> spans, Set<Permutation> set) {
     for (Set<Permutation> span : spans) {
-      if (setEquals(span, set)) {
+      if (span.equals(set)) {
         return true;
       }
     }
     return false;
-  }
-
-  private boolean setEquals(Set<Permutation> s1, Set<Permutation> s2) {
-    for (Permutation p1 : s1) {
-      if (!s2.contains(p1)) {
-        return false;
-      }
-    }
-    for (Permutation p2 : s2) {
-      if (!s1.contains(p2)) {
-        return false;
-      }
-    }
-    return true;
   }
 }

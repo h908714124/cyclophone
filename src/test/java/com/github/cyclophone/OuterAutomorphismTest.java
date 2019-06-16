@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import static com.github.cyclophone.ConjugationAutomorphism.conjugationBy;
 import static com.github.cyclophone.Permutation.cycle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,9 +18,9 @@ class OuterAutomorphismTest {
   void testConjugationClasses() {
     List<Permutation> s6 = SymmetricGroup.symmetricGroup(6).collect(Collectors.toList());
     TreeSet<Automorphism> morphisms = new TreeSet<>();
+    OuterAutomorphism m = OuterAutomorphism.getInstance();
     for (Permutation p : s6) {
-      ConjugationAutomorphism m = new ConjugationAutomorphism(p);
-      Automorphism v = m.compose(OuterAutomorphism.getInstance());
+      Automorphism v = conjugationBy(p).compose(m);
       morphisms.add(v);
     }
     Assertions.assertEquals(720, morphisms.size());

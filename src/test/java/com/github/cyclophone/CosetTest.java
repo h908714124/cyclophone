@@ -3,10 +3,12 @@ package com.github.cyclophone;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import static com.github.cyclophone.ConjugationAutomorphism.conjugationBy;
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Subgroup.isNormal;
 import static com.github.cyclophone.Subgroup.isSubgroup;
@@ -56,5 +58,19 @@ class CosetTest {
         cycle(1, 2).compose(cycle(3, 4)),
         cycle(1, 2),
         cycle(3, 4)))));
+  }
+
+  @Test
+  void testApplyOuter() {
+    HashSet<TreeSet<Permutation>> groups = new HashSet<>();
+    for (Permutation p : SymmetricGroup.symmetricGroup(6).collect(Collectors.toList())) {
+      OuterAutomorphism m = OuterAutomorphism.getInstance();
+      TreeSet<Permutation> set = new TreeSet<>();
+      SymmetricGroup.symmetricGroup(5)
+          .map(m.compose(conjugationBy(p)))
+          .forEach(set::add);
+      groups.add(set);
+    }
+    assertEquals(6, groups.size());
   }
 }
