@@ -204,7 +204,7 @@ public final class Permutation implements Comparable<Permutation> {
   @Override
   public String toString() {
     if (isIdentity()) {
-      return "id";
+      return "()";
     }
     return toCycles().toString();
   }

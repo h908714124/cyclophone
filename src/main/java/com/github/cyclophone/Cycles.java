@@ -182,7 +182,7 @@ final class Cycles implements Serializable {
   @Override
   public String toString() {
     if (cycles.length == 0) {
-      return "id";
+      return "()";
     }
     return Arrays.stream(cycles)
         .map(a -> Arrays.stream(a).map(i -> i + 1).mapToObj(Integer::toString).collect(Collectors.joining(" ")))
