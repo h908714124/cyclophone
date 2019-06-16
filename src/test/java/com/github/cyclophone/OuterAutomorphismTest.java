@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import static com.github.cyclophone.ConjugationAutomorphism.conjugationBy;
+import static com.github.cyclophone.InnerAutomorphism.conjugationBy;
+import static com.github.cyclophone.Morphisms.isMorphism;
 import static com.github.cyclophone.Permutation.cycle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class OuterAutomorphismTest {
 
@@ -35,14 +37,9 @@ class OuterAutomorphismTest {
   }
 
   @Test
-  void testMultiplicativeProperty() {
-    List<Permutation> s6 = SymmetricGroup.symmetricGroup(6).collect(Collectors.toList());
-    OuterAutomorphism m = OuterAutomorphism.getInstance();
-    for (Permutation p1 : s6) {
-      for (Permutation p2 : s6) {
-        assertEquals(m.apply(p1.compose(p2)), m.apply(p1).compose(m.apply(p2)));
-      }
-    }
+  void testMorphism() {
+    Automorphism m = OuterAutomorphism.getInstance();
+    assertTrue(isMorphism(6, m));
   }
 
   @Test

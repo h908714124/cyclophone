@@ -71,12 +71,12 @@ public final class Permutation implements Comparable<Permutation> {
   }
 
   /**
-   * Return the identity permutation. It is the only permutation that can be applied to arrays of any length.
+   * Return the identity permutation.
    *
-   * @return the identity permutation that can be applied to an array of length {@code length}
+   * @return the identity permutation
    * @see Permutation#isIdentity
    */
-  static Permutation identity() {
+  public static Permutation identity() {
     return IDENTITY;
   }
 

@@ -2,16 +2,16 @@ package com.github.cyclophone;
 
 import java.util.Set;
 
-final class ConjugationAutomorphism extends Automorphism {
+final class InnerAutomorphism extends Automorphism {
 
   private Permutation p;
 
-  private ConjugationAutomorphism(Permutation p) {
+  private InnerAutomorphism(Permutation p) {
     this.p = p;
   }
 
   static Automorphism conjugationBy(Permutation p) {
-    return new ConjugationAutomorphism(p);
+    return new InnerAutomorphism(p);
   }
 
   @Override

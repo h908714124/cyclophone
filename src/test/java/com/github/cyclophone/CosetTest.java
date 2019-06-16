@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import static com.github.cyclophone.ConjugationAutomorphism.conjugationBy;
+import static com.github.cyclophone.InnerAutomorphism.conjugationBy;
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Subgroup.isNormal;
 import static com.github.cyclophone.Subgroup.isSubgroup;
@@ -72,5 +72,10 @@ class CosetTest {
       groups.add(set);
     }
     assertEquals(6, groups.size());
+  }
+
+  @Test
+  void testApplyInner() {
+
   }
 }
