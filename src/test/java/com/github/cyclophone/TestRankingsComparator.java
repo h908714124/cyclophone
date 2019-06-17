@@ -43,7 +43,6 @@ class TestRankingsComparator {
   }
 
   @Test
-  @SuppressWarnings("unchecked")
   void testFromRandom() {
     for (int __ = 0; __ < REPEAT; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 200);

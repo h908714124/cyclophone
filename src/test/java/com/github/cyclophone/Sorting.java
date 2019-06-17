@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import static com.github.cyclophone.Permutation.define;
 
-public class Sorting {
+class Sorting {
 
   static final class SortingBuilder<E> {
     
