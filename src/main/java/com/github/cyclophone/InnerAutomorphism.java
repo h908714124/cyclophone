@@ -5,9 +5,11 @@ import java.util.Set;
 final class InnerAutomorphism extends Automorphism {
 
   private Permutation p;
+  private Permutation p_;
 
   private InnerAutomorphism(Permutation p) {
     this.p = p;
+    this.p_ = p.invert();
   }
 
   static Automorphism conjugationBy(Permutation p) {
@@ -21,6 +23,6 @@ final class InnerAutomorphism extends Automorphism {
 
   @Override
   public Permutation apply(Permutation h) {
-    return p.invert().compose(h).compose(p);
+    return p_.compose(h).compose(p);
   }
 }

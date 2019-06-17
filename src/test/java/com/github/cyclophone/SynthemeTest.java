@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.BinaryOperator;
 
 /*
  *
@@ -20,7 +21,7 @@ import java.util.Objects;
  *       --   |    -#   |    -#   |    -    |     -
  *      # #   |   -#    |    -#   |   ##-   |   -##
  *            |         |         |         |
- *                             
+ *
  */
 class SynthemeTest {
 
@@ -36,13 +37,7 @@ class SynthemeTest {
                 "   "
             })
         .reduce(new String[4],
-            (a, b) -> new String[]
-                {
-                    join(a[0], b[0]),
-                    join(a[1], b[1]),
-                    join(a[2], b[2]),
-                    join(a[3], b[3])
-                });
+            ArrayOperator.create(this::join));
     for (String row : rows) {
       System.out.println(row);
     }
@@ -55,6 +50,28 @@ class SynthemeTest {
     if (Objects.toString(b, "").isEmpty()) {
       return a;
     }
-    return a + "  |  " + b;
+    return a + "   |   " + b;
+  }
+
+  private static class ArrayOperator implements BinaryOperator<String[]> {
+
+    BinaryOperator<String> function;
+
+    ArrayOperator(BinaryOperator<String> function) {
+      this.function = function;
+    }
+
+    static BinaryOperator<String[]> create(BinaryOperator<String> function) {
+      return new ArrayOperator(function);
+    }
+
+    @Override
+    public String[] apply(String[] ts, String[] us) {
+      String[] result = new String[ts.length];
+      for (int i = 0; i < ts.length; i++) {
+        result[i] = function.apply(ts[i], us[i]);
+      }
+      return result;
+    }
   }
 }
