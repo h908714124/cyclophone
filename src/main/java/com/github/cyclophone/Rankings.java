@@ -41,10 +41,12 @@ final class Rankings {
   static boolean isValid(int[] a) {
     boolean[] used = new boolean[a.length];
     for (int value : a) {
-      if (value < 0 || value >= a.length)
+      if (value < 0 || value >= a.length) {
         return false;
-      if (used[value])
+      }
+      if (used[value]) {
         return false;
+      }
       used[value] = true;
     }
     return true;
@@ -58,8 +60,9 @@ final class Rankings {
    */
   private static int trimmedLength(int[] ranking) {
     for (int i = ranking.length - 1; i >= 0; i--)
-      if (ranking[i] != i)
+      if (ranking[i] != i) {
         return i + 1;
+      }
     return 0;
   }
 
@@ -71,10 +74,12 @@ final class Rankings {
    */
   static int[] trim(int[] ranking) {
     int length = trimmedLength(ranking);
-    if (length == 0)
+    if (length == 0) {
       return INT_0;
-    if (length < ranking.length)
+    }
+    if (length < ranking.length) {
       return Arrays.copyOf(ranking, length);
+    }
     return ranking;
   }
 
@@ -88,10 +93,12 @@ final class Rankings {
    * @exception java.lang.IllegalArgumentException if {@code n} is negative
    */
   static int[] shift(int n, int[] ranking) {
-    if (n < 0)
+    if (n < 0) {
       negativeFailure();
-    if (n == 0)
+    }
+    if (n == 0) {
       return ranking;
+    }
     int[] shifted = new int[n + ranking.length];
     for (int i = 1; i < n; i++)
       shifted[i] = i;
@@ -157,17 +164,20 @@ final class Rankings {
    */
   static int[] comp(int[] lhs, int[] rhs) {
     if (lhs.length >= rhs.length) {
-      if (rhs.length == 0)
+      if (rhs.length == 0) {
         return lhs;
+      }
       int[] result = new int[lhs.length];
       for (int i = 0; i < rhs.length; i++)
         result[i] = lhs[rhs[i]];
-      if (lhs.length > rhs.length)
+      if (lhs.length > rhs.length) {
         arraycopy(lhs, rhs.length, result, rhs.length, lhs.length - rhs.length);
+      }
       return result;
     }
-    if (lhs.length == 0)
+    if (lhs.length == 0) {
       return rhs;
+    }
     int[] result = new int[rhs.length];
     for (int i = 0; i < rhs.length; i++) {
       int n = rhs[i];
@@ -191,15 +201,18 @@ final class Rankings {
   static int nextOffset(final int idx, int offset, final int[] sorted) {
     if (offset >= 0) {
       int next = idx + ++offset;
-      if (next >= sorted.length || sorted[next] != sorted[idx])
-        if (idx == 0 || sorted[idx - 1] != sorted[idx])
+      if (next >= sorted.length || sorted[next] != sorted[idx]) {
+        if (idx == 0 || sorted[idx - 1] != sorted[idx]) {
           return 0;
-        else
+        } else {
           return -1;
+        }
+      }
     } else {
       int next = idx + --offset;
-      if (next < 0 || sorted[next] != sorted[idx])
+      if (next < 0 || sorted[next] != sorted[idx]) {
         return 0;
+      }
     }
     return offset;
   }
@@ -217,15 +230,18 @@ final class Rankings {
   static int nextOffset(final int idx, int offset, final long[] sorted) {
     if (offset >= 0) {
       int next = idx + ++offset;
-      if (next >= sorted.length || sorted[next] != sorted[idx])
-        if (idx == 0 || sorted[idx - 1] != sorted[idx])
+      if (next >= sorted.length || sorted[next] != sorted[idx]) {
+        if (idx == 0 || sorted[idx - 1] != sorted[idx]) {
           return 0;
-        else
+        } else {
           return -1;
+        }
+      }
     } else {
       int next = idx + --offset;
-      if (next < 0 || sorted[next] != sorted[idx])
+      if (next < 0 || sorted[next] != sorted[idx]) {
         return 0;
+      }
     }
     return offset;
   }
@@ -243,15 +259,18 @@ final class Rankings {
   static int nextOffset(final int idx, int offset, final Object[] sorted) {
     if (offset >= 0) {
       int next = idx + ++offset;
-      if (next >= sorted.length || !sorted[next].equals(sorted[idx]))
-        if (idx == 0 || !sorted[idx - 1].equals(sorted[idx]))
+      if (next >= sorted.length || !sorted[next].equals(sorted[idx])) {
+        if (idx == 0 || !sorted[idx - 1].equals(sorted[idx])) {
           return 0;
-        else
+        } else {
           return -1;
+        }
+      }
     } else {
       int next = idx + --offset;
-      if (next < 0 || !sorted[next].equals(sorted[idx]))
+      if (next < 0 || !sorted[next].equals(sorted[idx])) {
         return 0;
+      }
     }
     return offset;
   }
@@ -281,22 +300,25 @@ final class Rankings {
   }
 
   static int nextOffsetShifting(final int idx, int shiftedOffset, final int[] sorted) {
-    if (shiftedOffset == 0)
+    if (shiftedOffset == 0) {
       return 1;
+    }
     int offset = nextOffset(idx, unshift(shiftedOffset), sorted);
     return offset == 0 ? 0 : shift(offset);
   }
 
   static int nextOffsetShifting(final int idx, int shiftedOffset, final long[] sorted) {
-    if (shiftedOffset == 0)
+    if (shiftedOffset == 0) {
       return 1;
+    }
     int offset = nextOffset(idx, unshift(shiftedOffset), sorted);
     return offset == 0 ? 0 : shift(offset);
   }
 
   static int nextOffsetShifting(final int idx, int shiftedOffset, final Object[] sorted) {
-    if (shiftedOffset == 0)
+    if (shiftedOffset == 0) {
       return 1;
+    }
     int offset = nextOffset(idx, unshift(shiftedOffset), sorted);
     return offset == 0 ? 0 : shift(offset);
   }
@@ -442,7 +464,7 @@ final class Rankings {
   }
 
   /* ================= from ================= */
-  
+
 
   /**
    * Produce a particular ranking that produces {@code b} when applied to {@code a}.
@@ -462,11 +484,13 @@ final class Rankings {
     int[] offsets = new int[a.length];
     for (int i = 0; i < a.length; i += 1) {
       int idx = binarySearch(sorted, a[i]);
-      if (idx < 0)
+      if (idx < 0) {
         return null;
+      }
       int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      if (offset == 0)
+      if (offset == 0) {
         return null;
+      }
       ranking[i] = unsort[idx + unshift(offset)];
       offsets[idx] = offset;
     }
@@ -494,11 +518,13 @@ final class Rankings {
     for (int i = 0; i < a.length; i += 1) {
       @SuppressWarnings("unchecked")
       int idx = binarySearch(sorted, a[i], (Comparator) comp);
-      if (idx < 0)
+      if (idx < 0) {
         return null;
+      }
       int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      if (offset == 0)
+      if (offset == 0) {
         return null;
+      }
       ranking[i] = unsort[idx + unshift(offset)];
       offsets[idx] = offset;
     }
@@ -518,10 +544,12 @@ final class Rankings {
    * @exception java.lang.IllegalArgumentException if {@code i} is negative
    */
   static int apply(int[] ranking, int i) {
-    if (i < 0)
+    if (i < 0) {
       negativeFailure();
-    if (i >= ranking.length)
+    }
+    if (i >= ranking.length) {
       return i;
+    }
     return ranking[i];
   }
 
@@ -545,8 +573,9 @@ final class Rankings {
     T[] result = (T[]) Array.newInstance(type, input.length);
     for (int i = 0; i < ranking.length; i += 1)
       result[ranking[i]] = input[i];
-    if (input.length > ranking.length)
+    if (input.length > ranking.length) {
       arraycopy(input, ranking.length, result, ranking.length, input.length - ranking.length);
+    }
     return result;
   }
 
@@ -566,8 +595,9 @@ final class Rankings {
     int[] result = new int[input.length];
     for (int i = 0; i < ranking.length; i += 1)
       result[ranking[i]] = input[i];
-    if (input.length > ranking.length)
+    if (input.length > ranking.length) {
       arraycopy(input, ranking.length, result, ranking.length, input.length - ranking.length);
+    }
     return result;
   }
 
@@ -584,8 +614,9 @@ final class Rankings {
    * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
    */
   static <E> List<E> apply(int[] ranking, List<E> input) {
-    if (ranking.length == 0)
+    if (ranking.length == 0) {
       return input;
+    }
     int length = input.size();
     checkLength(ranking.length, length);
     ArrayList<E> result = new ArrayList<E>(length);
@@ -608,20 +639,24 @@ final class Rankings {
    * @see #isValid
    */
   static boolean sorts(int[] ranking, int[] a) {
-    if (a.length < ranking.length)
+    if (a.length < ranking.length) {
       lengthFailure();
-    if (a.length < 2)
+    }
+    if (a.length < 2) {
       return true;
+    }
     int idx = apply(ranking, 0);
     int test = a[0];
     for (int i = 1; i < a.length; i++) {
       int idx2 = apply(ranking, i);
       int test2 = a[i];
       if (idx2 > idx) {
-        if (test > test2)
+        if (test > test2) {
           return false;
-      } else if (test < test2)
+        }
+      } else if (test < test2) {
         return false;
+      }
       idx = idx2;
       test = test2;
     }
@@ -638,7 +673,6 @@ final class Rankings {
       this.suffix = suffix;
     }
   }
-
 
   /**
    * Returns all possible permutations of given length
@@ -666,14 +700,13 @@ final class Rankings {
         State state = stack.pop();
         while (state.suffix.length > 0) {
           for (int i = 0; i < state.suffix.length; i += 1) {
-            int[] newPrefix = new int[state.prefix.length + 1];
-            arraycopy(state.prefix, 0, newPrefix, 0, state.prefix.length);
-            newPrefix[state.prefix.length] = state.suffix[i];
+            int[] newPrefix = Arrays.copyOf(state.prefix, state.prefix.length + 1);
             int[] newSuffix = new int[state.suffix.length - 1];
-            if (i != 0)
-              arraycopy(state.suffix, 0, newSuffix, 0, i);
-            if (i < state.suffix.length - 1)
-              arraycopy(state.suffix, i + 1, newSuffix, i, state.suffix.length - 1 - i);
+            newPrefix[state.prefix.length] = state.suffix[i];
+            arraycopy(state.suffix, 0, newSuffix, 0, i);
+            if (i < state.suffix.length - 1) {
+              arraycopy(state.suffix, i + 1, newSuffix, i, state.suffix.length - i - 1);
+            }
             stack.push(new State(newPrefix, newSuffix));
           }
           state = stack.pop();

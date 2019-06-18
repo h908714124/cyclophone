@@ -196,7 +196,6 @@ public final class Permutation implements Comparable<Permutation> {
    *
    * @return the length of this operation
    */
-
   int length() {
     return ranking.length;
   }
@@ -226,7 +225,7 @@ public final class Permutation implements Comparable<Permutation> {
   public int[][] getCycles() {
     return CycleUtil.toOrbits(ranking);
   }
-  
+
   /**
    * Rearrange a list. This method does not modify the input list.
    *
