@@ -3,6 +3,7 @@ package com.github.cyclophone;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.github.cyclophone.ArrayUtil.checkLength;
 
@@ -18,6 +19,13 @@ public final class Permutation implements Comparable<Permutation> {
    */
   private final int[] ranking;
 
+  /**
+   * An efficient comparison for permutations,
+   * which returns {@code 0} iff their rankings are equal.
+   *
+   * @param other a permutation
+   * @return comparison result
+   */
   @Override
   public int compareTo(Permutation other) {
     if (this == other) {
@@ -35,10 +43,17 @@ public final class Permutation implements Comparable<Permutation> {
     return 0;
   }
 
-  private static final Permutation IDENTITY = new Permutation(new int[0]);
+  private static final Permutation IDENTITY = new Permutation(new int[0], false);
 
   private Permutation(int[] ranking) {
-    this.ranking = Rankings.checkRanking(ranking);
+    this(ranking, false);
+  }
+
+  private Permutation(int[] ranking, boolean check) {
+    if (check) {
+      Rankings.checkRanking(ranking);
+    }
+    this.ranking = ranking;
   }
 
   static Permutation define(int... ranking) {
@@ -46,7 +61,7 @@ public final class Permutation implements Comparable<Permutation> {
     if (trimmed.length == 0) {
       return IDENTITY;
     }
-    return new Permutation(trimmed);
+    return new Permutation(trimmed, true);
   }
 
   static Permutation cycle0(int... cycle) {
@@ -276,6 +291,18 @@ public final class Permutation implements Comparable<Permutation> {
     return OuterAutomorphism.getInstance().apply(this);
   }
 
+  /**
+   * Return all possible permutations of given length.
+   *
+   * @param n length of permutations to generate
+   * @return all possible permutations of length {@code n}. This stream contains {@code n!}
+   * different permutations.
+   */
+  public static Stream<Permutation> symmetricGroup(int n) {
+    return Rankings.symmetricGroup(n).map(Permutation::new);
+  }
+
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -284,8 +311,7 @@ public final class Permutation implements Comparable<Permutation> {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Permutation that = (Permutation) o;
-    return this.compareTo(that) == 0;
+    return Arrays.equals(ranking, ((Permutation) o).ranking);
   }
 
   @Override

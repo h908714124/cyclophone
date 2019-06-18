@@ -108,8 +108,9 @@ final class ArrayUtil {
    */
   static int[] add(int[] a, int k) {
     int[] result = new int[a.length];
-    for (int i = 0; i < a.length; i += 1)
+    for (int i = 0; i < a.length; i += 1) {
       result[i] = a[i] + k;
+    }
     return result;
   }
 

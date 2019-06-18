@@ -672,6 +672,12 @@ final class Rankings {
       this.prefix = prefix;
       this.suffix = suffix;
     }
+
+    @Override
+    public String toString() {
+      return
+          Arrays.toString(prefix) + " " + Arrays.toString(suffix);
+    }
   }
 
   /**
@@ -682,38 +688,45 @@ final class Rankings {
    * different permutations
    */
   static Stream<int[]> symmetricGroup(int n) {
-    int[] start = new int[n];
-    for (int i = 0; i < n; i += 1) {
-      start[i] = i + 1;
-    }
-    Stack<State> stack = new Stack<>();
-    stack.push(new State(new int[0], start));
-    Iterable<int[]> it = () -> new Iterator<int[]>() {
-
-      @Override
-      public boolean hasNext() {
-        return !stack.isEmpty();
-      }
-
-      @Override
-      public int[] next() {
-        State state = stack.pop();
-        while (state.suffix.length > 0) {
-          for (int i = 0; i < state.suffix.length; i += 1) {
-            int[] newPrefix = Arrays.copyOf(state.prefix, state.prefix.length + 1);
-            int[] newSuffix = new int[state.suffix.length - 1];
-            newPrefix[state.prefix.length] = state.suffix[i];
-            arraycopy(state.suffix, 0, newSuffix, 0, i);
-            if (i < state.suffix.length - 1) {
-              arraycopy(state.suffix, i + 1, newSuffix, i, state.suffix.length - i - 1);
-            }
-            stack.push(new State(newPrefix, newSuffix));
-          }
-          state = stack.pop();
-        }
-        return ArrayUtil.add(state.prefix, -1);
-      }
-    };
+    Iterable<int[]> it = () -> new SymmetricGroupIterator(n);
     return StreamSupport.stream(it.spliterator(), false);
+  }
+
+  private static class SymmetricGroupIterator implements Iterator<int[]> {
+
+    Stack<State> stack = new Stack<>();
+
+    SymmetricGroupIterator(int n) {
+      int[] start = new int[n];
+      for (int i = 0; i < n; i += 1) {
+        start[i] = i;
+      }
+      stack.push(new State(new int[0], start));
+    }
+
+    @Override
+    public boolean hasNext() {
+      return !stack.isEmpty();
+    }
+
+    @Override
+    public int[] next() {
+      State state = stack.pop();
+      while (state.suffix.length > 0) {
+        for (int i = 0; i < state.suffix.length; i += 1) {
+          int[] newPrefix = Arrays.copyOf(state.prefix, state.prefix.length + 1);
+          int[] newSuffix = new int[state.suffix.length - 1];
+          newPrefix[state.prefix.length] = state.suffix[i];
+          arraycopy(state.suffix, 0, newSuffix, 0, i);
+          if (i < state.suffix.length - 1) {
+            arraycopy(state.suffix, i + 1, newSuffix, i, state.suffix.length - i - 1);
+          }
+          State newState = new State(newPrefix, newSuffix);
+          stack.push(newState);
+        }
+        state = stack.pop();
+      }
+      return state.prefix;
+    }
   }
 }
