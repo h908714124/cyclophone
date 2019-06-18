@@ -664,11 +664,11 @@ final class Rankings {
   }
 
 
-  private static final class State {
+  private static final class Frame {
     private final int[] prefix;
     private final int[] suffix;
 
-    private State(int[] prefix, int[] suffix) {
+    private Frame(int[] prefix, int[] suffix) {
       this.prefix = prefix;
       this.suffix = suffix;
     }
@@ -694,14 +694,16 @@ final class Rankings {
 
   private static class SymmetricGroupIterator implements Iterator<int[]> {
 
-    Stack<State> stack = new Stack<>();
+    Stack<Frame> stack = new Stack<>();
+    int n;
 
     SymmetricGroupIterator(int n) {
       int[] start = new int[n];
       for (int i = 0; i < n; i += 1) {
         start[i] = i;
       }
-      stack.push(new State(new int[0], start));
+      stack.push(new Frame(new int[0], start));
+      this.n = n;
     }
 
     @Override
@@ -711,22 +713,22 @@ final class Rankings {
 
     @Override
     public int[] next() {
-      State state = stack.pop();
-      while (state.suffix.length > 0) {
-        for (int i = 0; i < state.suffix.length; i += 1) {
-          int[] newPrefix = Arrays.copyOf(state.prefix, state.prefix.length + 1);
-          int[] newSuffix = new int[state.suffix.length - 1];
-          newPrefix[state.prefix.length] = state.suffix[i];
-          arraycopy(state.suffix, 0, newSuffix, 0, i);
-          if (i < state.suffix.length - 1) {
-            arraycopy(state.suffix, i + 1, newSuffix, i, state.suffix.length - i - 1);
+      while (stack.peek().prefix.length < n) {
+        Frame frame = stack.pop();
+        for (int i = 0; i < frame.suffix.length; i += 1) {
+          // make a new frame: cut suffix[i], append to prefix
+          int[] longerPrefix = Arrays.copyOf(frame.prefix, frame.prefix.length + 1);
+          longerPrefix[frame.prefix.length] = frame.suffix[i];
+          int[] shorterSuffix = new int[frame.suffix.length - 1];
+          arraycopy(frame.suffix, 0, shorterSuffix, 0, i);
+          if (i < frame.suffix.length - 1) {
+            arraycopy(frame.suffix, i + 1, shorterSuffix, i, frame.suffix.length - i - 1);
           }
-          State newState = new State(newPrefix, newSuffix);
-          stack.push(newState);
+          Frame longerPrefixFrame = new Frame(longerPrefix, shorterSuffix);
+          stack.push(longerPrefixFrame);
         }
-        state = stack.pop();
       }
-      return state.prefix;
+      return stack.pop().prefix;
     }
   }
 }
