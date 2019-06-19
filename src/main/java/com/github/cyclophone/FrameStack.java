@@ -32,7 +32,7 @@ final class FrameStack {
 
   void expandLast() {
     // save last frame into tmp, before it gets overwritten
-    System.arraycopy(frames[pos], 0, tmp, 0, frameLenghts[pos]);
+    arraycopy(frames[pos], 0, tmp, 0, frameLenghts[pos]);
     int n = frameLenghts[pos];
     // build (n + 1) longer frames, by inserting n
     for (int i = 0; i <= n; i++) {
