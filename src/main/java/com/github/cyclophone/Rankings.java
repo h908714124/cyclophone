@@ -680,7 +680,7 @@ final class Rankings {
     int n;
 
     SymmetricGroupIterator(int n) {
-      stack = new ArrayList<>(n * n); // estimate for max stack height
+      stack = new ArrayList<>(Math.max(n * n, 16)); // stack height <= n * n (proof?)
       stack.add(new int[0]);
       this.n = n;
     }
