@@ -676,35 +676,35 @@ final class Rankings {
 
   private static class SymmetricGroupIterator implements Iterator<int[]> {
 
-    ArrayList<int[]> stack; // should be faster than java.util.Stack
+    ArrayList<int[]> frames; // should be faster than java.util.Stack
     int n;
 
     SymmetricGroupIterator(int n) {
-      stack = new ArrayList<>(Math.max(n * n, 16)); // stack height <= n * n (proof?)
-      stack.add(new int[0]);
+      frames = new ArrayList<>(Math.max(n * n, 16)); // stack height <= n * n (proof?)
+      frames.add(new int[0]);
       this.n = n;
     }
 
     @Override
     public boolean hasNext() {
-      return !stack.isEmpty();
+      return !frames.isEmpty();
     }
 
     @Override
     public int[] next() {
-      while (stack.get(stack.size() - 1).length < n) {
-        int[] last = stack.remove(stack.size() - 1);
-        int n = last.length;
+      while (frames.get(frames.size() - 1).length < n) {
+        int[] lastFrame = frames.remove(frames.size() - 1);
+        int n = lastFrame.length;
         // build longer frames by inserting n in all possible places
         for (int i = 0; i <= n; i++) {
           int[] longerFrame = new int[n + 1];
-          arraycopy(last, 0, longerFrame, 0, i);
-          arraycopy(last, i, longerFrame, i + 1, n - i);
+          arraycopy(lastFrame, 0, longerFrame, 0, i);
+          arraycopy(lastFrame, i, longerFrame, i + 1, n - i);
           longerFrame[i] = n;
-          stack.add(longerFrame);
+          frames.add(longerFrame);
         }
       }
-      return stack.remove(stack.size() - 1);
+      return frames.remove(frames.size() - 1);
     }
   }
 }
