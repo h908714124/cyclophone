@@ -7,43 +7,46 @@ final class FrameStack {
 
   private int[][] frames;
   private int[] frameLenghts;
-  private int pos;
+
+  // pointer to top of the stack
+  private int ptr;
 
   // tmp buffer for calculations
   private int[] tmp;
 
   FrameStack(int n) {
-    this.frames = new int[Math.max(n * n, 16)][n];  // stack height <= n * n (proof?)
-    this.frameLenghts = new int[Math.max(n * n, 16)];
+    int maxHeight = (n * (n + 1)) / 2;
+    this.frames = new int[Math.max(maxHeight, 16)][n];
+    this.frameLenghts = new int[Math.max(maxHeight, 16)];
     this.tmp = new int[n];
   }
 
   boolean isEmpty() {
-    return pos < 0;
+    return ptr < 0;
   }
 
   int getLastLength() {
-    return frameLenghts[pos];
+    return frameLenghts[ptr];
   }
 
   int[] removeLast() {
-    return frames[pos--];
+    return frames[ptr--];
   }
 
   void expandLast() {
     // save last frame into tmp, before it gets overwritten
-    arraycopy(frames[pos], 0, tmp, 0, frameLenghts[pos]);
-    int n = frameLenghts[pos];
+    arraycopy(frames[ptr], 0, tmp, 0, frameLenghts[ptr]);
+    int n = frameLenghts[ptr];
     // build (n + 1) longer frames, by inserting n
     for (int i = 0; i <= n; i++) {
-      frameLenghts[pos] = n + 1;
-      int[] longerFrame = frames[pos];
+      frameLenghts[ptr] = n + 1;
+      int[] longerFrame = frames[ptr];
       arraycopy(tmp, 0, longerFrame, 0, i);
       arraycopy(tmp, i, longerFrame, i + 1, n - i);
       longerFrame[i] = n;
-      pos++;
+      ptr++;
     }
-    // undo the last pos++ (note that the loop runs at least once)
-    pos--;
+    // undo the last ptr++ (note that the loop runs at least once)
+    ptr--;
   }
 }
