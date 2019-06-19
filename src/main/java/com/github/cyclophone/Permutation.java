@@ -61,6 +61,9 @@ public final class Permutation implements Comparable<Permutation> {
     if (trimmed.length == 0) {
       return IDENTITY;
     }
+    if (trimmed == ranking) {
+      trimmed = Arrays.copyOf(trimmed, trimmed.length); // no outside references
+    }
     return new Permutation(trimmed, true);
   }
 

@@ -663,7 +663,10 @@ final class Rankings {
   }
 
   /**
-   * Returns all possible permutations of given length
+   * <p>Returns all possible permutations of given length.</p>
+   *
+   * <h3>Note that this stream may contain modified versions of the same array,
+   * so be sure to make array copies if immutability is needed.</h3>
    *
    * @param n length of permutations to generate
    * @return all possible permutations of length {@code n}; this will contain {@code n!}
@@ -676,35 +679,25 @@ final class Rankings {
 
   private static class SymmetricGroupIterator implements Iterator<int[]> {
 
-    ArrayList<int[]> frames; // should be faster than java.util.Stack
+    FrameStack stack; // should be faster than java.util.Stack
     int n;
 
     SymmetricGroupIterator(int n) {
-      frames = new ArrayList<>(Math.max(n * n, 16)); // stack height <= n * n (proof?)
-      frames.add(new int[0]);
+      this.stack = new FrameStack(n);
       this.n = n;
     }
 
     @Override
     public boolean hasNext() {
-      return !frames.isEmpty();
+      return !stack.isEmpty();
     }
 
     @Override
     public int[] next() {
-      while (frames.get(frames.size() - 1).length < n) {
-        int[] lastFrame = frames.remove(frames.size() - 1);
-        int n = lastFrame.length;
-        // build longer frames by inserting n in all possible places
-        for (int i = 0; i <= n; i++) {
-          int[] longerFrame = new int[n + 1];
-          arraycopy(lastFrame, 0, longerFrame, 0, i);
-          arraycopy(lastFrame, i, longerFrame, i + 1, n - i);
-          longerFrame[i] = n;
-          frames.add(longerFrame);
-        }
+      while (stack.getLastLength() < n) {
+        stack.expandLast();
       }
-      return frames.remove(frames.size() - 1);
+      return stack.removeLast();
     }
   }
 }
