@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -284,7 +283,7 @@ final class Rankings {
    * @return {@code i + 1} if {@code i} is non-negative, otherwise {@code i}
    * @see #unshift
    */
-  static int shift(int i) {
+  private static int shift(int i) {
     return i >= 0 ? i + 1 : i;
   }
 
@@ -663,23 +662,6 @@ final class Rankings {
     return true;
   }
 
-
-  private static final class Frame {
-    private final int[] prefix;
-    private final int[] suffix;
-
-    private Frame(int[] prefix, int[] suffix) {
-      this.prefix = prefix;
-      this.suffix = suffix;
-    }
-
-    @Override
-    public String toString() {
-      return
-          Arrays.toString(prefix) + " " + Arrays.toString(suffix);
-    }
-  }
-
   /**
    * Returns all possible permutations of given length
    *
@@ -694,15 +676,12 @@ final class Rankings {
 
   private static class SymmetricGroupIterator implements Iterator<int[]> {
 
-    Stack<Frame> stack = new Stack<>();
+    ArrayList<int[]> stack; // should be faster than java.util.Stack
     int n;
 
     SymmetricGroupIterator(int n) {
-      int[] start = new int[n];
-      for (int i = 0; i < n; i += 1) {
-        start[i] = i;
-      }
-      stack.push(new Frame(new int[0], start));
+      stack = new ArrayList<>(n * n); // estimate for max stack height
+      stack.add(new int[0]);
       this.n = n;
     }
 
@@ -713,22 +692,19 @@ final class Rankings {
 
     @Override
     public int[] next() {
-      while (stack.peek().prefix.length < n) {
-        Frame frame = stack.pop();
-        for (int i = 0; i < frame.suffix.length; i += 1) {
-          // make a new frame: cut suffix[i], append to prefix
-          int[] longerPrefix = Arrays.copyOf(frame.prefix, frame.prefix.length + 1);
-          longerPrefix[frame.prefix.length] = frame.suffix[i];
-          int[] shorterSuffix = new int[frame.suffix.length - 1];
-          arraycopy(frame.suffix, 0, shorterSuffix, 0, i);
-          if (i < frame.suffix.length - 1) {
-            arraycopy(frame.suffix, i + 1, shorterSuffix, i, frame.suffix.length - i - 1);
-          }
-          Frame longerPrefixFrame = new Frame(longerPrefix, shorterSuffix);
-          stack.push(longerPrefixFrame);
+      while (stack.get(stack.size() - 1).length < n) {
+        int[] last = stack.remove(stack.size() - 1);
+        int n = last.length;
+        // build longer frames by inserting n in all possible places
+        for (int i = 0; i <= n; i++) {
+          int[] longerFrame = new int[n + 1];
+          arraycopy(last, 0, longerFrame, 0, i);
+          arraycopy(last, i, longerFrame, i + 1, n - i);
+          longerFrame[i] = n;
+          stack.add(longerFrame);
         }
       }
-      return stack.pop().prefix;
+      return stack.remove(stack.size() - 1);
     }
   }
 }

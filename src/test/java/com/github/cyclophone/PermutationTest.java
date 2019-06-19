@@ -503,7 +503,7 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(1, count);
   }
 
   @Test
@@ -513,7 +513,7 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(2, count);
   }
 
   @Test
@@ -523,7 +523,7 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(6, count);
   }
 
   @Test
@@ -533,7 +533,7 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(24, count);
   }
 
   @Test
@@ -543,7 +543,7 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(120, count);
   }
 
   @Test
@@ -553,7 +553,7 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(720, count);
   }
 
   @Test
@@ -563,27 +563,21 @@ class PermutationTest {
     long count = (long) sym.size();
     assertEquals(count, sym.stream().distinct().count());
     assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertEquals(5040, count);
   }
 
   @Test
   void testSymmetricGroup8() {
     int n = 8;
-    List<Permutation> sym = symmetricGroup(n).collect(Collectors.toList());
-    long count = (long) sym.size();
-    assertEquals(count, sym.stream().distinct().count());
-    assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertTrue(symmetricGroup(n).allMatch(p -> p.length() <= n));
+    assertEquals(40320, symmetricGroup(n).count());
   }
 
   @Test
   void testSymmetricGroup9() {
     int n = 9;
-    List<Permutation> sym = symmetricGroup(n).collect(Collectors.toList());
-    long count = (long) sym.size();
-    assertEquals(count, sym.stream().distinct().count());
-    assertTrue(sym.stream().allMatch(p -> p.length() <= n));
-    assertEquals(count, TestUtil.factorial(n));
+    assertTrue(symmetricGroup(n).allMatch(p -> p.length() <= n));
+    assertEquals(362880, symmetricGroup(n).count());
   }
 }
 
