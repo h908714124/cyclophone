@@ -1,10 +1,12 @@
 package com.github.cyclophone;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.github.cyclophone.ArrayUtil.checkEqualLength;
 import static com.github.cyclophone.Permutation.define;
-import static com.github.cyclophone.Rankings.apply;
 import static com.github.cyclophone.Rankings.invert;
 import static com.github.cyclophone.Rankings.nextOffsetShifting;
 import static com.github.cyclophone.Rankings.sorting;
@@ -66,7 +68,7 @@ final class Taking {
     }
 
     Permutation to(E[] to) {
-      return define(Rankings.from(from, to));
+      return define(From.from(from, to));
     }
   }
 
@@ -81,7 +83,7 @@ final class Taking {
     }
 
     Permutation using(Comparator<E> comp) {
-      return define(Rankings.from(from, to, comp));
+      return define(From.from(from, to, comp));
     }
   }
 
@@ -105,5 +107,11 @@ final class Taking {
 
   static <E> TakingBuilderObj<E> taking(E[] a) {
     return new TakingBuilderObj<>(a);
+  }
+
+  static int[] apply(int[] ranking, int[] input) {
+    List<Integer> integers = Arrays.stream(input).boxed().collect(Collectors.toList());
+    List<Integer> result = Rankings.apply(ranking, integers);
+    return result.stream().mapToInt(Integer::intValue).toArray();
   }
 }

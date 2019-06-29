@@ -64,7 +64,7 @@ class TestRankings {
   void testMismatch() {
     for (int __ = 0; __ < 1000; __ += 1) {
       int[] a = ArrayUtil.randomNumbers(100, 110);
-      int[] b = Rankings.apply(Rankings.random(a.length), a);
+      int[] b = Taking.apply(Rankings.random(a.length), a);
 
       int[] bdupes = TestUtil.duplicateIndexes(b);
       int[] adupes = TestUtil.duplicateIndexes(a);
@@ -106,7 +106,7 @@ class TestRankings {
     for (int __ = 0; __ < 100; __++) {
       int[] a = ArrayUtil.randomNumbers(100, (int) (Math.random() * 1000));
       int[] sort = Rankings.sorting(a);
-      int[] sorted = Rankings.apply(sort, a);
+      int[] sorted = Taking.apply(sort, a);
       int[] unsort = Rankings.invert(sort);
       int[] hopefullyIdentity = Rankings.comp(sort, unsort);
       assertTrue(ArrayUtil.isSorted(hopefullyIdentity));
@@ -144,7 +144,7 @@ class TestRankings {
   void testSorts() {
     int[] ranking = {0, 3, 1, 4, 2};
     int[] a = {0, 4, 2, 4, 3};
-    assertTrue(ArrayUtil.isSorted(Rankings.apply(ranking, a)));
+    assertTrue(ArrayUtil.isSorted(Taking.apply(ranking, a)));
     assertTrue(Rankings.sorts(ranking, a));
   }
 
@@ -153,7 +153,7 @@ class TestRankings {
     for (int __ = 0; __ < 100; __++) {
       int[] a = ArrayUtil.randomNumbers(100, 100 + (int) (100 * (Math.random() - 0.8)));
       int[] ranking = Rankings.sorting(a);
-      assertTrue(ArrayUtil.isSorted(Rankings.apply(ranking, a)));
+      assertTrue(ArrayUtil.isSorted(Taking.apply(ranking, a)));
       assertTrue(Rankings.sorts(ranking, a));
     }
   }

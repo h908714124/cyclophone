@@ -104,7 +104,7 @@ class TestRankingsComparator {
       assertTrue(bc > 0);
 
       // null because b is not a rearrangement of a
-      assertNull(Rankings.from(a, b, (Comparator) MyInt.COMP));
+      assertNull(From.from(a, b, (Comparator) MyInt.COMP));
     }
   }
 }

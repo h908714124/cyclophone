@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static com.github.cyclophone.ArrayUtil.INT_0;
-import static com.github.cyclophone.ArrayUtil.checkEqualLength;
 import static com.github.cyclophone.ArrayUtil.checkLength;
 import static com.github.cyclophone.ArrayUtil.lengthFailure;
 import static com.github.cyclophone.ArrayUtil.negativeFailure;
@@ -445,7 +444,6 @@ final class Rankings {
    * @param comp a comparator
    * @return a ranking that sorts the input
    * @exception java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
-   * @see #apply(int[], Object[])
    * @see ArrayUtil#indexOf
    */
   static <E> int[] sorting(Object[] a, Comparator<E> comp) {
@@ -457,74 +455,6 @@ final class Rankings {
       int idx = binarySearch(sorted, a[i], (Comparator) comp);
       int offset = nextOffsetShifting(idx, offsets[idx], sorted);
       ranking[i] = idx + unshift(offset);
-      offsets[idx] = offset;
-    }
-    return ranking;
-  }
-
-  /* ================= from ================= */
-
-
-  /**
-   * Produce a particular ranking that produces {@code b} when applied to {@code a}.
-   *
-   * @param a an array
-   * @param b an array
-   * @return a ranking that produces {@code b} when applied to {@code a}
-   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
-   * @exception java.lang.NullPointerException if any argument is {@code null}
-   */
-  static <E extends Comparable> int[] from(E[] a, E[] b) {
-    checkEqualLength(a, b);
-    int[] sort = sorting(b);
-    int[] unsort = invert(sort);
-    Comparable[] sorted = apply(sort, b);
-    int[] ranking = new int[a.length];
-    int[] offsets = new int[a.length];
-    for (int i = 0; i < a.length; i += 1) {
-      int idx = binarySearch(sorted, a[i]);
-      if (idx < 0) {
-        return null;
-      }
-      int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      if (offset == 0) {
-        return null;
-      }
-      ranking[i] = unsort[idx + unshift(offset)];
-      offsets[idx] = offset;
-    }
-    return ranking;
-  }
-
-  /**
-   * Produce a particular ranking that produces {@code b} when applied to {@code a}.
-   *
-   * @param a an array
-   * @param b an array
-   * @return a ranking that produces {@code b} when applied to {@code a}
-   * @exception java.lang.NullPointerException if any argument is null, or if {@code a} or {@code b}
-   * contain a {@code null} element
-   * @exception java.lang.IllegalArgumentException if {@code b} can not be obtained by rearranging {@code a}
-   * @see #apply(int[], java.lang.Object[])
-   */
-  static <E> int[] from(E[] a, E[] b, Comparator<E> comp) {
-    checkEqualLength(a, b);
-    int[] sort = sorting(b, comp);
-    int[] unsort = invert(sort);
-    Object[] sorted = apply(sort, b);
-    int[] ranking = new int[a.length];
-    int[] offsets = new int[a.length];
-    for (int i = 0; i < a.length; i += 1) {
-      @SuppressWarnings("unchecked")
-      int idx = binarySearch(sorted, a[i], (Comparator) comp);
-      if (idx < 0) {
-        return null;
-      }
-      int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      if (offset == 0) {
-        return null;
-      }
-      ranking[i] = unsort[idx + unshift(offset)];
       offsets[idx] = offset;
     }
     return ranking;
@@ -552,8 +482,6 @@ final class Rankings {
     return ranking[i];
   }
 
-  /* ================= apply ================= */
-
   /**
    * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
    * Indexes that are greater or equal to the length of the ranking are not moved.
@@ -570,28 +498,6 @@ final class Rankings {
     Class<?> type = input.getClass().getComponentType();
     @SuppressWarnings("unchecked")
     T[] result = (T[]) Array.newInstance(type, input.length);
-    for (int i = 0; i < ranking.length; i += 1)
-      result[ranking[i]] = input[i];
-    if (input.length > ranking.length) {
-      arraycopy(input, ranking.length, result, ranking.length, input.length - ranking.length);
-    }
-    return result;
-  }
-
-  /**
-   * Apply the ranking to the input array. An element at {@code i} is moved to {@code ranking[i]}.
-   * Indexes that are greater or equal to the length of the ranking are not moved.
-   * This method does not validate that the first argument is indeed a ranking.
-   *
-   * @param ranking a ranking
-   * @param input an input array
-   * @return the result of applying the ranking to the input
-   * @exception java.lang.IllegalArgumentException if the length of {@code input} is less than the length of {@code ranking}
-   * @exception java.lang.ArrayIndexOutOfBoundsException can be thrown if the {@code ranking} argument is not a ranking
-   */
-  static int[] apply(int[] ranking, int[] input) {
-    checkLength(ranking.length, input.length);
-    int[] result = new int[input.length];
     for (int i = 0; i < ranking.length; i += 1)
       result[ranking[i]] = input[i];
     if (input.length > ranking.length) {
