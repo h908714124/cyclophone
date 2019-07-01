@@ -22,8 +22,8 @@ class ExoticTest {
     // Step 1: Find a subgroup of S6 of size 120 (the size of S5)
     // This is an exotic embedding of S5 in S6.
     for (int i = 0; i < 100; i++) {
-      Permutation p1 = RandomPermutation.random(6);
-      Permutation p2 = RandomPermutation.random(6);
+      Permutation p1 = RandomPermutation.randomPermutation(6);
+      Permutation p2 = RandomPermutation.randomPermutation(6);
       Set<Permutation> span = span(p1, p2);
       if (span.size() == 120) {
         System.out.println("base1: " + p1);

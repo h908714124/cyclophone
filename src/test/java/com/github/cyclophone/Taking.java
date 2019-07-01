@@ -9,7 +9,7 @@ import static com.github.cyclophone.ArrayUtil.checkEqualLength;
 import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Rankings.invert;
 import static com.github.cyclophone.Rankings.nextOffsetShifting;
-import static com.github.cyclophone.Rankings.sorting;
+import static com.github.cyclophone.Sorting.sorting;
 import static com.github.cyclophone.Rankings.unshift;
 import static java.util.Arrays.binarySearch;
 

@@ -3,6 +3,7 @@ package com.github.cyclophone;
 import java.util.Comparator;
 
 import static com.github.cyclophone.ArrayUtil.checkEqualLength;
+import static com.github.cyclophone.Sorting.sorting;
 import static java.util.Arrays.binarySearch;
 
 class From {
@@ -18,7 +19,7 @@ class From {
    */
   static <E extends Comparable> int[] from(E[] a, E[] b) {
     checkEqualLength(a, b);
-    int[] sort = Rankings.sorting(b);
+    int[] sort = sorting(b);
     int[] unsort = Rankings.invert(sort);
     Comparable[] sorted = Rankings.apply(sort, b);
     int[] ranking = new int[a.length];
@@ -51,7 +52,7 @@ class From {
    */
   static <E> int[] from(E[] a, E[] b, Comparator<E> comp) {
     checkEqualLength(a, b);
-    int[] sort = Rankings.sorting(b, comp);
+    int[] sort = sorting(b, comp);
     int[] unsort = Rankings.invert(sort);
     Object[] sorted = Rankings.apply(sort, b);
     int[] ranking = new int[a.length];

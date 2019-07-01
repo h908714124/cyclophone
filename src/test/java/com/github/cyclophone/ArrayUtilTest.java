@@ -13,6 +13,8 @@ import static com.github.cyclophone.CycleUtil.cyclic;
 import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Product.product;
+import static com.github.cyclophone.RandomPermutation.randomNumbers;
+import static com.github.cyclophone.Sorting.isUnique;
 import static com.github.cyclophone.SymmetricGroup.symmetricGroup;
 import static com.github.cyclophone.TestUtil.cartesian;
 import static com.github.cyclophone.TestUtil.center;
@@ -119,7 +121,7 @@ class ArrayUtilTest {
   @Test
   void testDistinctInts() {
     for (int i = 0; i < 1000; i += 1) {
-      int[] ints = Rankings.random((int) (Math.random() * 1024));
+      int[] ints = RandomPermutation.randomRanking((int) (Math.random() * 1024));
       assertTrue(isDistinct(ints));
     }
   }
@@ -129,7 +131,7 @@ class ArrayUtilTest {
     int radius = (int) (50 * Math.random()) + 50;
     HashSet<Integer> seen = new HashSet<>(radius);
     for (int i = 0; i < 1000; i += 1) {
-      int[] ints = ArrayUtil.randomNumbers(Integer.MIN_VALUE, Integer.MIN_VALUE + radius, 100);
+      int[] ints = randomNumbers(Integer.MIN_VALUE, Integer.MIN_VALUE + radius, 100);
       for (int a : ints) {
         assertTrue(a <= Integer.MIN_VALUE + radius, String.format("%d %d %d", radius, a, Integer.MIN_VALUE + radius));
         seen.add(a);
@@ -140,7 +142,7 @@ class ArrayUtilTest {
     }
     seen = new HashSet<>(radius);
     for (int i = 0; i < 1000; i += 1) {
-      int[] ints = ArrayUtil.randomNumbers(Integer.MAX_VALUE - radius, Integer.MAX_VALUE, 100);
+      int[] ints = randomNumbers(Integer.MAX_VALUE - radius, Integer.MAX_VALUE, 100);
       for (int a : ints) {
         assertTrue(a >= Integer.MAX_VALUE - radius, (Integer.MAX_VALUE - a) + " " + radius);
         seen.add(a);
@@ -155,9 +157,9 @@ class ArrayUtilTest {
   void testRandom() {
     for (int radius = 3; radius < 10; radius++) {
       for (int low = -10; low < 4; low++) {
-        HashSet<Integer> seen = new HashSet<Integer>(radius);
+        Set<Integer> seen = new HashSet<>(radius);
         for (int i = 0; i < 100; i += 1) {
-          int[] ints = ArrayUtil.randomNumbers(low, low + radius, 10);
+          int[] ints = randomNumbers(low, low + radius, 10);
           for (int a : ints) {
             assertTrue(a <= low + radius, String.format("%d %d", low, a));
             seen.add(a);
@@ -180,7 +182,7 @@ class ArrayUtilTest {
   void testDuplicateIndexes2() {
     for (int i = 0; i < 1000; i += 1) {
       int maxNumber = 100;
-      int[] ints = ArrayUtil.randomNumbers(maxNumber, maxNumber + 2 + (int) (Math.random() * 20));
+      int[] ints = randomNumbers(maxNumber, maxNumber + 2 + (int) (Math.random() * 20));
       int[] pair = duplicateIndexes(ints, 0);
       assertTrue(count(ints, ints[pair[0]]) > 1);
       assertEquals(ints[pair[0]], ints[pair[1]]);
@@ -198,7 +200,7 @@ class ArrayUtilTest {
   void testDuplicateIndexes4() {
     for (int i = 0; i < 1000; i += 1) {
       int maxNumber = 100;
-      MyInt[] ints = MyInt.box(ArrayUtil.randomNumbers(maxNumber, maxNumber + 2 + (int) (Math.random() * 20)));
+      MyInt[] ints = MyInt.box(randomNumbers(maxNumber, maxNumber + 2 + (int) (Math.random() * 20)));
       int[] pair = duplicateIndexes(ints, MyInt.COMP);
       assertTrue(count(ints, ints[pair[0]]) > 1);
       assertEquals(ints[pair[0]], ints[pair[1]]);
@@ -251,7 +253,7 @@ class ArrayUtilTest {
   @Test
   void testUnique() {
     int[] a = {8, 5, 7, 2, 9, 4, 1, 6, 0, 3};
-    assertTrue(ArrayUtil.isUnique(a));
+    assertTrue(isUnique(a));
   }
 
   @Test

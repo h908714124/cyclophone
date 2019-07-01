@@ -13,11 +13,8 @@ import static com.github.cyclophone.ArrayUtil.INT_0;
 import static com.github.cyclophone.ArrayUtil.checkLength;
 import static com.github.cyclophone.ArrayUtil.lengthFailure;
 import static com.github.cyclophone.ArrayUtil.negativeFailure;
-import static com.github.cyclophone.ArrayUtil.range;
-import static com.github.cyclophone.ArrayUtil.sortedCopy;
 import static com.github.cyclophone.ArrayUtil.withIndex;
 import static java.lang.System.arraycopy;
-import static java.util.Arrays.binarySearch;
 
 /**
  * A collection of methods that return rankings, or operate on rankings.
@@ -138,19 +135,6 @@ final class Rankings {
     for (int i = 0; i < ranking.length; i += 1)
       inverted[i] = rankingWithIndex[i][1];
     return inverted;
-  }
-
-  /**
-   * Generate a random ranking of given length.
-   *
-   * @param length a non-negative integer
-   * @return a random ranking
-   * @exception IllegalArgumentException if {@code length} is negative
-   */
-  static int[] random(int length) {
-    int[] a = range(length);
-    ArrayUtil.shuffle(a);
-    return a;
   }
 
   /**
@@ -322,143 +306,6 @@ final class Rankings {
   }
 
   /* ================= sorting ================= */
-
-  /**
-   * Produce a particular ranking that sorts the input when applied to it.
-   * For each index {@code i < a.length}, the return value
-   * satisfies the following property.
-   * Let
-   * <pre><code>
-   *   int[] sorting = sorting(a);
-   *   int[] sorted = apply(sorting, a);
-   *   int[] unsort = invert(sorting);
-   *   int idx = Arrays.binarySearch(sorted, el);
-   * </code></pre>
-   * then for each index {@code i < a.length}, the following is true:
-   * <pre><code>
-   *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
-   * </code></pre>
-   *
-   * @param a an array
-   * @return a ranking that sorts the input
-   * @see ArrayUtil#indexOf
-   */
-  static int[] sorting(int[] a) {
-    int[] sorted = sortedCopy(a);
-    int[] ranking = new int[a.length];
-    int[] offsets = new int[a.length];
-    for (int i = 0; i < a.length; i++) {
-      int idx = binarySearch(sorted, a[i]);
-      int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      ranking[i] = idx + unshift(offset);
-      offsets[idx] = offset;
-    }
-    return checkRanking(ranking);
-  }
-
-  /**
-   * Produce a particular ranking that sorts the input when applied to it.
-   * For each index {@code i < a.length}, the return value
-   * satisfies the following property.
-   * Let
-   * <pre><code>
-   *   int[] sorting = sorting(a);
-   *   int[] sorted = apply(sorting, a);
-   *   int[] unsort = invert(sorting);
-   *   int idx = Arrays.binarySearch(sorted, el);
-   * </code></pre>
-   * then for each index {@code i < a.length}, the following is true:
-   * <pre><code>
-   *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
-   * </code></pre>
-   *
-   * @param a an array
-   * @return a ranking that sorts the input
-   * @see ArrayUtil#indexOf
-   */
-  static int[] sorting(long[] a) {
-    long[] sorted = sortedCopy(a);
-    int[] ranking = new int[a.length];
-    int[] offsets = new int[a.length];
-    for (int i = 0; i < a.length; i++) {
-      int idx = binarySearch(sorted, a[i]);
-      int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      ranking[i] = idx + unshift(offset);
-      offsets[idx] = offset;
-    }
-    return ranking;
-  }
-
-  /**
-   * Produce a particular ranking that sorts the input when applied to it.
-   * For each index {@code i < a.length}, the return value
-   * satisfies the following property.
-   * Let
-   * <pre><code>
-   *   int[] sorting = sorting(a);
-   *   int[] sorted = apply(sorting, a);
-   *   int[] unsort = invert(sorting);
-   *   int idx = Arrays.binarySearch(sorted, el);
-   * </code></pre>
-   * then for each index {@code i < a.length}, the following is true:
-   * <pre><code>
-   *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
-   * </code></pre>
-   *
-   * @param a an array
-   * @return a ranking that sorts the input
-   * @exception java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
-   * @see ArrayUtil#indexOf
-   */
-  static <E extends Comparable> int[] sorting(E[] a) {
-    Comparable[] sorted = sortedCopy(a);
-    int[] ranking = new int[a.length];
-    int[] offsets = new int[a.length];
-    for (int i = 0; i < a.length; i++) {
-      int idx = binarySearch(sorted, a[i]);
-      int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      ranking[i] = idx + unshift(offset);
-      offsets[idx] = offset;
-    }
-    return ranking;
-  }
-
-
-  /**
-   * Produce a particular ranking that sorts the input when applied to it.
-   * For each index {@code i < a.length}, the return value
-   * satisfies the following property.
-   * Let
-   * <pre><code>
-   *   int[] sorting = sorting(a);
-   *   int[] sorted = apply(sorting, a);
-   *   int[] unsort = invert(sorting);
-   *   int idx = Arrays.binarySearch(sorted, el);
-   * </code></pre>
-   * then for each index {@code i < a.length}, the following is true:
-   * <pre><code>
-   *   ArrayUtil.indexOf(a, el, 0) == unsort[idx]
-   * </code></pre>
-   *
-   * @param a an array
-   * @param comp a comparator
-   * @return a ranking that sorts the input
-   * @exception java.lang.NullPointerException if {@code a} is {@code null} or contains a {@code null} element
-   * @see ArrayUtil#indexOf
-   */
-  static <E> int[] sorting(Object[] a, Comparator<E> comp) {
-    Object[] sorted = sortedCopy(a, comp);
-    int[] ranking = new int[a.length];
-    int[] offsets = new int[a.length];
-    for (int i = 0; i < a.length; i++) {
-      @SuppressWarnings("unchecked")
-      int idx = binarySearch(sorted, a[i], (Comparator) comp);
-      int offset = nextOffsetShifting(idx, offsets[idx], sorted);
-      ranking[i] = idx + unshift(offset);
-      offsets[idx] = offset;
-    }
-    return ranking;
-  }
 
   /**
    * Check where the {@code ranking} moves the index {@code i}.

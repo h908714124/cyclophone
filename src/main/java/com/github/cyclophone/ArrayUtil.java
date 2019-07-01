@@ -1,12 +1,5 @@
 package com.github.cyclophone;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
-
 /**
  * A collection of array related utilities
  */
@@ -37,8 +30,9 @@ final class ArrayUtil {
    * @return the sequence from {@code start} to {@code end}
    */
   static int[] range(int start, int end, boolean inclusive) {
-    if (!inclusive)
+    if (!inclusive) {
       return range(start, end);
+    }
     return range(start, end >= start ? ++end : --end);
   }
 
@@ -64,15 +58,17 @@ final class ArrayUtil {
    * @throws java.lang.IllegalArgumentException if {@code end} is negative
    */
   static int[] range(int start, int end) {
-    if (start == end)
+    if (start == end) {
       return INT_0;
+    }
     int[] result = new int[Math.abs(start - end)];
-    if (start < end)
+    if (start < end) {
       for (int i = 0; i < result.length; i++)
         result[i] = start++;
-    else
+    } else {
       for (int i = 0; i < result.length; i++)
         result[i] = start--;
+    }
     return result;
   }
 
@@ -86,13 +82,16 @@ final class ArrayUtil {
    * @throws java.lang.IllegalArgumentException if {@code skip < 0}
    */
   static int indexOf(int[] a, int el, final int skip) {
-    if (skip < 0)
+    if (skip < 0) {
       negativeFailure();
+    }
     int cnt = 0;
     for (int i = 0; i < a.length; i += 1)
-      if (a[i] == el)
-        if (cnt++ >= skip)
+      if (a[i] == el) {
+        if (cnt++ >= skip) {
           return i;
+        }
+      }
     return -1;
   }
 
@@ -120,66 +119,15 @@ final class ArrayUtil {
    * @return the maximum of all numbers in {@code a}
    */
   static int max(int[] a) {
-    if (a.length == 0)
+    if (a.length == 0) {
       throw new IllegalArgumentException("argument must not be empty");
+    }
     int maxIndex = a[0];
     for (int index : a)
       maxIndex = Math.max(maxIndex, index);
     return maxIndex;
   }
 
-
-  /**
-   * Shuffle the input array in place, using a random permutation.
-   * This method will modify the input array.
-   * @param a an array
-   */
-  static void shuffle(int[] a) {
-    Random r = new Random();
-    for (int i = a.length - 1; i > 0; i--) {
-      int j = r.nextInt(i + 1);
-      if (j != i) {
-        int tmp = a[j];
-        a[j] = a[i];
-        a[i] = tmp;
-      }
-    }
-  }
-
-  /**
-   * Produce {@code length} random numbers between {@code 0} and {@code maxNumber} (inclusive)
-   * @param maxNumber upper bound of random numbers
-   * @param length result length
-   * @return an array of random numbers
-   */
-  static int[] randomNumbers(int maxNumber, int length) {
-    return randomNumbers(0, maxNumber, length);
-  }
-
-  /**
-   * Generate {@code length} random numbers between {@code minNumber} and {@code maxNumber} (inclusive)
-   * @param minNumber lower bound of random numbers
-   * @param maxNumber upper bound of random numbers
-   * @param length result length
-   * @return an array of random numbers
-   */
-  static int[] randomNumbers(int minNumber, int maxNumber, int length) {
-    if (minNumber > maxNumber) {
-      throw new IllegalArgumentException("minNumber must be less than or equal to maxNumber");
-    }
-    Random random = ThreadLocalRandom.current();
-    if (maxNumber < Integer.MAX_VALUE) {
-      IntStream ints = random.ints(length, minNumber, maxNumber + 1);
-      return ints.toArray();
-    } else {
-      LongStream longs = random.longs(length, minNumber, (long) maxNumber + 1l);
-      int[] result = new int[length];
-      long[] longArray = longs.toArray();
-      for (int i = 0; i < longArray.length; i++)
-        result[i] = Math.toIntExact(longArray[i]);
-      return result;
-    }
-  }
 
   /* ================= box ================= */
 
@@ -189,113 +137,13 @@ final class ArrayUtil {
    * @return an array of boxed primitives
    */
   static Integer[] box(int[] a) {
-    if (a.length == 0)
+    if (a.length == 0) {
       return BOX_INT_0;
+    }
     Integer[] result = new Integer[a.length];
     for (int i = 0; i < a.length; i += 1)
       result[i] = a[i];
     return result;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static char[] sortedCopy(char[] input) {
-    char[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static short[] sortedCopy(short[] input) {
-    short[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static double[] sortedCopy(double[] input) {
-    double[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static float[] sortedCopy(float[] input) {
-    float[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static long[] sortedCopy(long[] input) {
-    long[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static byte[] sortedCopy(byte[] input) {
-    byte[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static Comparable[] sortedCopy(Comparable[] input) {
-    Comparable[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @param comp a comparator
-   * @return a sorted copy of the input
-   */
-  @SuppressWarnings("unchecked")
-  static Object[] sortedCopy(Object[] input, Comparator comp) {
-    Object[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted, comp);
-    return sorted;
-  }
-
-  /**
-   * Returns a sorted copy of the input.
-   * @param input an array
-   * @return a sorted copy of the input
-   */
-  static int[] sortedCopy(int[] input) {
-    int[] sorted = Arrays.copyOf(input, input.length);
-    Arrays.sort(sorted);
-    return sorted;
   }
 
   static void lengthFailure() {
@@ -303,9 +151,10 @@ final class ArrayUtil {
   }
 
   static void checkLength(int rankingLength, int inputLength) {
-    if (inputLength < rankingLength)
+    if (inputLength < rankingLength) {
       throw new IllegalArgumentException("not enough input: minimum input length is " + rankingLength
           + ", but input length is " + inputLength);
+    }
   }
 
   static void negativeFailure() {
@@ -316,77 +165,46 @@ final class ArrayUtil {
     throw new IllegalArgumentException("repeated values are not allowed");
   }
 
-  /**
-   * Test if input is sorted
-   * @param input an array
-   * @return true if the {@code input} is sorted
-   */
-  static boolean isSorted(int[] input) {
-    if (input.length < 2) {
-      return true;
-    }
-    int test = input[0];
-    for (int i : input) {
-      if (i < test) {
-        return false;
-      }
-      test = i;
-    }
-    return true;
-  }
-
-
   static void checkEqualLength(int[] a, int[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
+    }
   }
 
   static void checkEqualLength(byte[] a, byte[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
+    }
   }
 
   static void checkEqualLength(short[] a, short[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
+    }
   }
 
   static void checkEqualLength(float[] a, float[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
+    }
   }
 
   static void checkEqualLength(double[] a, double[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
+    }
   }
 
   static void checkEqualLength(long[] a, long[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
+    }
   }
 
   static void checkEqualLength(Object[] a, Object[] b) {
-    if (a.length != b.length)
+    if (a.length != b.length) {
       lengthFailure();
-  }
-
-  /* ================= isUnique ================= */
-
-  /**
-   * Test if the input contains duplicates.
-   * @param a an array
-   * @return true if the input contains no duplicate element
-   */
-  static boolean isUnique(int[] a) {
-    if (a.length < 2)
-      return true;
-    if (!isSorted(a))
-      a = sortedCopy(a);
-    for (int i = 1; i < a.length; i++)
-      if (a[i] == a[i - 1])
-        return false;
-    return true;
+    }
   }
 
   /**
@@ -396,8 +214,9 @@ final class ArrayUtil {
    * @return an array of length {@code a.length - 1}
    */
   static int[] cut(int[] a, int i) {
-    if (i < 0 || i >= a.length)
+    if (i < 0 || i >= a.length) {
       throw new IllegalArgumentException("i must be non netative and less than " + a.length);
+    }
     int[] result = new int[a.length - 1];
     System.arraycopy(a, 0, result, 0, i);
     System.arraycopy(a, i + 1, result, i, a.length - i - 1);
@@ -412,8 +231,9 @@ final class ArrayUtil {
    * @return an array of length {@code a.length + 1}, this will have {@code el} at position {@code i}
    */
   static int[] paste(int[] a, int i, int el) {
-    if (i < 0 || i > a.length)
+    if (i < 0 || i > a.length) {
       throw new IllegalArgumentException("i must be non negative and not greater than " + a.length);
+    }
     int[] result = new int[a.length + 1];
     System.arraycopy(a, 0, result, 0, i);
     result[i] = el;

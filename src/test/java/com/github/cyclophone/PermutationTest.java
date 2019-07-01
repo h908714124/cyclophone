@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.github.cyclophone.Apply.apply;
-import static com.github.cyclophone.ArrayUtil.randomNumbers;
 import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static com.github.cyclophone.Move.move;
 import static com.github.cyclophone.Permutation.cycle;
@@ -19,10 +18,12 @@ import static com.github.cyclophone.Permutation.cycle0;
 import static com.github.cyclophone.Permutation.define;
 import static com.github.cyclophone.Permutation.identity;
 import static com.github.cyclophone.Product.product;
+import static com.github.cyclophone.RandomPermutation.randomNumbers;
 import static com.github.cyclophone.Reverse.reverse;
 import static com.github.cyclophone.Reverse.reverses;
 import static com.github.cyclophone.Shift.shift;
 import static com.github.cyclophone.SymmetricGroup.symmetricGroup;
+import static com.github.cyclophone.TestRankingsComparator.sortingPermutation;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -54,7 +55,7 @@ class PermutationTest {
   @Test
   void testComp2() {
     Permutation p = Permutation.define(1, 2, 0);
-    Permutation p2 = Sorting.sorting(new int[]{4, 6, 10, -5, 195, 33, 2});
+    Permutation p2 = sortingPermutation(new int[]{4, 6, 10, -5, 195, 33, 2});
     for (int i = 0; i < p.length(); i += 1) {
       assertEquals(apply(p2, apply(p, i)), apply(p2.compose(p), i));
     }
@@ -64,7 +65,7 @@ class PermutationTest {
   @Test
   void testApply() {
     int[] a = randomNumbers(100, 200);
-    Permutation p = RandomPermutation.random((int) (a.length * Math.random()));
+    Permutation p = RandomPermutation.randomPermutation((int) (a.length * Math.random()));
     for (int i = 0; i < a.length; i += 1) {
       assertEquals(apply(p, a)[apply(p, i)], a[i]);
       if (i >= p.length()) {
@@ -77,7 +78,7 @@ class PermutationTest {
   void testIterable() {
     for (int __ = 0; __ < 100; __++) {
       MyInt[] a = MyInt.box(randomNumbers(100, 50 + (int) (Math.random() * 100)));
-      Permutation p = RandomPermutation.random((int) (Math.random() * a.length));
+      Permutation p = RandomPermutation.randomPermutation((int) (Math.random() * a.length));
       Object[] applied = apply(p, a);
       List<MyInt> arrayList = new ArrayList<>(a.length);
       List<MyInt> linkedList = new LinkedList<>();
@@ -174,7 +175,7 @@ class PermutationTest {
   /* Check defining property of inverse */
   @Test
   void testInverse2() {
-    Permutation p = Sorting.sorting(new int[]{4, 6, 10, -5, 195, 33, 2});
+    Permutation p = sortingPermutation(new int[]{4, 6, 10, -5, 195, 33, 2});
     for (int i = 0; i < p.length(); i += 1) {
       assertEquals(i, apply(p.invert(), apply(p, i)));
     }
@@ -227,7 +228,7 @@ class PermutationTest {
     int[] x = new int[]{4, 6, 10, -5, 195, 33, 2};
     int[] y = Arrays.copyOf(x, x.length);
     Arrays.sort(y);
-    Permutation p = Sorting.sorting(x);
+    Permutation p = sortingPermutation(x);
     for (int i = 0; i < x.length; i += 1) {
       assertEquals(x[i], y[apply(p, i)]);
     }
@@ -256,7 +257,7 @@ class PermutationTest {
   @Test
   void testSortInvert() {
     int[] x = new int[]{4, 6, 10, -5, 195, 33, 2};
-    Permutation unsort = Sorting.sorting(x).invert();
+    Permutation unsort = sortingPermutation(x).invert();
     int[] y = Arrays.copyOf(x, x.length);
     Arrays.sort(y);
     for (int k = 0; k < y.length; k += 1) {
@@ -269,10 +270,10 @@ class PermutationTest {
   @Test
   void testSortRandom() {
     int size = (int) (100 * Math.random());
-    int[] distinct = Rankings.random(size);
+    int[] distinct = RandomPermutation.randomRanking(size);
     int[] sorted = Arrays.copyOf(distinct, distinct.length);
     Arrays.sort(sorted);
-    Permutation p = Sorting.sorting(distinct);
+    Permutation p = sortingPermutation(distinct);
     for (int i = 0; i < sorted.length; i += 1) {
       distinct[i] = sorted[apply(p, i)];
     }
@@ -310,8 +311,8 @@ class PermutationTest {
   /* Another way of checking that duplicateRejectingFactory().sorting(a).apply(a) sorts a, for distinct array a */
   @Test
   void testSort1024() {
-    int[] a = Rankings.random(1024);
-    assertArrayEquals(classicSort(a), apply(Sorting.sorting(a), a));
+    int[] a = RandomPermutation.randomRanking(1024);
+    assertArrayEquals(classicSort(a), apply(sortingPermutation(a), a));
   }
 
   @Test
@@ -329,10 +330,10 @@ class PermutationTest {
   /* check defining property of from */
   private void testFromQuickly2() {
     int size = 2048;
-    int[] a = Rankings.random(size);
+    int[] a = RandomPermutation.randomRanking(size);
     Permutation random;
     do {
-      random = RandomPermutation.random((int) (Math.random() * size));
+      random = RandomPermutation.randomPermutation((int) (Math.random() * size));
     } while (random.isIdentity());
     int[] b = apply(random, a);
     assertFalse(Arrays.equals(a, b));
@@ -414,7 +415,7 @@ class PermutationTest {
   @Test
   void testDegenerate() {
     int[] a = new int[]{3, 3, 3, 3, 3, 3, 3};
-    assertFalse(Sorting.sorting(a).isIdentity());
+    assertFalse(sortingPermutation(a).isIdentity());
   }
 
   @Test
@@ -425,7 +426,7 @@ class PermutationTest {
   @Test
   void testShift2() {
     for (int __ = 0; __ < 100; __++) {
-      Permutation p = RandomPermutation.random(40);
+      Permutation p = RandomPermutation.randomPermutation(40);
       for (int n = 0; n < 100; n++) {
         for (int j = 0; j < 100; j++) {
           if (j < n) {
@@ -441,10 +442,10 @@ class PermutationTest {
   @Test
   void testDestructive() {
     for (int __ = 0; __ < 100; __++) {
-      int[] a = ArrayUtil.randomNumbers(10, 5);
+      int[] a = randomNumbers(10, 5);
       int[] copy = Arrays.copyOf(a, a.length);
       List<Integer> listCopy = Arrays.asList(ArrayUtil.box(Arrays.copyOf(a, a.length)));
-      Permutation p = RandomPermutation.random(5);
+      Permutation p = RandomPermutation.randomPermutation(5);
       Cycles d = p.toCycles();
       d.clobber(copy);
       d.clobber(listCopy);
@@ -467,10 +468,10 @@ class PermutationTest {
   @Test
   void testDestructive3() {
     for (int __ = 0; __ < 100; __++) {
-      int[] a = ArrayUtil.randomNumbers(100, 100);
+      int[] a = randomNumbers(100, 100);
       int[] copy = Arrays.copyOf(a, a.length);
       List<Integer> listCopy = Arrays.asList(ArrayUtil.box(Arrays.copyOf(a, a.length)));
-      Permutation p = RandomPermutation.random(100);
+      Permutation p = RandomPermutation.randomPermutation(100);
       Cycles d = p.toCycles();
       d.clobber(copy);
       d.clobber(listCopy);
@@ -484,8 +485,8 @@ class PermutationTest {
   @Test
   void testSorts() {
     for (int __ = 0; __ < 100; __++) {
-      int[] a = ArrayUtil.randomNumbers(100, 50 + (int) (Math.random() * 100));
-      Permutation p = Sorting.sorting(a);
+      int[] a = randomNumbers(100, 50 + (int) (Math.random() * 100));
+      Permutation p = sortingPermutation(a);
       assertTrue(Sorting.sorts(p, a));
     }
   }

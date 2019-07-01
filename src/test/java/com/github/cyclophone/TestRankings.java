@@ -7,6 +7,11 @@ import java.util.Arrays;
 
 import static com.github.cyclophone.Apply.apply;
 import static com.github.cyclophone.Equals.assertPermutationEquals;
+import static com.github.cyclophone.RandomPermutation.randomNumbers;
+import static com.github.cyclophone.Sorting.isSorted;
+import static com.github.cyclophone.Sorting.sortedCopy;
+import static com.github.cyclophone.Sorting.sorting;
+import static com.github.cyclophone.TestRankingsComparator.sortingPermutation;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -18,12 +23,12 @@ class TestRankings {
   @Test
   void testSortRandom() {
     for (int __ = 0; __ < 100; __ += 1) {
-      int[] a = ArrayUtil.randomNumbers(100, 200);
-      assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(a), a));
+      int[] a = randomNumbers(100, 200);
+      assertArrayEquals(sortedCopy(a), apply(sortingPermutation(a), a));
     }
     for (int __ = 0; __ < 100; __ += 1) {
-      int[] a = ArrayUtil.randomNumbers(100, 20);
-      assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(a), a));
+      int[] a = randomNumbers(100, 20);
+      assertArrayEquals(sortedCopy(a), apply(sortingPermutation(a), a));
     }
   }
 
@@ -31,21 +36,21 @@ class TestRankings {
   void testSortStrict() {
     for (int __ = 0; __ < 100; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = apply(RandomPermutation.random(a.length), a);
-      assertArrayEquals(ArrayUtil.sortedCopy(a), apply(Sorting.sorting(shuffled), shuffled));
+      String[] shuffled = apply(RandomPermutation.randomPermutation(a.length), a);
+      assertArrayEquals(sortedCopy(a), apply(sortingPermutation(shuffled), shuffled));
     }
   }
 
   @Test
   void testFromRandom() {
     for (int __ = 0; __ < 100; __ += 1) {
-      int[] a = ArrayUtil.randomNumbers(100, 200);
-      int[] b = apply(RandomPermutation.random(a.length), a);
+      int[] a = randomNumbers(100, 200);
+      int[] b = apply(RandomPermutation.randomPermutation(a.length), a);
       assertArrayEquals(b, apply(Taking.taking(a).to(b), a));
     }
     for (int __ = 0; __ < 100; __ += 1) {
-      int[] a = ArrayUtil.randomNumbers(100, 20);
-      int[] b = apply(RandomPermutation.random(a.length), a);
+      int[] a = randomNumbers(100, 20);
+      int[] b = apply(RandomPermutation.randomPermutation(a.length), a);
       assertArrayEquals(b, apply(Taking.taking(a).to(b), a));
     }
   }
@@ -54,7 +59,7 @@ class TestRankings {
   void testFromStrict() {
     for (int __ = 0; __ < 100; __ += 1) {
       String[] a = TestUtil.symbols(100);
-      String[] shuffled = apply(RandomPermutation.random(a.length), a);
+      String[] shuffled = apply(RandomPermutation.randomPermutation(a.length), a);
       assertArrayEquals(a, apply(Taking.taking(shuffled).to(a), shuffled));
     }
   }
@@ -63,8 +68,8 @@ class TestRankings {
   @Test
   void testMismatch() {
     for (int __ = 0; __ < 1000; __ += 1) {
-      int[] a = ArrayUtil.randomNumbers(100, 110);
-      int[] b = Taking.apply(Rankings.random(a.length), a);
+      int[] a = randomNumbers(100, 110);
+      int[] b = Taking.apply(RandomPermutation.randomRanking(a.length), a);
 
       int[] bdupes = TestUtil.duplicateIndexes(b);
       int[] adupes = TestUtil.duplicateIndexes(a);
@@ -104,13 +109,13 @@ class TestRankings {
   @Test
   void testSort() {
     for (int __ = 0; __ < 100; __++) {
-      int[] a = ArrayUtil.randomNumbers(100, (int) (Math.random() * 1000));
-      int[] sort = Rankings.sorting(a);
+      int[] a = randomNumbers(100, (int) (Math.random() * 1000));
+      int[] sort = sorting(a);
       int[] sorted = Taking.apply(sort, a);
       int[] unsort = Rankings.invert(sort);
       int[] hopefullyIdentity = Rankings.comp(sort, unsort);
-      assertTrue(ArrayUtil.isSorted(hopefullyIdentity));
-      assertTrue(ArrayUtil.isSorted(sorted));
+      assertTrue(isSorted(hopefullyIdentity));
+      assertTrue(isSorted(sorted));
       for (int el : a) {
         assertEquals(ArrayUtil.indexOf(a, el, 0), unsort[Arrays.binarySearch(sorted, el)]);
       }
@@ -135,7 +140,7 @@ class TestRankings {
   @Test
   void testDecompose() {
     for (int __ = 0; __ < 100; __++) {
-      Permutation p = RandomPermutation.random(100);
+      Permutation p = RandomPermutation.randomPermutation(100);
       assertPermutationEquals(p, p.toCycles().toPermutation());
     }
   }
@@ -144,16 +149,16 @@ class TestRankings {
   void testSorts() {
     int[] ranking = {0, 3, 1, 4, 2};
     int[] a = {0, 4, 2, 4, 3};
-    assertTrue(ArrayUtil.isSorted(Taking.apply(ranking, a)));
+    assertTrue(isSorted(Taking.apply(ranking, a)));
     assertTrue(Rankings.sorts(ranking, a));
   }
 
   @Test
   void testSorts2() {
     for (int __ = 0; __ < 100; __++) {
-      int[] a = ArrayUtil.randomNumbers(100, 100 + (int) (100 * (Math.random() - 0.8)));
-      int[] ranking = Rankings.sorting(a);
-      assertTrue(ArrayUtil.isSorted(Taking.apply(ranking, a)));
+      int[] a = randomNumbers(100, 100 + (int) (100 * (Math.random() - 0.8)));
+      int[] ranking = sorting(a);
+      assertTrue(isSorted(Taking.apply(ranking, a)));
       assertTrue(Rankings.sorts(ranking, a));
     }
   }
