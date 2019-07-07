@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import static com.github.cyclophone.ArrayUtil.range;
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 
 class RandomPermutation {
 
@@ -17,7 +17,7 @@ class RandomPermutation {
    * @return a random permutation that can be applied to an array of length {@code length}
    */
   static Permutation randomPermutation(int length) {
-    return define(randomRanking(length));
+    return define0(randomRanking(length));
   }
 
 

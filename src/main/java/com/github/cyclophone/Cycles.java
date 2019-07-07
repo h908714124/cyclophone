@@ -176,7 +176,7 @@ final class Cycles implements Serializable {
   Permutation toPermutation() {
     int[] ranking = ArrayUtil.range(length);
     unclobber(ranking);
-    return Permutation.define(ranking);
+    return Permutation.define0(ranking);
   }
 
   @Override

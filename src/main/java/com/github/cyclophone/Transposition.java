@@ -386,7 +386,7 @@ final class Transposition implements Serializable {
       ranking[t.k] = ranking[t.j];
       ranking[t.j] = temp;
     }
-    return Permutation.define(ranking);
+    return Permutation.define0(ranking);
   }
 
   public String toString() {

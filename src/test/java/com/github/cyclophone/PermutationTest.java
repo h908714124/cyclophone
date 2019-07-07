@@ -15,7 +15,7 @@ import static com.github.cyclophone.Equals.assertPermutationEquals;
 import static com.github.cyclophone.Move.move;
 import static com.github.cyclophone.Permutation.cycle;
 import static com.github.cyclophone.Permutation.cycle0;
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 import static com.github.cyclophone.Permutation.identity;
 import static com.github.cyclophone.Product.product;
 import static com.github.cyclophone.RandomPermutation.randomNumbers;
@@ -39,14 +39,14 @@ class PermutationTest {
   /* Check example from constructor javadoc */
   @Test
   void testAbc() {
-    Permutation p = define(1, 2, 0);
+    Permutation p = define0(1, 2, 0);
     assertEquals("cab", apply(p, "abc"));
   }
 
   @Test
   void testComp() {
-    Permutation p = Permutation.define(1, 2, 0);
-    assertPermutationEquals(define(1, 2, 0), p);
+    Permutation p = Permutation.define0(1, 2, 0);
+    assertPermutationEquals(define0(1, 2, 0), p);
     assertArrayEquals(new String[]{"c", "a", "b"}, apply(p, TestUtil.symbols(3)));
     assertArrayEquals(new String[]{"b", "c", "a"}, apply(p.pow(2), TestUtil.symbols(3)));
   }
@@ -54,7 +54,7 @@ class PermutationTest {
   /* check defining property of composition */
   @Test
   void testComp2() {
-    Permutation p = Permutation.define(1, 2, 0);
+    Permutation p = Permutation.define0(1, 2, 0);
     Permutation p2 = sortingPermutation(new int[]{4, 6, 10, -5, 195, 33, 2});
     for (int i = 0; i < p.length(); i += 1) {
       assertEquals(apply(p2, apply(p, i)), apply(p2.compose(p), i));
@@ -108,14 +108,14 @@ class PermutationTest {
   @Test
   void testInvalidGap() {
     Assertions.assertThrows(IllegalArgumentException.class, () ->
-        define(1, 2, 0, 5));
+        define0(1, 2, 0, 5));
   }
 
   /* missing zero in ranking */
   @Test
   void testInvalidMissingZero() {
     Assertions.assertThrows(IllegalArgumentException.class, () ->
-        define(1, 2, 3));
+        define0(1, 2, 3));
   }
 
   /* duplicates in ranking */
@@ -124,7 +124,7 @@ class PermutationTest {
     Assertions.assertThrows(IllegalArgumentException.class, () -> {
       int[] ranking = {1, 2, 0, 2, 3};
       assertFalse(Rankings.isValid(ranking));
-      define(ranking);
+      define0(ranking);
     });
   }
 
@@ -132,12 +132,12 @@ class PermutationTest {
   @Test
   void testInvalidNegative() {
     Assertions.assertThrows(IllegalArgumentException.class, () ->
-        define(-1, 0, 1));
+        define0(-1, 0, 1));
   }
 
   @Test
   void testInvert() {
-    Permutation p = Permutation.define(1, 2, 0);
+    Permutation p = Permutation.define0(1, 2, 0);
     assertTrue(product(p.invert(), p).isIdentity());
     assertTrue(product(p, p.invert()).isIdentity());
     assertTrue(product(p, p.pow(2)).isIdentity());
@@ -159,8 +159,8 @@ class PermutationTest {
   @Test
   void testIdentity() {
     assertTrue(Permutation.identity().isIdentity());
-    assertTrue(define(0, 1, 2, 3, 4).isIdentity());
-    assertTrue(define(0, 1, 2, 3, 4).invert().isIdentity());
+    assertTrue(define0(0, 1, 2, 3, 4).isIdentity());
+    assertTrue(define0(0, 1, 2, 3, 4).invert().isIdentity());
   }
 
   /* test defining property of identity */
@@ -391,7 +391,7 @@ class PermutationTest {
   @Test
   void testZero() {
     Permutation p = identity();
-    assertEquals(define(), p);
+    assertEquals(define0(), p);
     assertEquals(p, cycle0());
     assertEquals(0, p.length());
     assertArrayEquals(new int[0], apply(p, new int[0]));
@@ -459,7 +459,7 @@ class PermutationTest {
   @Test
   void testNonDestructive() {
     int[] a = {0, 1, 2, 3, 4};
-    Permutation p = define(1, 2, 0, 3, 4).compose(define(0, 1, 2, 4, 3));
+    Permutation p = define0(1, 2, 0, 3, 4).compose(define0(0, 1, 2, 4, 3));
     Cycles d = p.toCycles();
     assertArrayEquals(apply(p, a), d.apply(a));
   }

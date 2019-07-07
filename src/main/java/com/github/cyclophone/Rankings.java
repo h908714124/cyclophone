@@ -79,6 +79,26 @@ final class Rankings {
   }
 
   /**
+   * Opposite of {@link #trim(int[])}
+   * @param ranking
+   * @param length
+   * @return filled ranking
+   */
+  static int[] fill(int[] ranking, int length) {
+    if (ranking.length == length) {
+      return ranking;
+    }
+    if (ranking.length > length) {
+      throw new IllegalArgumentException("ranking length: " + ranking.length);
+    }
+    int[] result = Arrays.copyOf(ranking, length);
+    for (int i = ranking.length; i < result.length; i++) {
+      result[i] = i;
+    }
+    return result;
+  }
+
+  /**
    * Return a ranking that acts similar to the input but operates on higher indexes,
    * leaving the lower {@code n} indexes unmoved.
    *

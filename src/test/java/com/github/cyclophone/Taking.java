@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.github.cyclophone.ArrayUtil.checkEqualLength;
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 import static com.github.cyclophone.Rankings.invert;
 import static com.github.cyclophone.Rankings.nextOffsetShifting;
 import static com.github.cyclophone.Sorting.sorting;
@@ -23,7 +23,7 @@ final class Taking {
     }
 
     Permutation to(int[] to) {
-      return define(from(from, to));
+      return define0(from(from, to));
     }
   }
 
@@ -68,7 +68,7 @@ final class Taking {
     }
 
     Permutation to(E[] to) {
-      return define(From.from(from, to));
+      return define0(From.from(from, to));
     }
   }
 
@@ -83,7 +83,7 @@ final class Taking {
     }
 
     Permutation using(Comparator<E> comp) {
-      return define(From.from(from, to, comp));
+      return define0(From.from(from, to, comp));
     }
   }
 

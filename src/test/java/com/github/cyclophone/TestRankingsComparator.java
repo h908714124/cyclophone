@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Comparator;
 
 import static com.github.cyclophone.Apply.apply;
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 import static com.github.cyclophone.RandomPermutation.randomNumbers;
 import static com.github.cyclophone.Sorting.sortedCopy;
 import static com.github.cyclophone.Sorting.sorting;
@@ -113,11 +113,11 @@ class TestRankingsComparator {
   }
 
   static <E extends Comparable> Permutation sortingPermutation(E[] input) {
-    return define(sorting(input));
+    return define0(sorting(input));
   }
 
   static Permutation sortingPermutation(int[] input) {
-    return define(sorting(input));
+    return define0(sorting(input));
   }
 
 }

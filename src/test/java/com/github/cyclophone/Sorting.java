@@ -3,7 +3,7 @@ package com.github.cyclophone;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 import static com.github.cyclophone.Rankings.checkRanking;
 import static com.github.cyclophone.Rankings.nextOffsetShifting;
 import static com.github.cyclophone.Rankings.unshift;
@@ -20,7 +20,7 @@ class Sorting {
     }
 
     Permutation using(Comparator<E> comparator) {
-      return define(sorting(a, comparator));
+      return define0(sorting(a, comparator));
     }
   }
 

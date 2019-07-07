@@ -1,6 +1,6 @@
 package com.github.cyclophone;
 
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 
 final class Shift {
 
@@ -19,6 +19,6 @@ final class Shift {
     int[] ranking = p.getRanking();
     if (ranking.length == 0 && n == 0)
       return p;
-    return define(Rankings.shift(n, ranking));
+    return define0(Rankings.shift(n, ranking));
   }
 }

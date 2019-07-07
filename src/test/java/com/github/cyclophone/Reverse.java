@@ -1,7 +1,7 @@
 package com.github.cyclophone;
 
 import static com.github.cyclophone.ArrayUtil.negativeFailure;
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 
 final class Reverse {
 
@@ -39,6 +39,6 @@ final class Reverse {
     for (int i = 0; i < length; i += 1) {
       result[i] = length - i - 1;
     }
-    return define(result);
+    return define0(result);
   }
 }

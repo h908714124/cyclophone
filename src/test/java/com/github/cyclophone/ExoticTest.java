@@ -91,7 +91,7 @@ class ExoticTest {
         // build a ranking from the result
         ranking[i] = actionResult.ordinal();
       }
-      System.out.println("map.put(" + p.toCycles().print() + ", " + Permutation.define(ranking).toCycles().print() + ");");
+      System.out.println("map.put(" + p.toCycles().print() + ", " + Permutation.define0(ranking).toCycles().print() + ");");
     }
   }
 

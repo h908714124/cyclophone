@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static com.github.cyclophone.CycleUtil.cyclic;
 import static com.github.cyclophone.Equals.assertPermutationEquals;
-import static com.github.cyclophone.Permutation.define;
+import static com.github.cyclophone.Permutation.define0;
 import static com.github.cyclophone.Product.product;
 import static com.github.cyclophone.RandomPermutation.randomNumbers;
 import static com.github.cyclophone.Sorting.isUnique;
@@ -72,10 +72,10 @@ class ArrayUtilTest {
 
   @Test
   void testClosed() {
-    Permutation id = Permutation.define(0, 1, 2, 3);
-    Permutation p = Permutation.define(1, 0, 2, 3);
-    Permutation k = Permutation.define(0, 1, 3, 2);
-    Permutation p2 = Permutation.define(1, 2, 0, 3);
+    Permutation id = Permutation.define0(0, 1, 2, 3);
+    Permutation p = Permutation.define0(1, 0, 2, 3);
+    Permutation k = Permutation.define0(0, 1, 3, 2);
+    Permutation p2 = Permutation.define0(1, 2, 0, 3);
     assertTrue(isClosed(singletonList(id)));
     assertTrue(isClosed(asList(id, p)));
     assertTrue(isClosed(asList(id, p2, p2.pow(2))));
@@ -221,23 +221,23 @@ class ArrayUtilTest {
 
   @Test
   void testFindCommutator() {
-    Permutation p = define(cyclic(1, 2));
-    Permutation q = define(cyclic(0, 1));
-    assertPermutationEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
+    Permutation p = define0(cyclic(1, 2));
+    Permutation q = define0(cyclic(0, 1));
+    assertPermutationEquals(define0(1, 2, 0), product(p.invert(), q.invert(), p, q));
   }
 
   @Test
   void testEvenCommutator() {
-    Permutation p = define(cyclic(0, 4, 1));
-    Permutation q = define(cyclic(0, 3, 2, 1, 4));
-    assertPermutationEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
+    Permutation p = define0(cyclic(0, 4, 1));
+    Permutation q = define0(cyclic(0, 3, 2, 1, 4));
+    assertPermutationEquals(define0(1, 2, 0), product(p.invert(), q.invert(), p, q));
   }
 
   @Test
   void testEvenCommutator2() {
-    Permutation p = define(cyclic(0, 3, 1));
-    Permutation q = define(cyclic(0, 4, 2, 1, 3));
-    assertPermutationEquals(define(1, 2, 0), product(p.invert(), q.invert(), p, q));
+    Permutation p = define0(cyclic(0, 3, 1));
+    Permutation q = define0(cyclic(0, 4, 2, 1, 3));
+    assertPermutationEquals(define0(1, 2, 0), product(p.invert(), q.invert(), p, q));
   }
 
   @Test

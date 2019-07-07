@@ -1,5 +1,6 @@
 package com.github.cyclophone;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,7 +57,7 @@ public final class Permutation implements Comparable<Permutation> {
     this.ranking = ranking;
   }
 
-  static Permutation define(int... ranking) {
+  static Permutation define0(int... ranking) {
     int[] trimmed = Rankings.trim(ranking);
     if (trimmed.length == 0) {
       return IDENTITY;
@@ -67,8 +68,20 @@ public final class Permutation implements Comparable<Permutation> {
     return new Permutation(trimmed, true);
   }
 
+  public static Permutation define(int... ranking) {
+    return define0(ArrayUtil.add(ranking, -1));
+  }
+
+  public static Permutation define(int a) {
+    return define(Long.valueOf(a));
+  }
+
+  public static Permutation define(long a) {
+    return define0(ArrayUtil.add(getDigits(a), -1));
+  }
+
   static Permutation cycle0(int... cycle) {
-    return define(CycleUtil.cyclic(cycle));
+    return define0(CycleUtil.cyclic(cycle));
   }
 
   /**
@@ -86,6 +99,27 @@ public final class Permutation implements Comparable<Permutation> {
     ints[1] = b;
     System.arraycopy(cycle1based, 0, ints, 2, cycle1based.length);
     return cycle0(ArrayUtil.add(ints, -1));
+  }
+
+  public static Permutation cycle(int a) {
+    return cycle(Long.valueOf(a));
+  }
+
+  public static Permutation cycle(long a) {
+    int[] input = getDigits(a);
+    return cycle0(ArrayUtil.add(input, -1));
+  }
+
+  private static int[] getDigits(long a) {
+    int digits = (int) Math.log10(a) + 1;
+    int[] input = new int[digits];
+    for (int i = 0; i < digits; i++) {
+      BigInteger pow = BigInteger.TEN.pow(digits - i);
+      BigInteger remainder = BigInteger.valueOf(a).remainder(pow);
+      BigInteger firstDigitOfRemainder = remainder.divide(pow.divide(BigInteger.TEN));
+      input[i] = firstDigitOfRemainder.intValueExact();
+    }
+    return input;
   }
 
   /**
@@ -115,7 +149,7 @@ public final class Permutation implements Comparable<Permutation> {
     if (other.isIdentity()) {
       return this;
     }
-    return define(Rankings.comp(this.ranking, other.ranking));
+    return define0(Rankings.comp(this.ranking, other.ranking));
   }
 
   /**
@@ -163,7 +197,7 @@ public final class Permutation implements Comparable<Permutation> {
     if (this.ranking.length == 0) {
       return this;
     }
-    return define(Rankings.invert(ranking));
+    return define0(Rankings.invert(ranking));
   }
 
   /**
@@ -218,12 +252,32 @@ public final class Permutation implements Comparable<Permutation> {
     return ranking.length;
   }
 
+  /**
+   * Print this permutation using cycle notation.
+   *
+   * @return a string
+   */
   @Override
   public String toString() {
     if (isIdentity()) {
       return "()";
     }
     return toCycles().toString();
+  }
+
+  /**
+   * Print the ranking of this permutation.
+   * Alternative to {@link #toString()}
+   * which uses cycle notation.
+   *
+   * @param length number of digits to print
+   * @return a string
+   */
+  public String print(int length) {
+    return Arrays.stream(Rankings.fill(this.ranking, length))
+        .map(i -> i + 1)
+        .mapToObj(Integer::toString)
+        .collect(Collectors.joining(""));
   }
 
   /**
@@ -282,16 +336,7 @@ public final class Permutation implements Comparable<Permutation> {
    * @return {@code h^-1 * this * h}
    */
   public Permutation conjugationBy(Permutation h) {
-    return h.invert().compose(this).compose(h);
-  }
-
-  /**
-   * Apply the outer automorphism of S6.
-   *
-   * @return map result
-   */
-  Permutation exoticSwap() {
-    return OuterAutomorphism.getInstance().apply(this);
+    return InnerAutomorphism.conjugationBy(h).apply(this);
   }
 
   /**
